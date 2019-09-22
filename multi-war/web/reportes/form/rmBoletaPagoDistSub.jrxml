@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oficinasSub" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="edb3547a-0303-477f-9446-6292fbbf15c1">
+	<property name="ireport.zoom" value="3.2210200000000335"/>
+	<property name="ireport.x" value="642"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idRegalia" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select mun.codigo,mun.nombre,mun.numero_cuenta ,liq.min_distribucion_municipio
+from liquidacion liq
+inner join municipio mun on mun.id = liq.min_id_municipio
+where liq.estado = 'HAB'
+and liq.id_regalia = $P{idRegalia}]]>
+	</queryString>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="numero_cuenta" class="java.lang.String"/>
+	<field name="min_distribucion_municipio" class="java.math.BigDecimal"/>
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{min_distribucion_municipio}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="2" width="44" height="11" uuid="da8d7f7b-368f-4b8b-b4f5-e148ce321210"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="13" width="497" height="1" uuid="68ebd910-99ff-4240-9414-b107ab542583"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="1" width="497" height="1" uuid="b98abcd6-44eb-47c2-b405-6f0d5cccfb3e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="418" y="2" width="54" height="11" uuid="638dba9a-fca7-46f7-ac21-8c657987aca5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe (Bs)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="78" y="2" width="150" height="11" uuid="ccc89b53-b114-465c-bf41-9d9bb798933e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Municipio Productor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="273" y="2" width="94" height="11" uuid="19b963bc-e098-4c9f-bf60-eff6f6cebcca"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro de Cuenta]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="78" y="0" width="193" height="12" uuid="3bc8fa92-1bf7-4c8a-a71e-afc556a62289"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00">
+				<reportElement x="367" y="0" width="106" height="12" uuid="a4f98a9b-7325-48fa-9762-f7be7e9e3d76"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{min_distribucion_municipio}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="12" width="476" height="1" uuid="4759c50e-71e7-4768-b946-8b5ddcf0ed70"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="13" y="0" width="54" height="12" uuid="d7d5ef43-466e-4ffb-86a9-d47fb7089e70"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="273" y="0" width="94" height="12" uuid="d8c92365-9cf5-4c34-be98-80fb3586f795"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_cuenta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="13">
+			<staticText>
+				<reportElement x="315" y="2" width="44" height="11" uuid="11a13753-a527-41e7-a578-551052346daa"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField pattern="###,###,##0.00">
+				<reportElement x="367" y="2" width="106" height="11" uuid="467b858a-5888-41f9-93d9-55925456486c"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="355" y="1" width="118" height="1" uuid="20c01e66-8cb3-473b-8b83-d540bb80f0a9"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>

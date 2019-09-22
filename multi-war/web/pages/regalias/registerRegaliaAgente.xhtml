@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+
+	<h:outputText value="No existe tipo de cambio a la Fecha" styleClass="title-page" rendered="#{regaliaAgenteBean.tipoCambio.id == null}"/>
+	
+	<h:form id="frmExportacion" rendered="#{regaliaAgenteBean.tipoCambio.id.intValue() > 0}">
+		<table>
+			<tr>
+				<td>
+					<h:outputText value="Razón social:" styleClass="required-field"/>
+				</td>
+				<td>
+					<h:outputText value="#{regaliaAgenteBean.cooperativa.razonSocial}"/>
+				</td>
+				
+				<td width="50px" />
+				
+				<td>
+					<h:outputText value="NIM:" styleClass="required-field"/>
+				</td>
+				<td>
+					<h:outputText value="#{regaliaAgenteBean.cooperativa.nim}" />
+				</td>
+				
+				<td width="10px"/>
+				
+				<td>
+					<h:outputText value="NIT:" styleClass="required-field"/>
+				</td>
+				<td>
+					<h:outputText value="#{regaliaAgenteBean.cooperativa.nit}" />
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<h:outputText value="Fecha de Transacción:" styleClass="required-field"/>
+				</td>
+				
+				<td>
+					<p:calendar id="idFechaTransaccion" required="true" showOn="button" mask="true"
+						value="#{regaliaAgenteBean.regalia.ageFechaTransaccion}" label="Fecha de exportación"
+						pattern="dd/MM/yyyy" showButtonPanel="false" size="15"
+						locale="es">
+					</p:calendar>
+				</td>
+			</tr>
+			
+		</table>
+		
+		
+		
+		
+			
+			
+			<p:fieldset styleClass="legendNone" legend="Datos del Vendedor" id="idDatosDelVendedor">
+				<table>
+					<tr>
+						
+						<td><h:outputLabel for="idRazonSocialVendedor" value="Razón Social/Nombre:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputText id="idRazonSocialVendedor" value="#{regaliaAgenteBean.regalia.ageRazonSocial}" 
+				            	required="true" label="Razón Social/Nombre" size="40"
+				            	onkeyup="return trimText(this);">
+				            </p:inputText>
+						</td>
+						
+						<td><h:outputLabel for="idNimCi" value="NIM/CI:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputText id="idNimCi" value="#{regaliaAgenteBean.regalia.ageNimCi}" 
+				            	required="true" label="NIM/CI" size="30">
+				            </p:inputText>
+						</td>
+						
+						<td><h:outputLabel for="idMunicipioVendedor" value="Municipio:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idMunicipioVendedor" required="true" label="Municipio"
+								filter="true" filterMatchMode="contains"
+								style="width:130px" panelStyle="width:130px" effect="fade"
+								value="#{regaliaAgenteBean.regalia.ageIdMunicipio.id}">
+								<f:selectItems value="#{regaliaAgenteBean.selectMunicipio}" />
+							</p:selectOneMenu>
+						</td>
+						
+						<td><h:outputLabel for="idLocalidad" value="Localidad:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputText id="idLocalidad" value="#{regaliaAgenteBean.regalia.ageLocalidad}" 
+				            	required="true" label="Localidad" size="40"
+				            	onkeyup="return trimText(this);">
+				            </p:inputText>
+						</td>
+						
+					</tr>
+					
+					<tr>
+						<td><h:outputLabel for="idLaboratorio" value="Laboratorio:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idLaboratorio" required="true" label="Laboratorio"
+								filter="true" filterMatchMode="contains"
+								style="width:150px" panelStyle="width:150px" effect="fade"
+								value="#{regaliaAgenteBean.regalia.ageIndLaboratorio}">
+								<f:selectItems value="#{regaliaAgenteBean.selectLaboratorio}" />
+							</p:selectOneMenu>
+						</td>
+						
+						<td><h:outputLabel for="idCertificadoAnalisis" value="Certificado Analisis:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputText id="idCertificadoAnalisis" value="#{regaliaAgenteBean.regalia.ageCertificadoAnalisis}" 
+				            	required="true" label="Certificado Analisis" size="20"
+				            	onkeyup="return trimText(this);">
+				            </p:inputText>
+						</td>
+						
+					</tr>
+					
+				</table>
+			</p:fieldset>
+			
+			
+			<p:fieldset styleClass="legendNone" legend="Caracteristicas del Mineral Comercializado">
+			
+				<table>
+					<tr>
+						<td><h:outputLabel for="idMunicipioProductor" value="Municipio Productor:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idMunicipioProductor" label="Municipio Productor"
+								filter="true" filterMatchMode="contains"
+								style="width:150px" panelStyle="width:150px" effect="fade"
+								value="#{regaliaAgenteBean.liquidacion.minIdMunicipio.id}">
+								<f:selectItems value="#{regaliaAgenteBean.selectMunicipio}" />
+							</p:selectOneMenu>
+						</td>
+					</tr>
+					
+					<tr>
+						
+						<td><h:outputLabel for="idMineral" value="Mineral:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idMineral" label="Mineral"
+								filter="true" filterMatchMode="contains"
+								style="width:152px" panelStyle="width:152px" effect="fade"
+								value="#{regaliaAgenteBean.liquidacion.minIdCotizacionMineral.id}">
+								<f:selectItems value="#{regaliaAgenteBean.selectMineral}"/>
+								
+								<p:ajax listener="#{regaliaAgenteBean.buscarDescripcionMineral}" 
+										update=":frmExportacion:idMineralDescripcion
+												:frmExportacion:idCotizacionLabel
+												:frmExportacion:idUnidadMedidaLabel
+												:frmExportacion:idAlicuotaLabel
+												:frmExportacion:idTipoCambioLabel" 
+												process="@this"/>
+												
+							</p:selectOneMenu>
+						</td>
+						
+						<td><h:outputLabel for="idMineralDescripcion" value="Descripción:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idMineralDescripcion" label="Descripción"
+								filter="true" filterMatchMode="contains"
+								style="width:152px" panelStyle="width:152px" effect="fade"
+								value="#{regaliaAgenteBean.liquidacion.minIdCotizacionMineralDesc.id}">
+								<f:selectItems value="#{regaliaAgenteBean.selectMineralDescripcion}"/>
+								
+							</p:selectOneMenu>
+						</td>
+						
+						<td><h:outputLabel for="idPresentacionProducto" value="Presentación:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idPresentacionProducto" label="Presentación"
+								filter="true" filterMatchMode="contains"
+								style="width:152px" panelStyle="width:152px" effect="fade"
+								value="#{regaliaAgenteBean.liquidacion.minIndPresentacion}">
+								<f:selectItems value="#{regaliaAgenteBean.selectPresentacion}" />
+								
+							</p:selectOneMenu>
+						</td>
+						
+						<td><h:outputLabel for="idPNS" value="PNS(Kg):" style="font-weight:bold" /></td>
+						<td>
+							<p:inputNumber id="idPNS" value="#{regaliaAgenteBean.liquidacion.minPnsKg}" 
+				            	label="Lote" size="12" decimalPlaces="5" decimalSeparator=".">
+				            </p:inputNumber>
+						</td>
+						
+						<td><h:outputLabel for="idLey" value="Ley:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputNumber id="idLey" value="#{regaliaAgenteBean.liquidacion.minLey}" 
+				            	label="Ley" size="12" decimalPlaces="5" decimalSeparator=".">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+				            </p:inputNumber>
+						</td>
+						
+						<td><h:outputLabel for="idUnidad" value="Unid:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idUnidad" label="Unid"
+								style="width:40px" panelStyle="width:40px" effect="fade"
+								value="#{regaliaAgenteBean.liquidacion.minIndUnidad}">
+								<f:selectItems value="#{regaliaAgenteBean.selectOpcionMineral}" />
+								
+							</p:selectOneMenu>
+						</td>
+					</tr>
+					
+					<tr>
+					
+						<td><h:outputLabel for="idCotizacionLabel" value="Cotización:"/></td>
+						<td>
+							<p:inputText id="idCotizacionLabel" value="#{regaliaAgenteBean.liquidacion.minCotizacion}" 
+				            	size="7" disabled="true">
+				            </p:inputText>
+						</td>
+						
+						<td><h:outputLabel for="idUnidadMedidaLabel" value="Unidad Medida:"/></td>
+						<td>
+							<p:inputText id="idUnidadMedidaLabel" value="#{regaliaAgenteBean.mapCotizacionUnidadMedida.get(regaliaAgenteBean.liquidacion.minIndUnidadMedCoti)}" 
+				            	size="7" disabled="true">
+				            </p:inputText>
+						</td>
+						
+						<td><h:outputLabel for="idAlicuotaLabel" value="Alicuota:"/></td>
+						<td>
+							<p:inputText id="idAlicuotaLabel" value="#{regaliaAgenteBean.liquidacion.minAlicuota}" 
+				            	size="7" disabled="true">
+				            </p:inputText>
+						</td>
+						
+						<td><h:outputLabel for="idTipoCambioLabel" value="T.C. USD:"/></td>
+						<td>
+							<p:inputText id="idTipoCambioLabel" value="#{regaliaAgenteBean.regalia.tc}" 
+				            	size="7" disabled="true">
+				            </p:inputText>
+						</td>
+						
+						<td colspan="4" align="center">
+							
+							<p:commandButton value="Adicionar" icon="ui-add" id="idCmdGuardar"
+								action="#{regaliaAgenteBean.adicionarMineral}" 
+								process="@form"
+								update="@form :messages">
+							</p:commandButton>
+						
+						</td>
+						
+					</tr>
+					
+					<tr>
+						<td colspan="12">
+							<h:outputLabel value="Minerales Seleccionados" style="font-weight:bold"/>
+						</td>
+					</tr>
+
+					
+				</table>
+				
+				  
+				<p:dataTable id="tblLiquidacionTemp" var="liqui" widgetVar="tblLiquidacionTempVar"
+					value="#{regaliaAgenteBean.listLiquidacion}" 
+					selection="#{regaliaAgenteBean.liquidacionSelect}"
+					rowKey="#{liqui.id}"
+					selectionMode="single" 
+					
+					rowIndexVar="rowIndex"
+					rowsPerPageTemplate="#{cons['dtb.rows.per.page.template']}" 
+					emptyMessage="#{cons['dtb.empty.page.table']}"
+					
+					>
+	
+					<p:ajax event="rowSelect" process="@this" update="frmExportacion" 
+						listener="#{regaliaAgenteBean.onRowSelect}" 
+					 />
+	
+					<p:column headerText="Mineral" sortBy="#{liqui.minIdCotizacionMineral.nombre}"
+						style="white-space:normal;" width="5%">
+						<h:outputText value="#{liqui.minIdCotizacionMineral.nombre}" />
+					</p:column>
+					
+					<p:column headerText="Ley"
+						style="white-space:normal;" width="5%">
+						<h:outputText value="#{liqui.minLey}">
+							<f:convertNumber pattern="#{cons['pattern.currency.decimalTwo']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="PNS(Kg)"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{liqui.minPnsKg}" >
+							<f:convertNumber pattern="#{cons['pattern.currency.decimalTwo']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="PF(Kg)"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{liqui.minPfKg}">
+							<f:convertNumber pattern="#{cons['pattern.currency.decimal']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="PF(um)"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{liqui.minPfUm}">
+							<f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Cotización"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{liqui.minCotizacion}">
+							<f:convertNumber pattern="#{cons['pattern.currency.decimal']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="VBV US$"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{liqui.minVbvUsd}">
+							<f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="VBV Bs"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{liqui.minVbvBs}">
+							<f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Alicuota"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{liqui.minAlicuota}">
+							<f:convertNumber pattern="#{cons['pattern.currency.decimal']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="RM Bs"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{liqui.minRmBs}">
+							<f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>						
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText=" " style="white-space:normal;" width="2%" >
+						<p:commandLink value="Eliminar" title="Eliminar Mineral"
+							update=":frmExportacion:tblLiquidacionTemp
+									:frmExportacion:tblLiquidacionTempResumen
+									:messages" 
+							process="@this"
+							actionListener="#{regaliaAgenteBean.eliminarMineral(liqui)}">
+							<p:confirm header="Confirmación" message="¿Esta seguro de ELIMINAR el registro?" icon="ui-icon-alert" /> 
+						</p:commandLink>
+					</p:column>
+					
+			        <p:columnGroup type="footer">
+					    <p:row>
+					        <p:column colspan="9" footerText="Total Regalia Minera (Bs)" style="text-align:right"/>
+					        <p:column style="text-align:right">
+					            <f:facet name="footer">
+					                <h:outputText value="#{regaliaAgenteBean.totalRM}">
+					                    <f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+					                </h:outputText>
+					            </f:facet>
+					        </p:column>
+					    </p:row>
+					</p:columnGroup>
+			        
+				</p:dataTable>
+				
+			
+			</p:fieldset>
+			
+			<p:fieldset styleClass="legendNone" legend="Distribución Departamental y Municipal">
+			
+				<p:dataTable id="tblLiquidacionTempResumen" var="res" widgetVar="tblLiquidacionTempResVar"
+					value="#{regaliaAgenteBean.listLiquidacion}" selection="#{regaliaAgenteBean.liquidacionSelect}"
+					rowKey="#{res.id}"
+					selectionMode="single" 
+					
+					rowsPerPageTemplate="#{cons['dtb.rows.per.page.template']}" rowIndexVar="rowIndex"
+					emptyMessage="#{cons['dtb.empty.page.table']}"
+					
+					sortBy="#{res.minIdCotizacionMineral.nombre}">
+	
+					<p:ajax event="rowSelect" process="@this" update="frmExportacion" 
+						listener="#{regaliaAgenteBean.onRowSelect}" 
+					 />
+					
+					<p:column headerText="Departamento"
+						style="white-space:normal;" width="5%">
+						<h:outputText value="#{res.idRegalia.idDepartamento.nombre}" />
+					</p:column>
+					
+					<p:column headerText="Municipio"
+						style="white-space:normal;" width="5%">
+						<h:outputText value="#{regaliaAgenteBean.mapMunicipio.get(res.minIdMunicipio.id)}" />
+					</p:column>
+
+					<p:column headerText="Regalia Minera (Bs)"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{res.minRmBs}">
+							<f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Gobernación"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{res.minDistribucionGobernacion}">
+							<f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Municipios"
+						style="white-space:normal; text-align:right;" width="5%">
+						<h:outputText value="#{res.minDistribucionMunicipio}">
+							<f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+						</h:outputText>
+					</p:column>
+					
+			        <p:columnGroup type="footer">
+					    <p:row>
+					        <p:column colspan="3" footerText="Total Regalia Minera (Bs)" style="text-align:right"/>
+					        <p:column style="text-align:right">
+					            <f:facet name="footer">
+					                <h:outputText value="#{regaliaAgenteBean.totalDistriGobernacion}">
+					                    <f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+					                </h:outputText>
+					            </f:facet>
+					        </p:column>
+					        
+					        <p:column style="text-align:right">
+					            <f:facet name="footer">
+					                <h:outputText value="#{regaliaAgenteBean.totalDistriMunicipio}">
+					                    <f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+					                </h:outputText>
+					            </f:facet>
+					        </p:column>
+					    </p:row>
+					</p:columnGroup>
+					
+				</p:dataTable>
+			
+			</p:fieldset>
+			
+			 
+			<p:toolbar id="mnuFinal">
+				<f:facet name="left" >
+					
+					<p:commandButton value="Guardar y Emitir" icon="ui-save" id="idCmdGuardarDos"
+						disabled="#{regaliaAgenteBean.regalia.id == null or regaliaAgenteBean.listLiquidacion.size() == 0}"
+						action="#{regaliaAgenteBean.guardarExportacion}"
+						process=":frmExportacion:idDatosDelVendedor 
+								 :frmExportacion:idFechaTransaccion
+								 :frmExportacion:idCmdGuardarDos"
+								 
+						update=":frmExportacion:idDatosDelVendedor 
+								:frmExportacion:idFechaTransaccion
+								:frmExportacion:mnuFinal
+								:messages">
+						<p:confirm header="Confirmación" message="¿Esta seguro de Emitir?" icon="ui-icon-alert" />
+					</p:commandButton>
+					
+					<p:commandButton id="imprimirBoletaPago" icon="ui-textList"
+						rendered="#{regaliaAgenteBean.regalia.indEstadoFormulario.intValue() == 130 and regaliaAgenteBean.regalia.id != null}"
+						value="Emitir Boleta de Pago" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false">
+						<p:fileDownload value="#{regaliaAgenteBean.reporteBoletaPago}" />
+					</p:commandButton>
+					
+					<p:commandButton id="imprimirLiquidacionRM" icon="ui-textList"
+						rendered="#{regaliaAgenteBean.regalia.indEstadoFormulario.intValue() == 130 and regaliaAgenteBean.regalia.id != null}"
+						value="Emitir Liquidación de RM" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false">
+						<p:fileDownload value="#{regaliaAgenteBean.reporteFormEmision}" />
+					</p:commandButton>
+					
+				</f:facet>
+			</p:toolbar>
+			
+	
+		</h:form>
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+	        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+	        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+	    
+		<script type="text/javascript">
+			function enviarFormSucursal(xhr, status, args) {
+				if( undefined == args.validationFailed &amp;&amp; args.sinErrores) {
+					  PF('dlgSucursalVar').hide();
+					  PF('tblOficinaVar').unselectAllRows(); PF('tblOficinaVar').clearFilters();
+				  } else {  
+				    	PF('dlgSucursalVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+
+	</script>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+		<h:outputText value="Administración de Usuarios"
+			styleClass="title-page" />
+
+		<h:form id="frmUsuario">
+			<p:menubar id="mnuUsuario">
+				<p:menuitem id="actualizarButton" label="Actualizar"
+					value="Actualizar" icon="ui-icon-refresh" process="@this"
+					actionListener="#{usuarioBean.listarUsuariosTabla}"
+					update=":frmUsuario:tblUsuario,
+							:frmUsuario:mnuUsuario,
+							:frmRoles:idRolesPanel"
+					oncomplete="PF('tblUsuarioVan').unselectAllRows(); PF('tblUsuarioVan').clearFilters();" />
+
+				<p:menuitem id="registrarButton" value="Registrar" process="@this"
+					icon="ui-icon-document"
+					update=":dlgRegistroUsuario,
+							:frmRegistroUsuario,
+							:messages,
+							:frmRoles:idRolesPanel,
+							:frmUsuario:tblUsuario,"
+					actionListener="#{usuarioBean.registrarUsuario}"
+					oncomplete="PF('dlgUsuarioVar').show();" />
+
+				<p:menuitem id="modificarButton" value="Modificar"
+					icon="ui-icon-pencil"
+					actionListener="#{usuarioBean.modificarUsuario}" process="@this"
+					update=":dlgRegistroUsuario,
+							:frmRoles:idRolesPanel"
+					oncomplete="PF('dlgUsuarioVar').show();"
+					disabled="#{usuarioBean.blnBloquearBoton}" />
+
+				<p:menuitem id="eliminarButton" label="Eliminar" value="Eliminar"
+					icon="ui-icon-trash" process="@this"
+					update=":dglConfirmacion, :frmRoles:idRolesPanel"
+					oncomplete="PF('dglConfirmacionVar').show();"
+					disabled="#{usuarioBean.blnBloquearBoton}"
+					actionListener="#{usuarioBean.eliminarUsuarioSeleccionado}" />
+
+				<p:menuitem id="btnDefinicionRoles" value="Definición roles"
+					icon="ui-icon-person" process="@this"
+					update=":frmRoles:idRolesDefinidos,
+							:frmRoles:idRolesPanel"
+					actionListener="#{usuarioBean.desplegarRolesPorUsuario}"
+					disabled="#{usuarioBean.blnBloquearBoton}" />
+
+				<p:menuitem id="btnReaturarContrasena" value="Restaurar contraseña"
+					icon="ui-icon-unlocked" process="@this"
+					update=":dglConfirmacionPass, :frmRoles:idRolesPanel"
+					oncomplete="PF('dglConfirmacionPassVar').show();"
+					actionListener="#{usuarioBean.datosParaCambiarPass}"
+					disabled="#{usuarioBean.blnBloquearBoton}" />
+
+				<!--  
+				<p:menuitem id="reporteButton" value="Imprimir" icon="ui-icon-print"
+					onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false">
+					<p:fileDownload value="#{usuarioBean.reporte}" />
+				</p:menuitem>
+				-->
+
+			</p:menubar>
+
+			<p:dataTable id="tblUsuario" var="usuario" widgetVar="tblUsuarioVan"
+				value="#{usuarioBean.listaSegUsuario}"
+				selection="#{usuarioBean.segUsuario}" rowKey="#{usuario.id}"
+				filteredValue="#{usuarioBean.listaSegUsuarioFiltro}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15,20" rowIndexVar="rowIndex"
+				emptyMessage="No existen registros.">
+
+				<p:ajax event="rowSelect" process="@this"
+					update=":frmUsuario:mnuUsuario,
+							:frmRoles:idRolesPanel"
+					listener="#{usuarioBean.onRowSelect}" />
+
+				<p:column headerText="Nro." style="width:2%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+
+				<p:column headerText="Usuario" filterBy="#{usuario.usuario}"
+					filterMatchMode="contains" sortBy="#{usuario.usuario}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{usuario.usuario}" />
+				</p:column>
+
+				<p:column headerText="F. Creación" sortBy="#{usuario.fechacreacion}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{usuario.fechacreacion}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Nombre Completo"
+					filterBy="#{usuario.nombreCompleto}" filterMatchMode="contains"
+					sortBy="#{usuario.nombreCompleto}" filterStyle="width:150px;"
+					style="white-space:normal;" width="20%">
+					<h:outputText value="#{usuario.nombreCompleto}" />
+				</p:column>
+				
+				<p:column headerText="Sigla"
+					filterBy="#{usuario.sigla}" filterMatchMode="contains"
+					sortBy="#{usuario.sigla}" filterStyle="width:50px;"
+					style="white-space:normal;" width="4%">
+					<h:outputText value="#{usuario.sigla}" />
+				</p:column>
+
+				<p:column headerText="Pantalla"
+					sortBy="#{usuario.pantallaprincipal}" filterStyle="width:250px;"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{usuario.pantallaprincipal}" />
+				</p:column>
+
+				<p:column headerText="Estado" sortBy="#{usuario.habilitado}"
+					filterStyle="width:250px;" style="white-space:normal;" width="8%">
+					<h:outputText
+						value="#{usuario.habilitado==1?'Autorizado':'Denegado'}" />
+				</p:column>
+				
+				<p:column headerText="Cooperativa"
+					filterBy="#{usuario.idCooperativa.razonSocial}" filterMatchMode="contains"
+					sortBy="#{usuario.idCooperativa.razonSocial}" filterStyle="width:150px;"
+					style="white-space:normal;" width="width:150px;">
+					<h:outputText value="#{usuario.idCooperativa.razonSocial}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog id="dlgRegistroUsuario" widgetVar="dlgUsuarioVar"
+			appendTo="@(body)" showEffect="explode" hideEffect="clip"
+			position="center" modal="true" closable="false" resizable="false"
+			width="550" header="#{usuarioBean.strTitulo}">
+			<h:form id="frmRegistroUsuario">
+				<p:panel id="pnlRegistroUsuario">
+					<p:fieldset styleClass="legendNone"	legend="Datos Personales">
+						<h:panelGrid id="pgrDatosAcceso" columns="2">
+
+							<h:outputText value="Apellido Paterno:*" styleClass="required-field"
+								style='white-space:nowrap;' />
+							<p:inputText id="txtPaterno" size="24" required="true"
+								onkeyup="return trimText(this);"
+								requiredMessage="El campo Apellido Paterno es requerido"
+								value="#{usuarioBean.segUsuario.paterno}">
+								<pe:keyFilter regEx="#{cons['exp.regular.alphabetic.name.lastname']}" />
+							</p:inputText>
+
+							<h:outputText value="Apellido Materno:*" styleClass="required-field"
+								style='white-space:nowrap;' />
+							<p:inputText id="txtMaterno" size="24" required="true"
+								onkeyup="return trimText(this);"
+								requiredMessage="El campo Apellido Materno es requerido"
+								value="#{usuarioBean.segUsuario.materno}">
+								<pe:keyFilter
+									regEx="#{cons['exp.regular.alphabetic.name.lastname']}" />
+							</p:inputText>
+
+							<h:outputText value="Nombres:*" styleClass="required-field" style='white-space:nowrap;' />
+							<p:inputText id="txtNombres" size="24" required="true"
+								onkeyup="return trimText(this);"
+								requiredMessage="El campo Nombres es requerido"
+								value="#{usuarioBean.segUsuario.nombres}">
+								<pe:keyFilter
+									regEx="#{cons['exp.regular.alphabetic.name.lastname']}" />
+							</p:inputText>
+							
+							<h:outputText value="Sigla:" styleClass="required-field" style='white-space:nowrap;' />
+							<p:inputText id="txtSigla" size="24" required="true"
+								onkeyup="return trimText(this);"
+								requiredMessage="El campo Sigla es requerido"
+								value="#{usuarioBean.segUsuario.sigla}">
+								
+								<p:ajax event="blur"
+									update=":messages :frmRegistroUsuario:txtSigla"
+									process="@this"
+									listener="#{usuarioBean.verificarSiExisteSigla}" />
+									
+								<pe:keyFilter regEx="#{cons['exp.regular.alphabetic.not.space']}" />
+							</p:inputText>
+
+							<h:outputText value="Num. Documento:*" styleClass="required-field"
+								style='white-space:nowrap;' />
+							<p:inputText id="txtNumDoc" size="24" required="true"
+								onkeyup="return trimText(this);"
+								requiredMessage="El campo Num. Documento es requerido"
+								value="#{usuarioBean.segUsuario.nroDocumento}">
+								<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}" />
+							</p:inputText>
+
+							<h:outputText value="E-mail:*" styleClass="required-field" style='white-space:nowrap;' />
+							<p:inputText id="txtEmail" size="30" required="true"
+								requiredMessage="El campo E-mail es requerido"
+								value="#{usuarioBean.segUsuario.email}"
+								onkeypress="return parcheArroba(event, this);">
+								<pe:keyFilter
+									regEx="#{cons['exp.regular.alphanumeric.not.space.with.underline.mail']}" />
+							</p:inputText>
+
+							<h:outputText value="Cargo:*" styleClass="required-field" style='white-space:nowrap;' />
+							<p:selectOneMenu id="lstCargo" required="true"
+								requiredMessage="El campo Cargo es requerido"
+								style="width:200px" panelStyle="width:200px" effect="fade"
+								value="#{usuarioBean.segUsuario.pCargo}">
+								<f:selectItems value="#{usuarioBean.selectCargo}" />
+							</p:selectOneMenu>
+							
+							<h:outputText value="Cooperativa:" style='white-space:nowrap;' />
+							<p:selectOneMenu id="lstCooperativa"
+								style="width:200px" panelStyle="width:200px" effect="fade"
+								value="#{usuarioBean.segUsuario.idCooperativa.id}">
+								<f:selectItems value="#{usuarioBean.selectCooperativa}" />
+							</p:selectOneMenu>
+
+						</h:panelGrid>
+					</p:fieldset>
+
+					<p:fieldset styleClass="legendNone" id="fldsFilters"
+						legend="Datos de Acceso">
+						<h:panelGrid id="pgrRegistroUsuario" columns="2">
+
+							<h:outputLabel value="Usuario*:" styleClass="required-field" />
+							<p:inputText id="txtUsuarios" size="24" required="true"
+								label="Usuario" requiredMessage="El campo Usuario es requerido"
+								value="#{usuarioBean.segUsuario.usuario}" onkeyup="return trimText(this);"
+								disabled="#{usuarioBean.blnCamposEditables}">
+								<p:ajax event="blur"
+									update=":messages,:frmRegistroUsuario:txtUsuarios"
+									process="@this"
+									listener="#{usuarioBean.verificarSiExisteUsuario}" />
+								<pe:keyFilter regEx="#{cons['exp.regular.alphabetic.not.space']}" />
+							</p:inputText>
+
+							<h:outputText value="Contraseña*:" styleClass="required-field" />
+							<p:password id="txtContrasenas" size="24"
+								required="!#{usuarioBean.blnCamposEditables}"
+								disabled="#{usuarioBean.blnCamposEditables}"
+								match="txtContrasenaRepetir"
+								validatorMessage="Las contrasemas no coenciden"
+								requiredMessage="El campo Contraseña es requerido"
+								value="#{usuarioBean.segUsuario.contrasena}">
+							</p:password>
+
+							<h:outputText value="Repetir Contraseña*:" styleClass="required-field" />
+							<p:password id="txtContrasenaRepetir" size="24"
+								required="!#{usuarioBean.blnCamposEditables}"
+								disabled="#{usuarioBean.blnCamposEditables}"
+								requiredMessage="El campo Repetir Contraseña es requerido"
+								value="#{usuarioBean.segUsuario.contrasena}">
+							</p:password>
+
+							<h:outputText value="Inicio Vigencia:*" styleClass="required-field"
+								style='white-space:nowrap;' />
+							<p:calendar id="txtFechaInicio" required="true" showOn="button"
+								requiredMessage="El campo Inicio Vigencia es requerido"
+								value="#{usuarioBean.segUsuario.fechainiciovigencia}"
+								pattern="dd/MM/yyyy" showButtonPanel="false" navigator="true"
+								locale="es" mindate="#{usuarioBean.fechaActual}">
+								<p:ajax event="dateSelect" process="@this"
+									update=":frmRegistroUsuario:txtFechaFin" />
+							</p:calendar>
+
+							<h:outputText value="Fin Vigencia:*" styleClass="required-field" style='white-space:nowrap;' />
+							<p:calendar id="txtFechaFin" required="true" showOn="button"
+								requiredMessage="El campo Inicio Vigencia es requerido"
+								value="#{usuarioBean.segUsuario.fechafinvigencia}"
+								pattern="dd/MM/yyyy" showButtonPanel="false" navigator="true"
+								locale="es"
+								mindate="#{usuarioBean.segUsuario.fechainiciovigencia}">
+							</p:calendar>
+
+							<h:outputText value="Pantalla inicial:*" styleClass="required-field"
+								style='white-space:nowrap;' />
+							<p:selectOneMenu id="lstPantalla" required="true"
+								requiredMessage="El campo Pantalla inicial es requerido"
+								style="width:300px" panelStyle="width:300px" effect="fade"
+								value="#{usuarioBean.segUsuario.pantallaprincipal}">
+								<f:selectItems value="#{usuarioBean.selectPantallas}" />
+							</p:selectOneMenu>
+
+							<h:outputText value="Acceso:*" styleClass="required-field" style='white-space:nowrap;' />
+							<p:selectOneMenu id="lstAcceso" required="true"
+								requiredMessage="El campo Acceso es requerido"
+								style="width:300px" panelStyle="width:300px" effect="fade"
+								value="#{usuarioBean.segUsuario.habilitado}">
+								<f:selectItems value="#{usuarioBean.selectAcceso}" />
+							</p:selectOneMenu>
+
+							<h:outputText value="Observaciones:*" styleClass="required-field" style='white-space:nowrap;' />
+
+							<p:inputTextarea rows="3" cols="45" id="txtObservacioens"
+								required="true"
+								requiredMessage="El campo Observaciones: es requerido"
+								value="#{usuarioBean.segUsuario.observaciones}" size="50"
+								maxlength="250">
+								<pe:keyFilter
+									regEx="#{cons['exp.regular.address.and.observations']}" />
+							</p:inputTextarea>
+						</h:panelGrid>
+					</p:fieldset>
+
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								actionListener="#{usuarioBean.guardarUsuario}" process="@form"
+								update=":frmRegistroUsuario,
+										:frmUsuario:mnuUsuario
+										:messages"
+								oncomplete="enviarFormUsuario(xhr, status, args); " />
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar"
+								icon="ui-icon-close"
+								update=":frmRegistroUsuario,
+											:frmUsuario:mnuUsuario,
+											:frmUsuario:tblUsuario,"
+								oncomplete="PF('dlgUsuarioVar').hide();"
+								actionListener="#{usuarioBean.listarUsuariosTabla}">
+								<p:resetInput target="frmRegistroUsuario" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+
+
+		<p:confirmDialog id="dglConfirmacion" header="Eliminar"
+			appendTo="@(body)" severity="alert" width="350"
+			widgetVar="dglConfirmacionVar" closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Nombre usuario: #{usuarioBean.segUsuario.nombres}.
+		  			</f:facet>
+			<p:toolbar
+				style="margin:0;border-spacing:0;border-collapse:collapse;padding:0;">
+				<p:toolbarGroup style="width:100%; text-align:center; height:30px;">
+					<p:commandButton value="Si"
+						update=":messages,
+										:frmUsuario:mnuUsuario"
+						process="@this" actionListener="#{usuarioBean.eliminarUsuario}"
+						oncomplete="PF('dglConfirmacionVar').hide(); PF('tblUsuarioVan').unselectAllRows(); PF('tblUsuarioVan').clearFilters(); " />
+
+					<p:commandButton value="No" process="@none"
+						onclick="PF('dglConfirmacionVar').hide()" type="button" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</p:confirmDialog>
+
+		<h:form id="frmRoles">
+			<p:panel id="idRolesPanel" visible="#{usuarioBean.blnDesplegarRoles}">
+
+				<p:panel style="text-align:left;" styleClass="ui-widget-header">
+					<p:outputLabel
+						value="ROLES PARA EL USUARIO: #{usuarioBean.segUsuario.nombres}"
+						style="font-size:12px;font-weight:bold;" />
+				</p:panel>
+
+
+
+				<p:dataTable id="idRolesDefinidos" var="rolesDefinidos"
+					value="#{usuarioBean.segRolData}" paginator="true" rows="10"
+					rowIndexVar="rowIndex" paginatorPosition="bottom"
+					emptyMessage="No existen registros"
+					selection="#{usuarioBean.selectRol}">
+
+					<p:column width="3" headerText="Nro">
+						#{rowIndex+1}
+					</p:column>
+
+					<p:column selectionMode="multiple" style="width:18px" />
+
+					<p:column headerText="Rol">
+						<h:outputText value="#{rolesDefinidos.nombre}" />
+					</p:column>
+
+					<p:column headerText="Descripción">
+						<h:outputText value="#{rolesDefinidos.observaciones}" />
+					</p:column>
+				</p:dataTable>
+
+				<p:menubar id="mnuRol">
+					<p:menuitem id="guardarRol" value="Guardar" icon="ui-icon-disk"
+						process="@form"
+						actionListener="#{usuarioBean.guardarRolesPorUsuario}"
+						update=":frmUsuario:tblUsuario,
+								:frmUsuario:mnuUsuario,
+								:messages"
+						oncomplete="enviarRolesPorUsuario(xhr, status, args); " />
+				</p:menubar>
+
+
+
+			</p:panel>
+
+		</h:form>
+
+		<p:dialog id="dglConfirmacionPass" widgetVar="dglConfirmacionPassVar"
+			appendTo="@(body)" showEffect="explode" hideEffect="clip"
+			position="center" modal="true" closable="false" resizable="false"
+			width="550" header="#{usuarioBean.strTitulo}">
+			<h:form id="frmModificarPass">
+				<p:panel id="pnlModificarPass">
+					<h:panelGrid id="pgrModificarPass" columns="2">
+
+						<h:outputText value="Nombre:*" style='white-space:nowrap;' />
+						<h:outputText value="#{usuarioBean.segUsuario.nombres}" />
+
+						<h:outputText value="Nueva contraseña*:" />
+						<p:password id="txtNuevaContrasenas" size="24" required="true"
+							match="txtContrasenaRepetirNueva"
+							validatorMessage="Las contrasemas no coenciden"
+							requiredMessage="El campo Contraseña es requerido"
+							value="#{usuarioBean.segUsuario.contrasena}">
+						</p:password>
+
+						<h:outputText value="Repetir Contraseña*:" />
+						<p:password id="txtContrasenaRepetirNueva" size="24"
+							required="true"
+							requiredMessage="El campo Repetir Contraseña es requerido"
+							value="#{usuarioBean.segUsuario.contrasena}">
+						</p:password>
+
+					</h:panelGrid>
+
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								actionListener="#{usuarioBean.guardarCambioPass}"
+								process="@form"
+								update=":frmModificarPass,
+											:frmUsuario:mnuUsuario,
+											:messages"
+								oncomplete="enviarFormCambioPass(xhr, status, args); " />
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar"
+								icon="ui-icon-close"
+								update=":frmModificarPass,
+											:frmUsuario:mnuUsuario"
+								oncomplete="PF('dglConfirmacionPassVar').hide();">
+								<p:resetInput target="frmModificarPass" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+
+
+
+
+		<script type="text/javascript">
+			function enviarFormUsuario(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  PF('tblUsuarioVan').unselectAllRows(); PF('tblUsuarioVan').clearFilters();  
+					  PF('dlgUsuarioVar').hide();
+				  } else {  
+				    	PF('dlgUsuarioVar').jq.effect("shake", {times:2}, 50);
+				  }  
+				}
+			function enviarRolesPorUsuario(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  
+				  }   
+				}
+			function enviarFormCambioPass(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  PF('dglConfirmacionPassVar').hide();
+				  } else {  
+				    	PF('dglConfirmacionPassVar').jq.effect("shake", {times:2}, 50);
+				  }  
+				}
+
+			
+	</script>
+
+
+	</ui:define>
+</ui:composition>

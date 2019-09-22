@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<f:view>
+
+		<table width="100%" border="0" cellpadding="0" cellspacing="0"
+			class="tablaTitulo">
+
+			<tr valign="top">
+
+				<td width="30%" align="left">
+
+					<table border="0" cellpadding="0" cellspacing="2">
+						<tr>
+							<td align="center"><h:outputText value="#{msgs['lbl.devlope.version']} #{accesoBean.versionApplication}"  />  </td> 
+							<td width="15px" align="center"><h:outputText value="|" /></td>
+							<td><a href="#{facesContext.externalContext.requestContextPath}/pages/seg/politicaUso.jsf">Politica de
+									uso</a></td>
+						</tr>
+					</table>
+				</td>
+
+
+				<td width="30%" align="center">
+					<table border="0" cellpadding="0" cellspacing="2">
+						<tr>
+							<td align="center"><h:outputText value="#{accesoBean.systemOwn}" />  </td> 
+						</tr>
+						
+					</table>
+				</td>
+
+
+
+				<td width="30%" align="right">
+					<table border="0" cellpadding="0" cellspacing="2">
+						<tr>
+							<!--  
+							<td><a href="#{facesContext.externalContext.requestContextPath}/pages/seg/licencia.jsf?ticketId=#{menuController.sessionId}">Licencia</a></td>
+							<td width="15px" align="center"><h:outputText value="|" /></td>
+							<td><a href="#{facesContext.externalContext.requestContextPath}/pages/seg/about.jsf">Acerca del sistema</a></td>
+							-->
+						</tr>
+					</table>
+				</td>
+
+
+
+			</tr>
+
+
+		</table>
+
+
+	</f:view>
+
+</ui:composition>

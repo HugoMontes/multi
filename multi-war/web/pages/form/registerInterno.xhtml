@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+
+		<table>
+			<tr>
+				<td>
+					<h:outputText value="Razón social:" styleClass="required-field"/>
+				</td>
+				<td>
+					<h:outputText value="#{registerInternoBean.cooperativa.razonSocial}"/>
+				</td>
+				
+				<td width="50px" />
+				
+				<td>
+					<h:outputText value="NIM:" styleClass="required-field"/>
+				</td>
+				<td>
+					<h:outputText value="#{registerInternoBean.cooperativa.nim}" />
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<h:outputText value="NIT:" styleClass="required-field"/>
+				</td>
+				<td>
+					<h:outputText value="#{registerInternoBean.cooperativa.nit}" />
+				</td>
+				
+				<td width="50px" />
+				
+				<td>
+					<h:outputText value="NIAR:" styleClass="required-field"/>
+				</td>
+				<td>
+					<h:outputText value="#{registerInternoBean.cooperativa.niar}" />
+				</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h:form id="frmRegistroInterno">
+			
+			<p:fieldset styleClass="legendNone" legend="2. Origen del mineral">
+			
+				<table>
+					<tr>
+						<td><h:outputLabel for="idMunicipioProductor" value="Municipio:" style="font-weight:bold" /></td>
+						<td>
+							<!--  
+							<p:inputText id="idMunicipioProductor" value="#{registerInternoBean.transporteInterno.orgMunicipioProductor}" 
+				            	required="true" label="Mun.Productor" size="60" onkeyup="return mayusText(this);">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+				            </p:inputText>
+				            -->
+				            
+				            <p:selectOneMenu id="idMunicipioProductor" required="true"
+								filter="true" filterMatchMode="contains"
+								style="width:200px" panelStyle="width:200px" effect="fade"
+								value="#{registerInternoBean.transporteInterno.orgMunicipioProductor}">
+								<f:selectItems value="#{registerInternoBean.selectMunicipioDerMin}" />
+							</p:selectOneMenu>
+						</td>
+						
+						<td width="50px" />
+						
+						<td><h:outputLabel for="idAreaMinera" value="Denominación Area Minera:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputText id="idAreaMinera" value="#{registerInternoBean.transporteInterno.orgDenominacionArea}" 
+				            	required="true" label="Denom.Area Minera" size="40" onkeyup="return mayusText(this);">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+				            </p:inputText>
+						</td>
+						
+					</tr>
+					
+					<tr>
+						<td><h:outputLabel for="idCentroMineroLocalidad" value="Localidad:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputText id="idCentroMineroLocalidad" value="#{registerInternoBean.transporteInterno.orgCentroMineroLocalidad}" 
+				            	required="true" label="Centro Minero Loc." size="60" onkeyup="return mayusText(this);">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+				            </p:inputText>
+						</td>
+						
+						<td width="50px" />
+						
+						<td><h:outputLabel for="idTrancaSalida" value="Tranca de Salida:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idTrancaSalida" required="true" label="Tranca de Salida"
+								filter="true" filterMatchMode="contains"
+								style="width:200px" panelStyle="width:200px" effect="fade"
+								value="#{registerInternoBean.transporteInterno.orgIndTrancaSalida}">
+								<f:selectItems value="#{registerInternoBean.selectTrancaSalida}" />
+							</p:selectOneMenu>
+						</td>
+						
+					</tr>
+					
+				</table>
+			</p:fieldset>
+			
+			
+			<p:fieldset styleClass="legendNone" legend="3. Caracteristicas del mineral">
+				<table>
+					<tr>
+						<td><h:outputLabel for="idPresentacion" value="Presentación:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idPresentacion" required="true" label="Presentación"
+								filter="true" filterMatchMode="contains"
+								style="width:152px" panelStyle="width:152px" effect="fade"
+								value="#{registerInternoBean.transporteInterno.carIndPresentacion}">
+								<f:selectItems value="#{registerInternoBean.selectPresentacion}" />
+							</p:selectOneMenu>
+						</td>
+					</tr>
+					
+					<tr>
+						<td><h:outputLabel for="idPesoBruto" value="Peso Bruto(Kg):" style="font-weight:bold" /></td>
+						<td>
+							<p:inputNumber id="idPesoBruto" value="#{registerInternoBean.transporteInterno.carPesoBrutoKg}" 
+				            	required="true" label="Peso Bruto(Kg)" size="30" decimalPlaces="2" decimalSeparator=".">
+				            </p:inputNumber>
+						</td>
+						
+						<td width="50px" />
+						
+						<td><h:outputLabel for="idPesoNeto" value="Peso Neto(Kg):"/></td>
+						<td>
+							<p:inputNumber id="idPesoNeto" value="#{registerInternoBean.transporteInterno.carPesoNetoKg}" 
+				            	label="Peso Neto" size="30" decimalPlaces="2" decimalSeparator=".">
+				            	<!--  
+				            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+				            	-->
+				            </p:inputNumber>
+						</td>
+						
+					</tr>
+					<tr>
+						<td><h:outputLabel for="idCatidadEmbalaje" value="Cantidad Embalaje:"/></td>
+						<td>
+							<p:inputText id="idCatidadEmbalaje" value="#{registerInternoBean.transporteInterno.carCantidadEmbalaje}" 
+				            	size="30">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+				            </p:inputText>
+						</td>
+						
+						<td width="50px" />
+						
+						<td><h:outputLabel for="idCatidadLote" value="Lote:"/></td>
+						<td>
+							<p:inputText id="idCatidadLote" value="#{registerInternoBean.transporteInterno.carLotes}" 
+				            	size="30">
+				            </p:inputText>
+						</td>
+					
+					</tr>
+					
+					<tr>
+						<td><h:outputLabel for="idMetalicos" value="Metalicos:"/></td>
+						<td colspan="4">
+							<p:inputText id="idMetalicos" value="#{registerInternoBean.transporteInterno.carMineralUno}" 
+				            	label="Metalicos" size="90" disabled="true">
+				            </p:inputText>
+						</td>
+						
+					</tr>
+					
+					<tr>	
+						<td><h:outputLabel for="idNoMetalicos" value="No Metalicos:"/></td>
+						<td colspan="4">
+							<p:inputText id="idNoMetalicos" value="#{registerInternoBean.transporteInterno.carMineralDos}" 
+				            	label="No Metalicos" size="90" disabled="true">
+				            </p:inputText>
+						</td>
+					</tr>
+					
+					<tr>
+						
+						<td colspan="4" align="center">
+							<p:commandButton icon="ui-search" id="cmdMineral" title="Seleccionar Mineral" value="Seleccionar minerales"
+								actionListener="#{registerInternoBean.seleccionMinerales}" process="@this"
+								update=":dlgMineral
+										:frmMineral"
+								oncomplete="PF('dlgMineralVar').show();"
+								>
+							</p:commandButton>
+						</td>	
+						
+					</tr>
+				</table>
+			</p:fieldset>
+			
+			<p:fieldset styleClass="legendNone" legend="4. Destino Mineral">
+				<table>
+					<tr>
+						<td><h:outputText for="idDepartamento" value="Departamento:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idDepartamento" required="true" label="Departamento"
+								filter="true" filterMatchMode="contains"
+								style="width:150px" panelStyle="width:150px" effect="fade"
+								value="#{registerInternoBean.transporteInterno.idDepartamento.id}">
+								<f:selectItems value="#{registerInternoBean.selectDepartamento}" />
+								
+								<p:ajax listener="#{registerInternoBean.cargarCiudad}" update=":frmRegistroInterno:idCiudad" process="@this"/>
+							</p:selectOneMenu>
+						</td>
+						
+						<td width="50px" />
+						
+						<td><h:outputText for="idCiudad" value="Ciudad:" style="font-weight:bold" /></td>
+						<td>
+							<p:selectOneMenu id="idCiudad" required="true" label="Ciudad"
+								filter="true" filterMatchMode="contains"
+								style="width:150px" panelStyle="width:150px" effect="fade"
+								value="#{registerInternoBean.transporteInterno.idCiudad.id}">
+								<f:selectItems value="#{registerInternoBean.selectCiudad}" />
+							</p:selectOneMenu>
+				        </td>
+					</tr>
+					
+					<tr>
+						<td><h:outputText for="idEmpComercializadora" value="Empresa:"/></td>
+						<td colspan="3">
+							<p:inputText id="idEmpComercializadora" value="#{registerInternoBean.transporteInterno.comercializadora}"
+				            	size="60" onkeyup="return mayusText(this);">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+				            </p:inputText>
+						</td>
+					</tr>
+				</table>
+			</p:fieldset>
+			
+			<p:fieldset styleClass="legendNone" legend="5. Datos del conductor">
+				<table>
+					
+					<tr>
+						<td><h:outputText for="idNombreConductor" value="Nombre conductor:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputText id="idNombreConductor" value="#{registerInternoBean.transporteInterno.conNombreConductor}"
+				            	required="true" label="Nombre conductor" size="30" onkeyup="return mayusText(this);">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+				            </p:inputText>
+						</td>
+						
+						<td width="50px" />
+						
+						<td><h:outputText for="idNombrePlacaControl" value="Placa de Control:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputText id="idNombrePlacaControl" value="#{registerInternoBean.transporteInterno.conPlacaControl}"
+				            	required="true" label="Placa de Control" size="30" onkeyup="return mayusText(this);">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+				            </p:inputText>
+						</td>
+						
+					</tr>
+					
+					<tr>
+						<td><h:outputText for="idLicenciaConductor" value="Licencia de Conducir:" style="font-weight:bold" /></td>
+						<td>
+							<p:inputText id="idLicenciaConductor" value="#{registerInternoBean.transporteInterno.conLicenciaConductor}"
+				            	required="true" label="Licencia Conductor" size="30" onkeyup="return mayusText(this);">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+				            </p:inputText>
+						</td>
+						
+						<td/>
+						
+						<td>
+				            <!--  
+				            <h:outputLabel for="idExpedido" value="Expedido en:" style="font-weight:bold" />
+				            -->
+						</td>
+						<td>
+							<!--  
+							<p:selectOneMenu id="idExpedido" required="true" label="Exp"
+								filter="true" filterMatchMode="contains"
+								style="width:150px" panelStyle="width:150px" effect="fade"
+								value="#{registerInternoBean.transporteInterno.indEmitidoLicencia}">
+								<f:selectItems value="#{registerInternoBean.selectCiExpedido}" />
+							</p:selectOneMenu>
+							-->
+						</td>
+						
+					</tr>
+					<tr>
+						<td><h:outputText for="idCaracteristicasVehiculo" value="Carasterísticas Vehiculo:" style="font-weight:bold" /></td>
+						<td colspan="4">
+							<p:inputText id="idCaracteristicasVehiculo" value="#{registerInternoBean.transporteInterno.conCaracteristicaVehiculo}"
+				            	required="true" label="Carasterísticas Vehiculo" size="100">
+				            </p:inputText>
+						</td>
+					</tr>
+				</table>
+			</p:fieldset>
+			
+			
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="Guardar" icon="ui-save" id="cmdGuardar"
+						actionListener="#{registerInternoBean.guardarFormulario}" process="@form"
+						update="@form :messages">
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+	
+		</h:form>
+		
+		<p:dialog id="dlgMineral" widgetVar="dlgMineralVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" height="500px"
+			closable="false" resizable="false" width="800" modal="true" 
+			header="#{registerInternoBean.strTitulo}">
+			
+			<h:form id="frmMineral">
+				<p:panel id="pnlMineral">
+					<table>
+						<tr>
+							<td width="50%">
+								<p:dataTable id="tblMetalicos" var="met" 
+									value="#{registerInternoBean.listMineralTodoMetal}"
+									rowKey="#{met.id}"
+									selection="#{registerInternoBean.listMineralMetalSelect}"
+									emptyMessage="#{cons['dtb.empty.page.table']}"
+									>
+					
+									<p:column selectionMode="multiple" style="width:3%;text-align:center" id="idSeleccionMode"/>
+									
+									<p:column headerText="METALICOS" 
+										style="white-space:normal;" width="10%">
+										<h:outputText value="#{met.otroUno}" />
+									</p:column>
+									
+									<p:column headerText="Ley" 
+										style="white-space:normal;" width="9%">
+										<p:inputText id="idLeyMetalicos" value="#{met.otroDos}"
+							            	size="9">
+							            </p:inputText>
+								    </p:column>
+								    
+								    <p:column headerText="Tipo"
+										style="white-space:normal;" width="8%">
+							            <p:selectOneMenu id="idTodoMetalicoSelect" label="Opcion"
+											style="width:10px" panelStyle="width:10px" effect="fade"
+											value="#{met.otroTres}">
+											<f:selectItems value="#{registerInternoBean.selectOpcionMineral}" />
+										</p:selectOneMenu>
+							         </p:column>
+									
+								</p:dataTable>
+								
+							</td>
+							<td width="2px">
+							</td>
+							<td width="50%">
+								<p:dataTable id="tblNoMetalicos" var="noMet"
+									value="#{registerInternoBean.listMineralTodoNoMetal}"
+									rowKey="#{noMet.id}"
+									selection="#{registerInternoBean.listMineralNoMetalSelect}"
+									emptyMessage="#{cons['dtb.empty.page.table']}">
+					
+									<p:column selectionMode="multiple" style="width:3%;text-align:center"/>
+									
+									<p:column headerText="No METALICOS" 
+										style="white-space:normal;" width="7%">
+										<h:outputText value="#{noMet.otroUno}" />
+									</p:column>
+									
+									<p:column headerText="Ley" 
+										style="white-space:normal;" width="9%">
+										<p:inputText id="idLeyNoMetalicos" value="#{noMet.otroDos}"
+							            	size="9">
+							            </p:inputText>
+									</p:column>
+									
+									<p:column headerText="Tipo"
+										style="white-space:normal;" width="8%">
+							            <p:selectOneMenu id="idTodoNoMetalicoSelect" label="Opcion"
+											style="width:10px" panelStyle="width:10px" effect="fade"
+											value="#{noMet.otroTres}">
+											<f:selectItems value="#{registerInternoBean.selectOpcionMineral}" />
+										</p:selectOneMenu>
+							         </p:column>
+									
+								</p:dataTable>
+							</td>
+						</tr>
+					</table>
+						
+					
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton process="@form" value="Seleccionar" id="cmdCerrar"
+								icon="ui-save"
+								update=":frmRegistroInterno:idMetalicos
+										:frmRegistroInterno:idNoMetalicos"
+								actionListener="#{registerInternoBean.mineralesSeleccionados}"
+								oncomplete="PF('dlgMineralVar').hide();">
+							</p:commandButton>
+							<p:separator />
+							
+							<p:commandButton value="Cancelar" id="cmdCancelar"
+								icon="ui-remove"
+								onclick="PF('dlgMineralVar').hide();">
+							</p:commandButton>
+							
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>	
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+	        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+	        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+	    
+		<script type="text/javascript">
+			function enviarFormSucursal(xhr, status, args) {
+				if( undefined == args.validationFailed &amp;&amp; args.sinErrores) {
+					  PF('dlgSucursalVar').hide();
+					  PF('tblOficinaVar').unselectAllRows(); PF('tblOficinaVar').clearFilters();
+				  } else {  
+				    	PF('dlgSucursalVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+
+	</script>
+	
+	<style type="text/css">   
+		  .ui-datatable {
+		      margin-bottom:20px;
+		  }
+		  
+		  .ui-datatable-frozenlayout-left {
+		      width:20%;
+		  }
+		 
+		  .ui-datatable-frozenlayout-right {
+		      width:80%;
+		  }
+    </style>
+
+	</ui:define>
+</ui:composition>

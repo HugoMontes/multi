@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml">
+
+	<ui:define name="content">
+
+		<h:outputText value="Politica de uso" styleClass="title-page" />
+
+		<h:form id="frmPolitica">
+			<p:accordionPanel multiple="true">
+				<p:tab title="Te damos la bienvenida a iMulti">
+					<h:outputText value="Nuestros Servicios son muy diversos, por lo que en ocasiones se pueden aplicar condiciones o requisitos de productos adicionales (incluidas restricciones de acceso). " />
+					
+					<br />
+					<h:outputText value="Las condiciones adicionales estarán disponibles junto con los Servicios pertinentes y formarán parte del acuerdo que establece con SDMMH con lo que require el cliente." />
+					
+				</p:tab>
+				<p:tab title="Uso de nuestros Servicios">
+					<h:outputText value="No debes usar nuestros Servicios de forma inadecuada." />
+					<br />
+					<h:outputText value="Por ejemplo, no debes interferir con los servicios ni intentar acceder a ellos usando un método distinto a la interfaz y a las instrucciones proporcionadas por SDMMH." />
+					
+					<br />
+					<h:outputText value="Solo podrás usar los Servicios en la medida en que el proveedor lo permita. Podemos suspender o cancelar nuestros Servicios si NO cumples con nuestras políticas o condiciones o si consideramos que tu conducta puede ser malintencionada." />
+					 
+				</p:tab>
+				<p:tab title="Protección de la privacidad">
+					<h:outputText value="- Toda la información personal esta protegida de tal manera que nadie pueda difundir la misma, excepto personal autorizado o personal con los roles respectivos." />
+					<br />
+					<h:outputText value="- Todas las contraseñas de acceso están encriptados, de tal manera que ni SDMMH puede descifrar la misma." />
+					<br/>
+					<h:outputText value="- El sistema SIM no podrá comercializase sin autorización del proveedor." />
+					<br/>
+					<h:outputText value="- El Sistema SIM posee mecanismos de autobloqueo, en caso de no cumplir las politicas expuestas anteriormente." />
+					
+				</p:tab>
+			</p:accordionPanel>
+		</h:form>
+
+
+
+
+
+	</ui:define>
+</ui:composition>

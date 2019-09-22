@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+	
+		<h:outputText value="Administración de Paises" styleClass="title-page"/>
+		
+		<h:form id="frmPais">
+		
+			<p:menubar id="mnuPais">
+				<p:menuitem id="actualizarButton" label="Actualizar"
+					value="Actualizar" icon="ui-refresh" process="@this"
+					actionListener="#{paisBean.listarPais}"
+					oncomplete="PF('tblPaisVar').unselectAllRows(); PF('tblPaisVar').clearFilters();" 
+					update="frmPais"/>
+
+				<p:menuitem id="registrarButton" value="Registrar" process="@this"
+					icon="ui-add" actionListener="#{paisBean.registrarPais}"
+					update=":dlgPais,
+							frmRegistroPais"
+					oncomplete="PF('dlgMasterVar').show();" />
+
+				<p:menuitem id="modificarButton" value="Modificar"
+					icon="ui-edit" actionListener="#{paisBean.modificarPais}"
+					process="@this" oncomplete="PF('dlgMasterVar').show();"
+					update=":dlgPais
+							:frmRegistroPais" 
+					disabled="#{paisBean.pais.id == null}"/>
+
+				<p:menuitem id="eliminarButton" label="Eliminar" value="Eliminar"
+					icon="ui-remove" process="@this" update=":dglConfirmacion"
+					oncomplete="PF('dglConfirmacionVar').show();" disabled="#{paisBean.pais.id == null}"/>
+
+			</p:menubar>
+
+			<p:dataTable id="tblMaster" var="master" widgetVar="tblPaisVar"
+				value="#{paisBean.listPais}"
+				selection="#{paisBean.pais}" rowKey="#{master.id}"
+				filteredValue="#{paisBean.listPaisFilter}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15,20" rowIndexVar="rowIndex"
+				emptyMessage="No existen registros.">
+
+				<p:ajax event="rowSelect" process="@this" update="@form"
+					listener="#{paisBean.onRowSelect}" />
+
+				<p:column headerText="Nro." style="width:3%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+		        	
+		        <p:column headerText="País"
+					style="white-space:normal;" width="40%">
+					<h:outputText value="#{master.nombre}">
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Código"
+					style="white-space:normal;" width="59%">
+					<h:outputText value="#{master.codigo}" />
+				</p:column>
+				
+			</p:dataTable>
+			
+		</h:form>
+		
+		
+		<p:dialog id="dlgPais" widgetVar="dlgMasterVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" modal="true"
+			closable="false" resizable="false" width="550"
+			header="#{paisBean.strTitulo}">
+			<h:form id="frmRegistroPais">
+				<p:panel id="pnlRegistroMaster">
+					<h:panelGrid id="pgrRegistroMaster" columns="2">
+
+			            
+			            <h:outputText value="Nombre:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:inputText  id="txtNombre" size="50" required="true"
+							onkeyup="return trimText(this);"
+							requiredMessage="El campo Nombre es requerido"
+							value="#{paisBean.pais.nombre}">
+						</p:inputText>
+						
+						<h:outputText value="Código:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:inputText  id="txtCodigo" size="50" required="true"
+							onkeyup="return trimText(this);"
+							requiredMessage="El campo Código es requerido"
+							value="#{paisBean.pais.codigo}">
+						</p:inputText>
+						
+					</h:panelGrid>
+					
+					<p:toolbar>
+						<f:facet name="left">
+								<p:commandButton value="Guardar" icon="ui-save"
+									actionListener="#{paisBean.guardarMaster}" process="@form"
+									update="frmRegistroPais
+											frmPais
+											:messages"
+									oncomplete="enviarFormMaster(xhr, status, args); " />
+								<p:separator />
+								<p:commandButton process="@this" value="Cancelar"
+									icon="ui-remove"
+									update=":frmRegistroPais,
+											:frmPais:mnuPais"
+									oncomplete="PF('dlgMasterVar').hide(); PF('tblPaisVar').unselectAllRows();">
+									<p:resetInput target="frmRegistroPais" />
+								</p:commandButton>
+							</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<p:confirmDialog id="dglConfirmacion" header="Eliminar"
+			appendTo="@(body)"
+			severity="alert" width="350" widgetVar="dglConfirmacionVar"
+			closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 País: #{paisBean.pais.nombre}.
+		  			</f:facet>
+			<p:toolbar
+				style="margin:0;border-spacing:0;border-collapse:collapse;padding:0;">
+				<p:toolbarGroup style="width:100%; text-align:center; height:30px;">
+					<p:commandButton value="Si"
+						update=":messages
+								frmPais" process="@this"
+						actionListener="#{paisBean.eliminarMaster}"
+						oncomplete="PF('dglConfirmacionVar').hide(); PF('tblPaisVar').unselectAllRows(); PF('tblPaisVar').clearFilters(); " />
+
+					<p:commandButton value="No" process="@none"
+						onclick="PF('dglConfirmacionVar').hide()" type="button" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</p:confirmDialog>
+		
+		<script type="text/javascript">
+			function enviarFormMaster(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  PF('tblPaisVar').unselectAllRows(); PF('tblPaisVar').clearFilters();  
+					  PF('dlgMasterVar').hide();
+				  } else {  
+				    	PF('dlgMasterVar').jq.effect("shake", {times:2}, 50);
+				  }
+			}
+		</script>
+
+
+	</ui:define>
+</ui:composition>

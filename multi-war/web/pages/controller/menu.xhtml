@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:view>
+		<h:form>
+			<!-- 
+			<p:panelMenu style="width:210px" >
+				<p:submenu label="Usuarios/Roles" >
+					
+					<p:menuitem value="Roles" id="roles" icon="ui-icon-arrow-1-e"
+						process="@this"
+						actionListener="#{menuController.eventoMenu}"
+						action="/pages/seg/rol?faces-redirect=true">
+						<f:param name="pagina" value="/pages/seg/rol.xhtml"></f:param>
+					</p:menuitem>
+					
+					<p:menuitem value="Menu/Rol" id="menuRoles" icon="ui-icon-arrow-1-e"
+						process="@this"
+						actionListener="#{menuController.eventoMenu}"
+						action="/pages/seg/menuRol?faces-redirect=true">
+						<f:param name="pagina" value="/pages/seg/menuRol.xhtml"></f:param>
+					</p:menuitem>
+				</p:submenu>
+
+			</p:panelMenu>
+		
+		-->
+			<p:menubar model="#{menuController.menuModel}" styleClass="ui-menubar-height">
+
+				<f:facet name="options">
+					<p:splitButton value="Inicio" icon="ui-icon-home"
+						actionListener="#{menuController.home}">
+						
+						<p:menuitem value="Cambiar contraseña"
+							actionListener="#{menuController.eventoMenu}" icon="ui-icon-key"
+							process="@this" outcome="/pages/seg/cambiarPass.jsf?ticketId=#{menuController.sessionId}"
+							action="/pages/seg/cambiarPass?faces-redirect=true">
+						</p:menuitem>
+						
+						<!--  
+						<p:separator />
+						<p:menuitem value="Cambiar idioma"
+							actionListener="#{buttonView.delete}" icon="ui-icon-suitcase" />
+						-->
+						
+						<p:separator />
+						
+						<p:menuitem value="Cerrar sesión"
+							actionListener="#{menuController.cerrarSesion}"
+							icon="ui-icon-power" />
+					</p:splitButton>
+					
+
+				</f:facet>
+			</p:menubar>
+
+
+		</h:form>
+	</f:view>
+</ui:composition>

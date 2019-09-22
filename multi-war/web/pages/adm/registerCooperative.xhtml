@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+
+		<h:outputText value="Registro y Actualización del Operador Minero" styleClass="title-page" rendered="#{registerCooperativeBean.cooperativa.id !=null}"/>
+		<h:outputText value="Registro de Operador Minero" styleClass="title-page" rendered="#{registerCooperativeBean.cooperativa.id ==null}"/>
+		
+		<h:outputText value=": #{registerCooperativeBean.cooperativa.razonSocial}" styleClass="title-page" rendered="#{registerCooperativeBean.cooperativa.id !=null}"/>
+		
+		<p:tabView id="idTabGroup" dynamic="true" cache="true">
+		 	<p:tab title="1. Infomación General">
+
+				<h:form id="frmRegistro">
+					<table>
+						<tr>
+							<td><h:outputText value="Fecha Registro" style="font-weight:bold" /></td>
+							<td>
+								<p:calendar id="idfechaRegistro" required="true" showOn="button" mask="true"
+									value="#{registerCooperativeBean.cooperativa.fechaRegistro}" label="Fecha Registro"
+									pattern="dd/MM/yyyy" showButtonPanel="false" disabled="true"
+									locale="es" mindate="#{registerCooperativeBean.fechaActual}">
+								</p:calendar>
+							</td>
+							<td width="50px" />
+							
+							<td><h:outputText value="Fecha Expiración" style="font-weight:bold" /></td>
+							<td>
+								<p:calendar id="idfechaExpiracion" required="true" showOn="button" mask="true"
+									value="#{registerCooperativeBean.cooperativa.fechaExpiracion}" label="Fecha Expiración"
+									pattern="dd/MM/yyyy" showButtonPanel="false" disabled="true"
+									locale="es">
+								</p:calendar>
+							</td>
+							
+						</tr>
+						
+					</table>
+					
+					
+					<p:fieldset styleClass="legendNone" legend="1 Información General">
+						<table>
+							<tr>
+								<td><h:outputText value="Razón Social" style="font-weight:bold" /></td>
+								<td colspan="5">
+									<p:inputText id="idRazonSocial" value="#{registerCooperativeBean.cooperativa.razonSocial}" 
+						            	required="true" label="Razón Social" size="108" onkeyup="return mayusText(this);">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+						            </p:inputText>
+								</td>
+							</tr>
+							
+							<tr>
+								<td><h:outputText value="NIT" style="font-weight:bold" /></td>
+								<td>
+									<p:inputText id="idNit" value="#{registerCooperativeBean.cooperativa.nit}" 
+						            	required="true" label="NIT" size="30" onkeyup="return mayusText(this);">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+						            </p:inputText>
+								</td>
+								
+								<td width="50px" />
+								
+								<td><h:outputLabel for="idActorProdcutivo" value="Actor Productivo:" style="font-weight:bold" /></td>
+								<td>
+									<p:selectOneMenu id="idActorProdcutivo" required="true" label="Actor Productivo"
+										filter="true" filterMatchMode="contains"
+										style="width:152px" panelStyle="width:152px" effect="fade"
+										value="#{registerCooperativeBean.cooperativa.indActorProductivo}">
+										<f:selectItems value="#{registerCooperativeBean.selectActorProductivo}" />
+									</p:selectOneMenu>
+								</td>
+							</tr>
+							<tr>
+								<td><h:outputLabel for="idNim" value="NIM:" style="font-weight:bold" /></td>
+								<td>
+									<p:inputMask id="idNim" value="#{registerCooperativeBean.cooperativa.nim}" 
+						            	required="true" label="NIT" size="30" mask="99-9999-99">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+						             </p:inputMask>
+								</td>
+								
+								<td width="50px" />
+								
+								<td><h:outputLabel for="idResolFundaEmpresa" value="Matricula FundEmpresa:"/></td>
+								<td>
+									<p:inputText id="idResolFundaEmpresa" value="#{registerCooperativeBean.cooperativa.resolucionFundeempresa}" 
+						            	size="30" onkeyup="return mayusText(this);">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+						            </p:inputText>
+								</td>
+							
+							</tr>
+							
+							<tr>
+								<td><h:outputLabel for="idNiar" value="NIAR:"/></td>
+								<td>
+									<p:inputText id="idNiar" value="#{registerCooperativeBean.cooperativa.niar}" 
+						            	label="NIAR" size="30">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+						            </p:inputText>
+								</td>
+								
+								<td width="50px" />
+								
+								<td><h:outputLabel for="idResolAdm" value="Resolución Administrativa:"/></td>
+								<td>
+									<p:inputText id="idResolAdm" value="#{registerCooperativeBean.cooperativa.resolucionAdm}" 
+						            	size="30" onkeyup="return mayusText(this);">
+						            	
+						            </p:inputText>
+								</td>	
+								
+								<td><h:outputLabel for="idfechaAdm" value="Fecha:"/></td>
+								<td>
+									<p:calendar id="idfechaAdm" showOn="button" mask="true"
+										value="#{registerCooperativeBean.cooperativa.fechaAdmin}"
+										pattern="dd/MM/yyyy" showButtonPanel="false"
+										locale="es" maxdate="#{registerCooperativeBean.fechaActual}">
+									</p:calendar>
+								</td>
+							</tr>
+							
+							<tr>
+								<td><h:outputLabel for="idRuex" value="RUEX:"/></td>
+								<td>
+									<p:inputText id="idRuex" value="#{registerCooperativeBean.cooperativa.ruex}" 
+						            	size="30">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+						            </p:inputText>
+								</td>
+								
+								<td width="50px" />
+								
+								<td><h:outputLabel for="idNroSocios" value="Nro Socios:"/></td>
+								<td>
+									<p:inputText id="idNroSocios" value="#{registerCooperativeBean.cooperativa.nroSocios}" 
+						            	size="30">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+						            </p:inputText>
+								</td>
+								
+							</tr>
+								
+						</table>
+					</p:fieldset>
+					
+					<p:fieldset styleClass="legendNone" legend="1.1 Representante Legal">
+						<table>
+							
+							<tr>
+								<td><h:outputText for="idApellidoPaterno" value="Apellido Paterno:" style="font-weight:bold" /></td>
+								<td>
+									<p:inputText id="idApellidoPaterno" value="#{registerCooperativeBean.cooperativa.reprePaterno}"
+						            	required="true" label="Apellido Paterno" size="30" onkeyup="return mayusText(this);">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+						            </p:inputText>
+								</td>
+								
+								<td width="50px" />
+								
+								<td><h:outputText for="idCi" value="C.I.:" style="font-weight:bold" /></td>
+								<td>
+									<p:inputText id="idCi" value="#{registerCooperativeBean.cooperativa.repreCi}" 
+						            	required="true" label="C.I.:" size="30" onkeyup="return mayusText(this);">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+						            </p:inputText>
+						        </td>
+						        <td>
+						            <h:outputLabel for="idExpedido" value="Exp:" style="font-weight:bold" />
+								</td>
+								<td>
+									<p:selectOneMenu id="idExpedido" required="true" label="Exp"
+										filter="true" filterMatchMode="contains"
+										style="width:100px" panelStyle="width:100px" effect="fade"
+										value="#{registerCooperativeBean.cooperativa.indRepreExpendido}">
+										<f:selectItems value="#{registerCooperativeBean.selectCiExpedido}" />
+									</p:selectOneMenu>
+								</td>
+							</tr>
+							<tr>
+								<td><h:outputText for="idApellidoMaterno" value="Apellido Materno:" /></td>
+								<td>
+									<p:inputText id="idApellidoMaterno" value="#{registerCooperativeBean.cooperativa.repreMaterno}"
+						            	size="30" onkeyup="return mayusText(this);">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+						            </p:inputText>
+								</td>
+								
+								<td width="50px" />
+								
+								<td><h:outputText for="idCorreoElectronico" value="Correo Electrónico:" /></td>
+								<td>
+									<p:inputText id="idCorreoElectronico" value="#{registerCooperativeBean.cooperativa.repreEmail}"
+						            	size="30" onkeyup="return mayusText(this);">
+						            	<!--  
+						            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+						            	-->
+						            </p:inputText>
+								</td>
+								
+							</tr>
+							
+							<tr>
+								<td><h:outputText for="idNombres" value="Nombres:" style="font-weight:bold" /></td>
+								<td>
+									<p:inputText id="idNombres" value="#{registerCooperativeBean.cooperativa.repreNombres}"
+						            	required="true" label="Nombres" size="30" onkeyup="return mayusText(this);">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+						            </p:inputText>
+								</td>
+								
+								<td width="50px" />
+								
+								<td><h:outputText for="idTelefono" value="Teléfono:"/></td>
+								<td>
+									  
+									<p:inputText id="idTelefono" value="#{registerCooperativeBean.cooperativa.repreTelefono}"
+						            	size="30">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+						            </p:inputText>
+						            
+								</td>
+								
+							</tr>
+							
+							<tr>
+								<td><h:outputText for="idCargo" value="Cargo:" style="font-weight:bold" /></td>
+								<td>
+									<p:inputText id="idCargo" value="#{registerCooperativeBean.cooperativa.repreCargo}"
+						            	required="true" label="Cargo" size="30" onkeyup="return mayusText(this);">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+						            </p:inputText>
+								</td>
+								
+								<td width="50px" />
+								
+								<td><h:outputText for="idCelular" value="Celular:"/></td>
+								<td>
+									<!--
+									<p:inputText id="idCelular" value="#{registerCooperativeBean.cooperativa.repreCelular}"
+						            	required="true" label="Celular" size="30" onkeyup="return mayusText(this);">
+						            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+						            </p:inputText>
+						            -->
+						            
+						            <p:inputMask id="idCelular" value="#{registerCooperativeBean.cooperativa.repreCelular}" 
+						            	mask="999-99999" size="30">
+						            </p:inputMask>
+						            
+								</td>
+								
+							</tr>
+								
+						</table>
+					</p:fieldset>
+					
+					
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-save" id="cmdGuardar"
+								actionListener="#{registerCooperativeBean.guardarOperacion}" process="@form"
+								update="@form :messages :idTabGroup">
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+			
+				</h:form>	
+			</p:tab>
+				
+			<p:tab title="1.2 Datos de Oficinas" disabled="#{registerCooperativeBean.cooperativa.id == null}" id="idTabSucursal">
+				<h:form id="frmSucursal">
+					
+					<p:menubar id="mnuSucursal">
+						<!--  
+						<p:menuitem id="actualizarButton" label="Actualizar"
+							value="Actualizar" icon="ui-icon-refresh" process="@this"
+							actionListener="#{operativaBean.listarOperativa}"
+							update="frmOperacion frmDetalle"
+							oncomplete="PF('tblOperacionVar').unselectAllRows(); PF('tblOperacionVar').clearFilters();
+								PF('tblDetalleVar').unselectAllRows(); PF('tblDetalleVar').clearFilters();"/>
+						--> 
+		
+						<p:menuitem id="registrarSucursalButton" value="Registrar" process="@this"
+							icon="ui-add"
+							update=":dlgRegistroSucursal,
+									frmRegistroSucursal
+									:messages"
+							actionListener="#{registerCooperativeBean.registrarSucursal}"
+							oncomplete="PF('dlgSucursalVar').show();">
+						</p:menuitem>
+		
+						<p:menuitem id="modificarSucursalButton" value="Modificar"
+							icon="ui-edit" actionListener="#{registerCooperativeBean.modificarSucursal}" 
+							disabled="#{registerCooperativeBean.sucursal.id == null}"
+							process="@this" update=":dlgRegistroSucursal,
+									frmRegistroSucursal"
+							oncomplete="PF('dlgSucursalVar').show();">
+						</p:menuitem>
+						
+						<p:menuitem id="eliminarButton12" label="Eliminar" value="Eliminar"
+							icon="ui-remove" process="@this" update=":dglConfirmacion"
+							oncomplete="PF('dglConfirmacionVar').show();"
+							disabled="#{registerCooperativeBean.sucursal.id == null}">
+						</p:menuitem>
+						
+					</p:menubar>
+					
+					<p:dataTable id="tblOficina" var="ofi" widgetVar="tblOficinaVar"
+						value="#{registerCooperativeBean.listSucursal}" selection="#{registerCooperativeBean.sucursal}"
+						rowKey="#{ofi.id}" 
+						selectionMode="single" paginator="true" rows="10"
+						paginatorAlwaysVisible="true" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="#{cons['dtb.rows.per.page.template']}" rowIndexVar="rowIndex"
+						emptyMessage="#{cons['dtb.empty.page.table']}">
+		
+						<p:ajax event="rowSelect" process="@this"  update="@form"
+							
+						 />
+		
+						<p:column headerText="Nro." style="width:1%; text-align:right;">  
+				            #{rowIndex+1}   
+				        	</p:column>
+		
+						<p:column headerText="Departamento" 
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{ofi.idDepartamento.nombre}" />
+						</p:column>
+						
+						<p:column headerText="Comunidad/Ciudad" 
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{ofi.idMunicipio.nombre}" />
+						</p:column>
+						
+						<p:column headerText="Zona" 
+							style="white-space:normal;" width="10%">
+							<h:outputText value="#{ofi.zona}" />
+						</p:column>
+						
+						<p:column headerText="Calle/Av." 
+							style="white-space:normal;" width="10%">
+							<h:outputText value="#{ofi.calleAvenida}" />
+						</p:column>
+						
+						<p:column headerText="Nro" 
+							style="white-space:normal;" width="3%">
+							<h:outputText value="#{ofi.numero}" />
+						</p:column>
+						
+						<p:column headerText="Teléfono" 
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{ofi.telefono}" />
+						</p:column>
+						
+						<p:column headerText="Tipo Oficina" 
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{registerCooperativeBean.mapTipoOficina.get(ofi.indTipoSucursal)}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+				
+			</p:tab>
+			
+			<p:tab title="2 Actividades" disabled="#{registerCooperativeBean.cooperativa.id == null}">
+				<h:form id="frmActividad">
+					<p:dataTable id="tblActividad" var="act"  
+						value="#{registerCooperativeBean.listTodasActividades}"
+						rowKey="#{act.id}" style="margin-bottom:0; width: 50% "
+						selection="#{registerCooperativeBean.listActividadesSeleccionadas}"
+						emptyMessage="#{cons['dtb.empty.page.table']}"
+						>
+		
+						<p:column selectionMode="multiple" style="width:1%;text-align:center"/>
+						
+						<p:column headerText="Actividad" 
+							style="white-space:normal;" width="10%">
+							<h:outputText value="#{registerCooperativeBean.mapActividad.get(act.id)}" />
+						</p:column>
+						
+					</p:dataTable>
+					
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-save" id="cmdGuardarActividad"
+								actionListener="#{registerCooperativeBean.guardarActividad}" process="@form"
+								update="@form :messages"
+								>
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+					
+				</h:form>
+			</p:tab>
+			
+			<p:tab title="3 Minerales" disabled="#{registerCooperativeBean.cooperativa.id == null}">
+				<h:form id="frmMinerales">
+					<h:panelGrid columns="2">
+						<p:dataTable id="tblMetalicos" var="met"  
+							value="#{registerCooperativeBean.listMineralTodoMetal}"
+							rowKey="#{met.id}" style="margin-bottom:0; width: 50% "
+							selection="#{registerCooperativeBean.listMineralMetalSelect}"
+							emptyMessage="#{cons['dtb.empty.page.table']}"
+							>
+			
+							<p:column selectionMode="multiple" style="width:1%;text-align:center"/>
+							
+							<p:column headerText="Metalicos" 
+								style="white-space:normal;" width="10%">
+								<h:outputText value="#{registerCooperativeBean.mapMineralMetal.get(met.id)}" />
+							</p:column>
+							
+							<!--  
+							<p:column headerText="Ley" 
+								style="white-space:normal;" width="10%">
+								<h:outputText value="#{registerCooperativeBean.mapLeyMineral.get(met.id)}" />
+							</p:column>
+							-->
+							
+						</p:dataTable>
+						
+						<p:dataTable id="tblNoMetalicos" var="noMet"  
+							value="#{registerCooperativeBean.listMineralTodoNoMetal}"
+							rowKey="#{noMet.id}" style="margin-bottom:0; width: 50% "
+							selection="#{registerCooperativeBean.listMineralNoMetalSelect}"
+							emptyMessage="#{cons['dtb.empty.page.table']}"
+							>
+			
+							<p:column selectionMode="multiple" style="width:1%;text-align:center"/>
+							
+							<p:column headerText="No Metalicos" 
+								style="white-space:normal;" width="10%">
+								<h:outputText value="#{registerCooperativeBean.mapMineralNoMetal.get(noMet.id)}" />
+							</p:column>
+							<!--  
+							<p:column headerText="Ley" 
+								style="white-space:normal;" width="10%">
+								<h:outputText value="#{registerCooperativeBean.mapLeyMineral.get(noMet.id)}" />
+							</p:column>
+							-->
+							
+						</p:dataTable>
+					</h:panelGrid>
+					
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-save" id="cmdGuardarMineral"
+								actionListener="#{registerCooperativeBean.guardarMineral}" process="@form"
+								update="@form :messages"
+								>
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</h:form>
+				
+			</p:tab>
+			
+			<p:tab title="4.1 Derechos Mineros" disabled="#{registerCooperativeBean.cooperativa.id == null}">
+				<h:form id="frmDerechoMinero">
+					
+					<p:menubar id="mnuDerechoMinero">
+						<!--  
+						<p:menuitem id="actualizarButton" label="Actualizar"
+							value="Actualizar" icon="ui-icon-refresh" process="@this"
+							actionListener="#{operativaBean.listarOperativa}"
+							update="frmOperacion frmDetalle"
+							oncomplete="PF('tblOperacionVar').unselectAllRows(); PF('tblOperacionVar').clearFilters();
+								PF('tblDetalleVar').unselectAllRows(); PF('tblDetalleVar').clearFilters();"/>
+						--> 
+						<p:menuitem id="registrarDerechoMineroButton" value="Registrar" process="@this"
+							icon="ui-add"
+							update=":dlgRegistroDerechoMinero,
+									frmRegistroDerechoMinero
+									:messages"
+							actionListener="#{registerCooperativeBean.registrarDerechosMineros}"
+							oncomplete="PF('dlgDerechoMineroVar').show();">
+						</p:menuitem>
+		
+						<p:menuitem id="modificarDerechoMineroButton" value="Modificar"
+							icon="ui-edit" actionListener="#{registerCooperativeBean.modificarDerechosMineros}" 
+							disabled="#{registerCooperativeBean.derechoMinero.id == null}"
+							process="@this" 
+							update=":dlgRegistroDerechoMinero,
+									frmRegistroDerechoMinero"
+							oncomplete="PF('dlgDerechoMineroVar').show();">
+						</p:menuitem>
+						
+						<p:menuitem id="eliminarButton41" label="Eliminar" value="Eliminar"
+							icon="ui-remove" process="@this" update=":dglConfirmacion41"
+							oncomplete="PF('dglConfirmacion41Var').show();"
+							disabled="#{registerCooperativeBean.derechoMinero.id == null}">
+						</p:menuitem>
+						
+					</p:menubar>
+					
+					<p:dataTable id="tblDerechoMinero" var="der" widgetVar="tblDerechoMineroVar"
+						value="#{registerCooperativeBean.listDerechoMinero}" selection="#{registerCooperativeBean.derechoMinero}"
+						rowKey="#{der.id}" 
+						selectionMode="single" paginator="true" rows="10"
+						paginatorAlwaysVisible="true" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="#{cons['dtb.rows.per.page.template']}" rowIndexVar="rowIndex"
+						emptyMessage="#{cons['dtb.empty.page.table']}">
+		
+						<p:ajax event="rowSelect" process="@this"  update="@form"
+							
+						 />
+		
+						<p:column headerText="Nro." style="width:1%; text-align:right;">  
+				            #{rowIndex+1}   
+				        	</p:column>
+		
+						<p:column headerText="Denominativo" 
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{der.denominativo}" />
+						</p:column>
+						
+						<p:column headerText="Fecha Derechos Min"
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{der.fechaDerechosMin}" >
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="Nro Resolución" 
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{der.numeroResolucion}" />
+						</p:column>
+						
+						<p:column headerText="Cuadricula" 
+							style="white-space:normal;" width="10%">
+							<h:outputText value="#{der.cantidadCuadricula}" />
+						</p:column>
+						
+						<p:column headerText="Pertenencia" 
+							style="white-space:normal;" width="10%">
+							<h:outputText value="#{der.cantidadPertenencia}" />
+						</p:column>
+						
+						<p:column headerText="Medida" 
+							style="white-space:normal;" width="10%">
+							<h:outputText value="#{registerCooperativeBean.mapUnidadMedida.get(der.indUnidadMedida)}" />
+						</p:column>
+						
+						<p:column headerText="Municipio" 
+							style="white-space:normal;" width="10%">
+							<h:outputText value="#{der.idMunicipio.municipio}" />
+						</p:column>
+						
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			
+			<p:tab title="4.2 Contratos Mineros" disabled="#{registerCooperativeBean.cooperativa.id == null}">
+			
+				<h:form id="frmContratoMinero">
+					
+					<p:menubar id="mnuContratoMinero">
+						<!--  
+						<p:menuitem id="actualizarButton" label="Actualizar"
+							value="Actualizar" icon="ui-icon-refresh" process="@this"
+							actionListener="#{operativaBean.listarOperativa}"
+							update="frmOperacion frmDetalle"
+							oncomplete="PF('tblOperacionVar').unselectAllRows(); PF('tblOperacionVar').clearFilters();
+								PF('tblDetalleVar').unselectAllRows(); PF('tblDetalleVar').clearFilters();"/>
+						--> 
+						<p:menuitem id="registrarContratoMineroButton" value="Registrar" process="@this"
+							icon="ui-add"
+							update=":dlgRegistroContratoMinero,
+									frmRegistroContratoMinero
+									:messages"
+							actionListener="#{registerCooperativeBean.registrarContratoMinero}"
+							oncomplete="PF('dlgContratoMineroVar').show();">
+						</p:menuitem>
+		
+						<p:menuitem id="modificarContratoMineroButton" value="Modificar"
+							icon="ui-edit" actionListener="#{registerCooperativeBean.modificarContratoMineros}" 
+							disabled="#{registerCooperativeBean.contratoMinero.id == null}"
+							process="@this" 
+							update=":dlgRegistroContratoMinero,
+									frmRegistroContratoMinero"
+							oncomplete="PF('dlgContratoMineroVar').show();">
+						</p:menuitem>
+						
+						<p:menuitem id="eliminarButton42" label="Eliminar" value="Eliminar"
+							icon="ui-remove" process="@this" update=":dglConfirmacion42"
+							oncomplete="PF('dglConfirmacion42Var').show();"
+							disabled="#{registerCooperativeBean.contratoMinero.id == null}">
+						</p:menuitem>
+						
+					</p:menubar>
+					
+					<p:dataTable id="tblContratoMinero" var="con" widgetVar="tblContratoMineroVar"
+						value="#{registerCooperativeBean.listContratoMinero}" selection="#{registerCooperativeBean.contratoMinero}"
+						rowKey="#{con.id}" 
+						selectionMode="single" paginator="true" rows="10"
+						paginatorAlwaysVisible="true" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="#{cons['dtb.rows.per.page.template']}" rowIndexVar="rowIndex"
+						emptyMessage="#{cons['dtb.empty.page.table']}">
+		
+						<p:ajax event="rowSelect" process="@this" update="@form" 
+							
+						 />
+		
+						<p:column headerText="Nro." style="width:1%; text-align:right;">  
+				            #{rowIndex+1}   
+				        	</p:column>
+		
+						<p:column headerText="Titular" 
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{con.titular}" />
+						</p:column>
+						
+						<p:column headerText="Fecha Contrato"
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{con.fechaContrato}" >
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="Nro Testimonio" 
+							style="white-space:normal;" width="5%">
+							<h:outputText value="#{con.numeroTestimonio}" />
+						</p:column>
+						
+						<p:column headerText="Plazo años" 
+							style="white-space:normal;" width="10%">
+							<h:outputText value="#{con.plazoAnios}" />
+						</p:column>
+						
+						<p:column headerText="ATEs" 
+							style="white-space:normal;" width="10%">
+							<h:outputText value="#{registerCooperativeBean.mapAtes.get(con.indAtes)}" />
+						</p:column>
+						
+					</p:dataTable>
+				</h:form>
+				
+			</p:tab>
+			
+
+		</p:tabView>
+		
+		
+		<p:dialog id="dlgRegistroSucursal" widgetVar="dlgSucursalVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" 
+			closable="false" resizable="false" width="550" modal="true" 
+			header="#{registerCooperativeBean.strTitulo}">
+			<h:form id="frmRegistroSucursal">
+				<p:panel id="pnlRegistroSucursal">
+					<h:panelGrid columns="2">
+					
+						<h:outputLabel for="idDepartamento" value="Departamnento:" style="font-weight:bold" />
+						<p:selectOneMenu id="idDepartamento" required="true" label="Departamento"
+							filter="true" filterMatchMode="contains"
+							style="width:150px" panelStyle="width:150px" effect="fade"
+							value="#{registerCooperativeBean.sucursal.idDepartamento.id}">
+							<f:selectItems value="#{registerCooperativeBean.selectDepartamento}" />
+							
+							<p:ajax listener="#{registerCooperativeBean.cargarMunicipio}" update=":frmRegistroSucursal:idMunicipio" process="@this"/>
+						</p:selectOneMenu>
+						
+						
+						<h:outputLabel for="idMunicipio" value="Comunidad/Ciudad:" style="font-weight:bold" />
+						<p:selectOneMenu id="idMunicipio" required="true" label="Comunidad/Ciudad"
+							filter="true" filterMatchMode="contains"
+							style="width:150px" panelStyle="width:150px" effect="fade"
+							value="#{registerCooperativeBean.sucursal.idMunicipio.id}">
+							<f:selectItems value="#{registerCooperativeBean.selectMunicipio}" />
+							 
+							<p:ajax listener="#{registerCooperativeBean.loadMunicipio}" update=":frmRegistroSucursal:idCiudadComunidad" process="@this"/>
+							
+						</p:selectOneMenu>
+						
+						<h:outputLabel for="idCiudadComunidad" value=""/>
+						<h:outputLabel id="idCiudadComunidad" value="#{registerCooperativeBean.mapRegionProMunicipio.get(registerCooperativeBean.sucursal.idMunicipio.id)}"/>
+						
+						<!--
+						<h:outputLabel for="idCiudad" value="Ciudad:" style="font-weight:bold" />
+						<p:selectOneMenu id="idCiudad" required="true" label="Ciudad"
+							style="width:150px" panelStyle="width:150px" effect="fade"
+							value="#{registerCooperativeBean.sucursal.idCiudad.id}">
+							<f:selectItems value="#{registerCooperativeBean.selectCiudad}" />
+						</p:selectOneMenu>
+						-->
+						
+						<h:outputText for="idZona" value="Zona:"/>
+						<p:inputText id="idZona" value="#{registerCooperativeBean.sucursal.zona}"
+			            	size="50" onkeyup="return mayusText(this);">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+			            </p:inputText>
+			            
+			            <h:outputText for="idCalle" value="Calle:"/>
+						<p:inputText id="idCalle" value="#{registerCooperativeBean.sucursal.calleAvenida}"
+			            	size="50" onkeyup="return mayusText(this);">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+			            </p:inputText>
+			            
+			            <h:outputText for="idNumero" value="Número:"/>
+						<p:inputText id="idNumero" value="#{registerCooperativeBean.sucursal.numero}"
+			            	size="50">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+			            </p:inputText>
+			            
+			            <h:outputText for="idTelefono" value="Teléfono:" />
+						<p:inputText id="idTelefono" value="#{registerCooperativeBean.sucursal.telefono}"
+			            	size="50">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+			            </p:inputText>
+			            
+			            <h:outputText for="idFax" value="Fax:" />
+						<p:inputText id="idFax" value="#{registerCooperativeBean.sucursal.fax}"
+			            	label="Fax" size="50">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+			            </p:inputText>
+			            
+			            <h:outputLabel for="idTipoOficina" value="Tipo de Oficina:" style="font-weight:bold" />
+						<p:selectOneMenu id="idTipoOficina" required="true" label="Tipo de Oficina"
+							filter="true" filterMatchMode="contains"
+							style="width:150px" panelStyle="width:150px" effect="fade"
+							value="#{registerCooperativeBean.sucursal.indTipoSucursal}">
+							<f:selectItems value="#{registerCooperativeBean.selectTipoOficina}" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-save" id="cmdGuardarSucursal"
+								actionListener="#{registerCooperativeBean.guardarSucursal}" process="@form"
+								update="@form :messages"
+								oncomplete="enviarFormSucursal(xhr, status, args);">
+							</p:commandButton>
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar" id="cmdCancelarSucursal"
+								icon="ui-remove"
+								update="frmRegistroSucursal"
+								onclick="PF('dlgSucursalVar').hide();">
+								<p:resetInput target="frmRegistroSucursal" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog id="dlgRegistroDerechoMinero" widgetVar="dlgDerechoMineroVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" 
+			closable="false" resizable="false" width="550" modal="true" 
+			header="#{registerCooperativeBean.strTitulo}">
+			<h:form id="frmRegistroDerechoMinero">
+				<p:panel id="pnlRegistroDerechoMinero">
+					<h:panelGrid columns="2">
+					
+						<h:outputText for="idMunicipioDerMin" value="Municipio:" style="font-weight:bold" />
+						<p:selectOneMenu id="idMunicipioDerMin"
+							filter="true" filterMatchMode="contains"
+							style="width:150px" panelStyle="width:150px" effect="fade"
+							value="#{registerCooperativeBean.derechoMinero.idMunicipio.id}">
+							<f:selectItems value="#{registerCooperativeBean.selectMunicipioDerMin}" />
+						</p:selectOneMenu>
+								
+						<h:outputText for="idDenominativo" value="Denominativo:" style="font-weight:bold" />
+						<p:inputText id="idDenominativo" value="#{registerCooperativeBean.derechoMinero.denominativo}"
+			            	required="true" label="Denominativo" size="50" onkeyup="return mayusText(this);">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+			            </p:inputText>
+			            
+			            <h:outputText for="idFechaDerechoMinero" value="Fecha:" style="font-weight:bold" />
+			            <p:calendar id="idFechaDerechoMinero" required="true" showOn="button" mask="true"
+							value="#{registerCooperativeBean.derechoMinero.fechaDerechosMin}" label="Fecha D. Minero"
+							pattern="dd/MM/yyyy" showButtonPanel="false"
+							locale="es" maxdate="#{registerCooperativeBean.fechaActual}">
+						</p:calendar>
+			            
+			            <h:outputText for="idNroResolucion" value="Nro Resolución:" style="font-weight:bold" />
+						<p:inputText id="idNroResolucion" value="#{registerCooperativeBean.derechoMinero.numeroResolucion}"
+			            	required="true" label="Nro Resolución" size="50">
+			            </p:inputText>
+			            
+			            <h:outputText for="idCuadricula" value="Cuadricula:" style="font-weight:bold" />
+						<p:inputText id="idCuadricula" value="#{registerCooperativeBean.derechoMinero.cantidadCuadricula}"
+			            	required="true" label="Cuadricula" size="50">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+			            </p:inputText>
+			            
+			            <h:outputText for="idPertenencia" value="Pertenencia:"/>
+						<p:outputPanel>
+							<h:panelGrid columns="2">
+								<p:inputText id="idPertenencia" value="#{registerCooperativeBean.derechoMinero.cantidadPertenencia}"
+					            	size="30">
+					            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+					            </p:inputText>
+								
+								<p:selectOneMenu id="idUnidadMedida"
+									filter="true" filterMatchMode="contains"
+									style="width:50px" panelStyle="width:50px" effect="fade"
+									value="#{registerCooperativeBean.derechoMinero.indUnidadMedida}">
+									<f:selectItems value="#{registerCooperativeBean.selectUnidadMedida}" />
+								</p:selectOneMenu>
+							</h:panelGrid>
+						</p:outputPanel>
+						
+						<!--  
+						<h:outputText for="idMunicicioDerecho" value="Municipio:" style="font-weight:bold" />
+						<p:selectOneMenu id="idMunicicioDerecho" required="true" label="Municipio"
+							style="width:50px" panelStyle="width:50px" effect="fade"
+							value="#{registerCooperativeBean.derechoMinero.indUnidadMedida}">
+							<f:selectItems value="#{registerCooperativeBean.selectUnidadMedida}" />
+						</p:selectOneMenu>
+						-->
+						
+					</h:panelGrid>
+
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-save" id="cmdGuardarDerecho"
+								actionListener="#{registerCooperativeBean.guardarDerechoMinero}" process="@form"
+								update="@form :messages"
+								oncomplete="enviarFormDerechoMinero(xhr, status, args);">
+							</p:commandButton>
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar" id="cmdCancelarDerecho"
+								icon="ui-remove"
+								update="frmRegistroDerechoMinero"
+								onclick="PF('dlgDerechoMineroVar').hide();">
+								<p:resetInput target="frmRegistroDerechoMinero" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog id="dlgRegistroContratoMinero" widgetVar="dlgContratoMineroVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" 
+			closable="false" resizable="false" width="550" modal="true" 
+			header="#{registerCooperativeBean.strTitulo}">
+			<h:form id="frmRegistroContratoMinero">
+				<p:panel id="pnlRegistroContratoMinero">
+					<h:panelGrid columns="2">
+					
+						<h:outputText for="idTitularContrato" value="Titular:" style="font-weight:bold" />
+						<p:inputText id="idTitularContrato" value="#{registerCooperativeBean.contratoMinero.titular}"
+			            	required="true" label="Titular" size="50" onkeyup="return mayusText(this);">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+			            </p:inputText>
+			            
+			            <h:outputText for="idFechaContratoMinero" value="Fecha:" style="font-weight:bold" />
+			            <p:calendar id="idFechaContratoMinero" required="true" showOn="button" mask="true"
+							value="#{registerCooperativeBean.contratoMinero.fechaContrato}" label="Fecha C. Minero"
+							pattern="dd/MM/yyyy" showButtonPanel="false"
+							locale="es" maxdate="#{registerCooperativeBean.fechaActual}">
+						</p:calendar>
+			            
+			            <h:outputText for="idNroTestimonio" value="Nro Testimonio:" style="font-weight:bold" />
+						<p:inputText id="idNroTestimonio" value="#{registerCooperativeBean.contratoMinero.numeroTestimonio}"
+			            	required="true" label="Nro Testimonio" size="50">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.address.and.observations']}"/>
+			            </p:inputText>
+			            
+			            <h:outputText for="idPlazoAnios" value="Plazo Años:" style="font-weight:bold" />
+						<p:inputText id="idPlazoAnios" value="#{registerCooperativeBean.contratoMinero.plazoAnios}"
+			            	required="true" label="Plazo Años" size="50">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+			            </p:inputText>
+			            
+			            <h:outputLabel for="idAtes" value="ATEs" style="font-weight:bold" />
+						<p:selectOneRadio id="idAtes" columns="1" required="true" label="ATEs"
+							value="#{registerCooperativeBean.contratoMinero.indAtes}">
+							<f:selectItem itemLabel="Si" itemValue="123" />
+							<f:selectItem itemLabel="No" itemValue="124" />
+						</p:selectOneRadio>
+						
+					</h:panelGrid>
+
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-save" id="cmdGuardarContrato"
+								actionListener="#{registerCooperativeBean.guardarContratoMinero}" process="@form"
+								update="@form :messages"
+								oncomplete="enviarFormContratoMinero(xhr, status, args);">
+							</p:commandButton>
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar" id="cmdCancelarContrato"
+								icon="ui-remove"
+								update="frmRegistroContratoMinero"
+								onclick="PF('dlgContratoMineroVar').hide();">
+								<p:resetInput target="frmRegistroContratoMinero" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+	        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+	        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+	    
+	    <p:confirmDialog id="dglConfirmacion" header="Eliminar" appendTo="@(body)"
+			severity="alert" width="350" widgetVar="dglConfirmacionVar"
+			closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Sucursal: #{registerCooperativeBean.sucursal.idDepartamento.nombre}.
+		  			</f:facet>
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="Si" id="idEliminarSiSucursal"
+						update=":messages" process="@this"
+						actionListener="#{registerCooperativeBean.eliminarSucursal}"
+						oncomplete="PF('dglConfirmacionVar').hide(); PF('tblOficinaVar').unselectAllRows(); PF('tblOficinaVar').clearFilters();" />
+
+					<p:commandButton value="No" process="@none"
+						onclick="PF('dglConfirmacionVar').hide()" type="button" />
+				</f:facet>
+			</p:toolbar>
+		</p:confirmDialog>
+	    
+	     
+		<p:confirmDialog id="dglConfirmacion41" header="Eliminar"
+			appendTo="@(body)" severity="alert" width="350"
+			widgetVar="dglConfirmacion41Var" closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Denominativo: #{registerCooperativeBean.derechoMinero.denominativo}.
+		  			</f:facet>
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="Si" id="cmdSiderechoMinero" 
+						update=":messages"
+						process="@this" 
+						actionListener="#{registerCooperativeBean.eliminarDerechoMinero}"
+						oncomplete="PF('dglConfirmacion41Var').hide(); PF('tblDerechoMineroVar').unselectAllRows(); PF('tblDerechoMineroVar').clearFilters();" />
+
+					<p:commandButton value="No" process="@none" id="cmdNoDerechoMinero"
+						onclick="PF('dglConfirmacion41Var').hide()" type="button" />
+				</f:facet>
+			</p:toolbar>
+		</p:confirmDialog>
+		
+		<p:confirmDialog id="dglConfirmacion42" header="Eliminar"
+			appendTo="@(body)" severity="alert" width="350"
+			widgetVar="dglConfirmacion42Var" closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Nro testimonio: #{registerCooperativeBean.contratoMinero.numeroTestimonio}.
+		  			</f:facet>
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="Si" id="cmdSiTestimonio" 
+						update=":messages"
+						process="@this" 
+						actionListener="#{registerCooperativeBean.eliminarContratoMinero}"
+						oncomplete="PF('dglConfirmacion42Var').hide(); PF('tblContratoMineroVar').unselectAllRows(); PF('tblContratoMineroVar').clearFilters();" />
+
+					<p:commandButton value="No" process="@none" id="cmdNoTestimonio"
+						onclick="PF('dglConfirmacion42Var').hide()" type="button" />
+				</f:facet>
+			</p:toolbar>
+		</p:confirmDialog>
+		
+
+		<script type="text/javascript">
+			function enviarFormSucursal(xhr, status, args) {
+				if( undefined == args.validationFailed &amp;&amp; args.sinErrores) {
+					  PF('dlgSucursalVar').hide();
+					  PF('tblOficinaVar').unselectAllRows(); PF('tblOficinaVar').clearFilters();
+				  } else {  
+				    	PF('dlgSucursalVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+
+			function enviarFormDerechoMinero(xhr, status, args) {
+				if( undefined == args.validationFailed &amp;&amp; args.sinErrores) {
+					  PF('dlgDerechoMineroVar').hide();
+					  PF('tblDerechoMineroVar').unselectAllRows(); PF('tblDerechoMineroVar').clearFilters();
+				  } else {  
+				    	PF('dlgDerechoMineroVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+
+			function enviarFormContratoMinero(xhr, status, args) {
+				if( undefined == args.validationFailed &amp;&amp; args.sinErrores) {
+					  PF('dlgContratoMineroVar').hide();
+					  PF('tblContratoMineroVar').unselectAllRows(); PF('tblContratoMineroVar').clearFilters();
+				  } else {  
+				    	PF('dlgContratoMineroVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+
+	</script>
+
+	</ui:define>
+</ui:composition>

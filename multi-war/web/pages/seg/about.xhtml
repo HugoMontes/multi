@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml">
+
+	<ui:define name="content">
+
+		<h:outputText value="Acerca del sistema" styleClass="title-page" />
+
+		<h:form id="frmAbout">
+
+			<p:accordionPanel>
+				<p:tab title="iMulti">
+					<p:graphicImage library="img" name="logo/logo_code.jpg"  id="idImgLogo" styleClass="logo" alt="LOGO" />
+					<br />
+					<br />
+					<br />
+					<h:outputText value="Comprometidos con el cliente: " styleClass="required-field" />
+					<br />
+					<h:outputText value="El objetivo de CODEBolivia consiste en organizar la información de la empresa y hacerla accesible, útil y oportuna para la toma de decisiones de la Alta Gerencia. " />
+					<br />
+					<br />
+					<br />
+					<h:outputText value="Software desarrollado por CODEBolivia"/>
+					<br />
+					<h:outputText value="Contáctos: " styleClass="required-field" />
+					<br />
+					<h:outputText value="Email: " styleClass="required-field texto-azul"/>
+					<h:outputText value=" javier@codebolivia.com"/>
+					<br />
+					<h:outputText value="Teléfono: " styleClass="required-field texto-azul"/>
+					<h:outputText value=" 2 2454229"/>
+					
+					<br />
+					<h:outputText value="Móvil / Whatsapp: " styleClass="required-field texto-azul"/>
+					<h:outputText value=" +591 72512538"/>
+					<br />
+					<h:outputText value="Sitio WEB:  " styleClass="required-field texto-azul"/>
+					
+					<a href="http://www.codebolivia.com" target="_blank">www.codebolivia.com</a>
+				    
+				</p:tab>
+			</p:accordionPanel>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

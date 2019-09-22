@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="frmHeader">
+		<div id="header">
+			<div class="topbar-left">
+				<ul>
+					<li>
+						<h:graphicImage library="img" name="user.png" alt="Usuario" title="Usuario"/>
+					</li>
+				</ul>
+				
+				<table border="0" cellpadding="0" cellspacing="2"  style="font-size: 11px; color: white;" >
+					<tr>
+						<td align="right"><b> <h:outputText value="#{msgs['login.lbl.user']}:"/></b></td>
+						<td style="width: 10px;"></td>
+						<td style="width: 450px;"> <h:outputText	value="#{accesoBean.segUsuarioSesion.nombreCompleto}"/></td>
+					</tr>
+					<tr>
+						<td align="right"><b><h:outputText value="Cargo: "/></b></td>
+						<td style="width: 10px;"></td>
+						<td> <h:outputText	value=" #{accesoBean.descripcionParametro(accesoBean.segUsuarioSesion.pCargo)}" /></td>
+					</tr>
+				</table>
+				
+				
+			</div>
+			
+			<div align="center">
+			<h:outputText value="#{accesoBean.nameSystem}" styleClass="title-header" style="font-size: 16px;" id="idMiEmpresa"/>
+				
+			</div>
+		</div>
+
+	</h:form>
+
+</ui:composition>

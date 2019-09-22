@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+
+		<h:outputText value="Administración de Cajas" styleClass="title-page"/>
+
+		<h:form id="frmExterno">
+		
+			<p:fieldset styleClass="legendNone" legend="Opciones de Busqueda">
+				<table>
+					<tr>
+						<td>
+							<h:outputText value="Numero Tramite:" styleClass="required-field"/>
+						</td>
+						<td>
+							<p:inputText id="idNumeroTramite" value="#{cajasBean.numeroTramite}" 
+				            	required="true" label="Numero de Tramite" size="60">
+				            	<pe:keyFilter regEx="#{cons['exp.regular.numeric.integer']}"/>
+				            </p:inputText>
+						</td>
+						<td>
+							<p:commandButton value="Buscar" icon="ui-find" id="cmdBuscar"
+								actionListener="#{cajasBean.buscarByNroTRamite}" process="@form"
+								update="@form :messages">
+							</p:commandButton>
+						</td>
+					</tr>
+				</table>
+			</p:fieldset>
+			<br/>
+			<p:fieldset styleClass="legendNone" legend="Resultados encontrados">
+				
+				<h:panelGrid columns="2">
+					<h:outputText value="Formulario de Liquidación:" styleClass="required-field"/>
+					<h:outputText value="#{cajasBean.mapTipoFormulario.get(cajasBean.regalia.indTipoFormulario)}"/>
+					
+					<h:outputText value="Razón Social:" styleClass="required-field"/>
+					<h:outputText value="#{cajasBean.regalia.idCooperativa.razonSocial}" />
+					
+					<h:outputText value="NIT:" styleClass="required-field"/>
+					<h:outputText value="#{cajasBean.regalia.idCooperativa.nit}" />
+					
+					<h:outputText value="NIM:" styleClass="required-field"/>
+					<h:outputText value="#{cajasBean.regalia.idCooperativa.nim}" />
+					
+					<h:outputText value="Monto a Pagar:" styleClass="required-field"/>
+					<h:outputText value="#{cajasBean.totalRM}" />
+				</h:panelGrid>
+			</p:fieldset>
+			
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="Realizar Pago" icon="ui-save" id="cmdRealizarPago" 
+						disabled="#{cajasBean.regalia.id == null}"
+						actionListener="#{cajasBean.registrarPago}" process="@form"
+						update="@form :messages">
+						
+						<p:confirm header="Confirmación" message="¿Esta seguro(a) de REALIZA EL PAGO?" icon="ui-icon-alert" />
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+			<br/>
+			
+			
+		</h:form>
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+	        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+	        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+
+	</ui:define>
+</ui:composition>

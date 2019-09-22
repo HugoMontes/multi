@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<meta http-equiv="Pragma" content="no-store" />
+	<meta http-equiv="Cache-Control"
+		content="no-store,No-cache,post-check=0,pre-check=0,max-age=0" />
+	<meta http-equiv="Expires" content="-1" />
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+
+<h:body>
+	
+
+	<p:ajaxStatus onerror="PF('statusDlgError').show();"
+		onstart="PF('statusDialogX').show();"
+		onsuccess="PF('statusDialogX').hide();" />
+
+	<p:dialog modal="true" widgetVar="statusDialogX" appendTo="@(body)"
+		draggable="false" closable="false"
+		resizable="false">
+		<p:graphicImage value="/resources/img/ajaxloadingbar.gif" />
+	</p:dialog>
+
+	<p:dialog modal="true" widgetVar="statusDlgError" header="Status"
+		appendTo="@(body)" draggable="false" closable="false"
+		resizable="false">
+		<p:outputLabel value="Ocurrieron errores al conectarse al servidor." />
+		<!-- p:commandButton value="Aceptar" icon="ui-icon-check"
+					  		onclick="statusDlgError.hide();" >
+					  </p:commandButton -->
+	</p:dialog>
+
+	<p:idleMonitor onidle="PF('sessionTimeOutDialog').show();"
+		timeout="#{mobAccesoBean.tiempoSession}" />
+
+	<p:dialog header="Sesión expirada" widgetVar="sessionTimeOutDialog"
+		appendTo="@(body)" modal="true" fixedCenter="true" closable="false"
+		width="300" resizable="false" visible="false">
+		<h:outputText
+			value="La sesión ha caducado, presione el botón para volver a acceder al sistema. " />
+		<input id="confirmBackToLogin" type="button" value="Aceptar"
+							onclick="window.location='#{facesContext.externalContext.requestContextPath}/mobile.jsf';" />
+		<p:commandButton id="confirmBackToLogin" value="Aceptar"
+			actionListener="#{menuController.cerrarSesion}"
+			onclick="window.location='#{facesContext.externalContext.requestContextPath}/mobile.jsf';" />
+	</p:dialog>
+
+</h:body>
+
+</html>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="combosCoctelesSub" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="edb3547a-0303-477f-9446-6292fbbf15c1">
+	<property name="ireport.zoom" value="3.2210200000000295"/>
+	<property name="ireport.x" value="714"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idCooperativa" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select der.*,
+(select nombre from parameter_table where id=der.ind_unidad_medida) as nombreUnidadMedida,
+mun.municipio
+from derecho_minero der
+left join municipio mun on mun.id = der.id_municipio
+where der.estado = 'HAB'
+and der.id_cooperativa = $P{idCooperativa}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="denominativo" class="java.lang.String"/>
+	<field name="fecha_derechos_min" class="java.sql.Date"/>
+	<field name="numero_resolucion" class="java.lang.String"/>
+	<field name="cantidad_cuadricula" class="java.lang.String"/>
+	<field name="cantidad_pertenencia" class="java.lang.String"/>
+	<field name="id_municipio" class="java.lang.Integer"/>
+	<field name="id_cooperativa" class="java.lang.Integer"/>
+	<field name="ind_unidad_medida" class="java.lang.Integer"/>
+	<field name="usuario_reg" class="java.lang.String"/>
+	<field name="fecha_reg" class="java.sql.Date"/>
+	<field name="fecha_mod" class="java.sql.Date"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="nombreunidadmedida" class="java.lang.String"/>
+	<field name="municipio" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="9" width="55" height="11" uuid="da8d7f7b-368f-4b8b-b4f5-e148ce321210"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Denominativo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="2" width="59" height="21" uuid="8845f896-56da-4bb6-a872-6493d416eac9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Derechos Min]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="2" width="95" height="11" uuid="6291b582-9dc1-4d26-af73-fb700b34696c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="395" height="1" uuid="b98abcd6-44eb-47c2-b405-6f0d5cccfb3e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="24" width="395" height="1" uuid="68ebd910-99ff-4240-9414-b107ab542583"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="146" y="2" width="59" height="21" uuid="d7831352-5932-42b7-a02b-079249449342"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro Resolución]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="13" width="46" height="11" uuid="a27681b1-49d4-4f7d-9085-10193819e219"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cuadricula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="258" y="13" width="48" height="11" uuid="a19beafe-066c-4319-b5d2-fbe49a4568b0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pertenencia]]></text>
+			</staticText>
+			<line>
+				<reportElement x="209" y="13" width="95" height="1" uuid="d9af7c7b-f6ad-4139-8305-9835ec92ae3e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="338" y="3" width="59" height="21" uuid="48bd9d78-b501-46eb-a519-1204cc1ce2ae"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Municipio]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="81" height="12" uuid="3bc8fa92-1bf7-4c8a-a71e-afc556a62289"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{denominativo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="0" width="41" height="12" uuid="4ab14f3e-2261-41b6-bf27-b4302bb1035c"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad_cuadricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="0" width="53" height="12" uuid="facad5dc-0558-4d86-8421-1af777745276"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_resolucion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="85" y="0" width="59" height="12" uuid="5261d876-6748-4b80-b8cc-b187b2b6a1ea"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_derechos_min}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="258" y="0" width="41" height="12" uuid="9c78d1c4-0261-4165-8368-cc68870039c4"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad_pertenencia}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="304" y="0" width="29" height="12" uuid="6ad19bd0-85ca-48c1-b75a-bfdba819a70a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreunidadmedida}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="338" y="0" width="81" height="12" uuid="821e60ad-14a6-46b6-80aa-9fa28d0dd1cf"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{municipio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+
+		<h:outputText value="Reporte Transporte de Minerales" styleClass="title-page"/>
+
+		<h:form id="frmReporte">
+			
+			<p:fieldset legend="Filtros de búsqueda">
+				<h:panelGrid columns="2">
+				
+					<h:outputLabel for="idTipoTransporte" value="Tipo Transporte" style="font-weight:bold" />
+					<p:selectOneRadio id="idTipoTransporte" columns="1" required="true" label="Tipo Transporte"
+						value="#{transporteBean.operadoresTO.indTipoTransporte}">
+						<f:selectItem itemLabel="Interno" itemValue="1" />
+						<f:selectItem itemLabel="Externo" itemValue="2" />
+					</p:selectOneRadio>
+					
+					
+					<h:outputLabel for="idOperadorMinero" value="Operador Minero:" style="font-weight:bold"/>
+		            <p:selectOneMenu id="idOperadorMinero" required="true" label="Operador Minero"
+		            	filter="true" filterMatchMode="contains"
+						style="width:200px" panelStyle="width:200px" effect="fade"
+						value="#{transporteBean.operadoresTO.idCooperativa}">
+						<f:selectItems value="#{transporteBean.selectCooperativa}" />
+						
+						<p:ajax process="@this" listener="#{transporteBean.seleccionOperador}" update=":frmReporte:idActorProdcutivo"/>
+					</p:selectOneMenu>
+					
+					
+					<h:outputLabel for="idActorProdcutivo" value="Actor Productivo:" style="font-weight:bold" />
+		            <p:selectOneMenu id="idActorProdcutivo" required="true" label="Actor Productivo"
+		            	filter="true" filterMatchMode="contains"
+						style="width:200px" panelStyle="width:200px" effect="fade"
+						disabled="#{transporteBean.operadoresTO.idCooperativa.intValue()>0}"
+						value="#{transporteBean.operadoresTO.indActorProductivo}">
+						<f:selectItems value="#{transporteBean.selectActorProductivo}" />
+					</p:selectOneMenu>
+					
+					
+					<h:outputLabel for="idfechaDesde" value="Desde:"	style="font-weight:bold" />
+					<p:calendar id="idfechaDesde" showOn="button" mask="true" required="true"
+						value="#{transporteBean.operadoresTO.desde}" label="Desde"
+						pattern="dd/MM/yyyy" showButtonPanel="false"
+						locale="es" maxdate="#{transporteBean.fechaActual}">
+					</p:calendar>
+					
+					<h:outputLabel for="idfechaHasta" value="Hasta:" style="font-weight:bold" />
+					<p:calendar id="idfechaHasta" showOn="button" mask="true" required="true"
+						value="#{transporteBean.operadoresTO.hasta}" label="Hasta"
+						pattern="dd/MM/yyyy" showButtonPanel="false"
+						locale="es" maxdate="#{transporteBean.fechaActual}">
+					</p:calendar>
+					
+				</h:panelGrid>
+			</p:fieldset>
+			
+			<p:toolbar>
+				<p:toolbarGroup align="left" style="width:100%; text-align:center;">
+					
+					<p:commandButton value="Ver Reporte" icon="ui-textList" id="imprimirButtonGral"
+						process="@form" update=":messages @form"
+						onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false"> 
+						<p:fileDownload value="#{transporteBean.reporte}" />
+					</p:commandButton>
+					
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+		
+	</ui:define>
+</ui:composition>

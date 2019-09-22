@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+
+		<h:outputText value="Registro y Actualizacion del Operador Minero" styleClass="title-page"/>
+
+		<h:form id="frmCooperativa">
+			<p:menubar id="mnuCooperativa">
+			
+				<p:menuitem id="actualizarButton" label="Actualizar"
+					value="Actualizar" icon="ui-refresh" process="@this"
+					actionListener="#{listCooperativaBean.listarCooperativa}"
+					update="frmCooperativa"
+					oncomplete="PF('tblCooperativaVar').unselectAllRows(); PF('tblCooperativaVar').clearFilters();"/> 
+
+				<p:menuitem id="registrarButton" value="Registrar" process="@this"
+					icon="ui-add"
+					update=""
+					actionListener="#{listCooperativaBean.registerCooperativa}"
+				/>
+				
+
+				<p:menuitem id="modificarButton" value="Modificar"
+					icon="ui-edit" actionListener="#{listCooperativaBean.modifyCooperative}"
+					disabled="#{listCooperativaBean.cooperativa.id == null}"
+					process="@this">
+							
+				</p:menuitem>
+				 
+			</p:menubar>
+
+			<p:dataTable id="tblCooperativa" var="cope" widgetVar="tblCooperativaVar"
+				value="#{listCooperativaBean.listCooperativa}" selection="#{listCooperativaBean.cooperativa}"
+				rowKey="#{cope.id}" filteredValue="#{listCooperativaBean.listCooperativaFilter}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{cons['dtb.rows.per.page.template']}" rowIndexVar="rowIndex"
+				emptyMessage="#{cons['dtb.empty.page.table']}">
+
+				<p:ajax event="rowSelect" process="@this" update="frmCooperativa" 
+					listener="#{listCooperativaBean.onRowSelect}" 
+				 />
+
+				<p:column headerText="Nro." style="width:1%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+
+				<p:column headerText="Nro de Registro" sortBy="#{cope.id}"
+					filterBy="#{cope.id}" filterMatchMode="contains"
+					style="white-space:normal;" width="3%">
+					<h:outputText value="#{cope.id}" />
+				</p:column>
+				
+				<p:column headerText="Razón Social" sortBy="#{cope.razonSocial}"
+					filterBy="#{cope.razonSocial}" filterMatchMode="contains"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{cope.razonSocial}" />
+				</p:column>
+				
+				<p:column headerText="Fecha Registro" sortBy="#{cope.fechaRegistro}"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{cope.fechaRegistro}" >
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Fecha Expiración" sortBy="#{cope.fechaExpiracion}"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{cope.fechaExpiracion}" >
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="NIT" sortBy="#{cope.nit}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{cope.nit}" />
+				</p:column>
+				
+				<p:column headerText="FundaEmpresa" sortBy="#{cope.resolucionFundeempresa}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{cope.resolucionFundeempresa}" />
+				</p:column>
+				
+				<p:column headerText="Representalte legal"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{cope.nombreCompleto}" />
+				</p:column>
+			
+			</p:dataTable>
+			
+			<p:menubar id="mnuInfProceso">
+				
+				<p:menuitem id="imprimirButton" icon="ui-icon-grip-dotted-vertical"
+					value="Reporte Form-100" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false"
+					disabled="#{listCooperativaBean.cooperativa.id == null}">
+					<p:fileDownload value="#{listCooperativaBean.reporteFormCien}" />
+				</p:menuitem>
+				
+				<p:menuitem id="imprimirButtonCert" icon="ui-icon-grip-dotted-vertical"
+					value="Reporte Certificado" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false"
+					disabled="#{listCooperativaBean.cooperativa.id == null}">
+					<p:fileDownload value="#{listCooperativaBean.reporteCertificado}" />
+				</p:menuitem>
+				
+				<p:menuitem id="modificarButtonValidez" value="Renovar"
+					icon="ui-icon-pencil" actionListener="#{listCooperativaBean.renovarCooperativa}"
+					disabled="#{listCooperativaBean.cooperativa.id == null}"
+					process="@this" 
+					update=":dlgRegistroAmpliacion
+							frmRegistroAmpliacion"
+					oncomplete="PF('dlgRegistroAmpliacionVar').show();">
+							
+				</p:menuitem>
+				
+			</p:menubar>
+		</h:form>
+		
+		  
+		<p:dialog id="dlgRegistroAmpliacion" widgetVar="dlgRegistroAmpliacionVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" 
+			closable="false" resizable="false" width="550" modal="true" 
+			header="#{listCooperativaBean.strTitulo}">
+			<h:form id="frmRegistroAmpliacion">
+				<p:panel id="pnlRegistroAmpliacion">
+					<h:panelGrid id="pgrRegistroAmpliacion" columns="2">
+
+						<h:outputLabel value="Fecha registro:" />                    
+			            <h:outputText value="#{listCooperativaBean.cooperativa.fechaRegistro}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+						
+						<h:outputLabel for="idfechaValidez" value="Fecha Validez:" style="font-weight:bold" />
+						<p:calendar id="idfechaValidez" required="true" showOn="button" mask="true"
+							value="#{listCooperativaBean.cooperativa.fechaExpiracion}" label="Fecha Validez"
+							pattern="dd/MM/yyyy" showButtonPanel="false"
+							locale="es" mindate="#{listCooperativaBean.fechaActual}">
+						</p:calendar>
+			            
+					</h:panelGrid>
+
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-save" id="cmdGuardar"
+								actionListener="#{listCooperativaBean.guardarValidez}" process="@form"
+								update="@form :messages"
+								oncomplete="enviarFormValidez(xhr, status, args);">
+								<p:confirm header="Confirmación" message="¿Esta seguro de Confirmar el REGISTRO...?" icon="ui-icon-alert" />
+							</p:commandButton>
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar" id="cmdCancelar"
+								icon="ui-cancel"
+								onclick="PF('dlgRegistroAmpliacionVar').hide();">
+								<p:resetInput target="frmRegistroAmpliacion" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+	        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+	        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+
+		<script type="text/javascript">
+			function enviarFormValidez(xhr, status, args) {
+		        if( undefined == args.validationFailed &amp;&amp; args.sinErrores) {
+					  PF('dlgRegistroAmpliacionVar').hide();
+					  PF('tblCooperativaVar').unselectAllRows(); PF('tblCooperativaVar').clearFilters();
+				  } else {  
+				    	PF('dlgRegistroAmpliacionVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+			
+	</script>
+
+	</ui:define>
+</ui:composition>

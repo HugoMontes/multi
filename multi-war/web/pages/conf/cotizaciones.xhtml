@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+	
+		<h:outputText value="Administración de Cotizaciones Minerales" styleClass="title-page"/>
+		
+		<br/>
+		<p:outputLabel value="Cotizaciones"
+			style="font-size:15px;font-weight:bold; color:#0B0B3B;" />
+
+		<h:form id="frmCotizaciones">
+		
+		
+			<p:menubar id="mnuMinerales">
+				<p:menuitem id="actualizarButton" label="Actualizar"
+					value="Actualizar" icon="ui-refresh" process="@this"
+					actionListener="#{cotizacionesBean.listarMinerales}"
+					oncomplete="PF('tblDetalleVar').unselectAllRows(); PF('tblDetalleVar').clearFilters(); PF('tblParameterVar').unselectAllRows();" 
+					update="frmCotizaciones"/>
+
+				<p:menuitem id="registrarButton" value="Registrar" process="@this"
+					icon="ui-add" actionListener="#{cotizacionesBean.registrarMaster}"
+					update=":dlgRegistroMineral,
+							:frmRegistroMaster"
+					oncomplete="PF('dlgMasterVar').show();" />
+
+				<p:menuitem id="modificarButton" value="Modificar"
+					icon="ui-edit" actionListener="#{cotizacionesBean.modificarMaster}"
+					process="@this" oncomplete="PF('dlgMasterVar').show();"
+					update=":dlgRegistroMineral
+							:frmRegistroMaster" 
+					disabled="#{cotizacionesBean.cotizacionMineral.id == null}"/>
+
+				<p:menuitem id="eliminarButton" label="Eliminar" value="Eliminar"
+					icon="ui-remove" process="@this" update=":dglConfirmacion"
+					oncomplete="PF('dglConfirmacionVar').show();" disabled="#{cotizacionesBean.cotizacionMineral.id == null}"/>
+
+			</p:menubar>
+
+			<p:dataTable id="tblMaster" var="master" widgetVar="tblDetalleVar"
+				value="#{cotizacionesBean.listCotizacionMineral}"
+				selection="#{cotizacionesBean.cotizacionMineral}" rowKey="#{master.id}"
+				filteredValue="#{cotizacionesBean.listCotizacionMineralFilter}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15,20" rowIndexVar="rowIndex"
+				emptyMessage="No existen registros.">
+
+				<p:ajax event="rowSelect" process="@this" 
+					update="frmCotizaciones"
+					listener="#{cotizacionesBean.onRowSelect}" 
+					oncomplete="PF('tblParameterVar').unselectAllRows();"/>
+
+				<p:column headerText="Nro." style="width:2%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+		        	
+		        <p:column headerText="Mineral"
+					filterBy="#{master.nombre}"
+					filterMatchMode="contains" sortBy="#{master.nombre}"
+					style="white-space:normal;" width="40%">
+					<h:outputText value="#{master.nombre}" />
+				</p:column>
+				
+				<p:column headerText="Unidad de Medida"
+					style="white-space:normal;" width="59%">
+					<h:outputText
+						value="#{cotizacionesBean.mapMedidaMineral.get(master.indUnidadMedida)}" />
+				</p:column>
+				
+				<p:column headerText="Cotización Oficial $us"
+					style="white-space:normal;" width="59%">
+					<h:outputText value="#{master.cotizacionOficial}">
+						<f:convertNumber pattern="#{cons['pattern.currency.decimal']}" locale="#{cons['conv.number.locale']}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Alicuota Regalias Exportacions %"
+					style="white-space:normal;" width="59%">
+					<h:outputText value="#{master.alicuotaExportaciones}">
+						<f:convertNumber pattern="#{cons['pattern.currency.decimal']}" locale="#{cons['conv.number.locale']}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Alicuota Regalias Internas %"
+					style="white-space:normal;" width="59%">
+					<h:outputText value="#{master.alicuotaInternas}">
+						<f:convertNumber pattern="#{cons['pattern.currency.decimal']}" locale="#{cons['conv.number.locale']}"/>
+					</h:outputText>
+				</p:column>
+				
+			</p:dataTable>
+
+			<br/>
+			<p:outputLabel value="Descripción de Minerales" style="font-size:15px;font-weight:bold; color:#0B0B3B;" />
+			
+			<p:menubar id="mnuParameter">
+				<p:menuitem id="actualizarButtonParam" label="Actualizar"
+					value="Actualizar" icon="ui-refresh" process="@this"
+					actionListener="#{cotizacionesBean.listarDescripcion}"
+					oncomplete="PF('tblParameterVar').unselectAllRows();"
+					disabled="#{cotizacionesBean.cotizacionMineral.id == null}" 
+					update="frmCotizaciones"/>
+
+				<p:menuitem id="registrarButtonParam" value="Registrar" process="@this"
+					icon="ui-add" actionListener="#{cotizacionesBean.registrarDescripcion}"
+					update=":dlgRegistroParameter,
+							:frmRegistroParameter"
+					oncomplete="PF('dlgParameterVar').show(); PF('tblParameterVar').unselectAllRows();"
+					disabled="#{cotizacionesBean.cotizacionMineral.id == null}" />
+
+				<p:menuitem id="modificarButtonParam" value="Modificar"
+					icon="ui-edit" actionListener="#{cotizacionesBean.modificarDescripcion}"
+					process="@this" oncomplete="PF('dlgParameterVar').show();"
+					update=":dlgRegistroParameter" disabled="#{cotizacionesBean.cotizacionMineralDesc.id == null}"/>
+
+				<p:menuitem id="eliminarButtonParam" label="Eliminar" value="Eliminar"
+					icon="ui-remove" process="@this" update=":dglConfirmacionParam"
+					oncomplete="PF('dglConfirmacionVarParam').show();" 
+					disabled="#{cotizacionesBean.cotizacionMineralDesc.id == null}"/>
+
+			</p:menubar>
+
+			<p:dataTable id="tblParameter" var="parameter" widgetVar="tblParameterVar"
+				value="#{cotizacionesBean.listCotizacionMineralDesc}"
+				selection="#{cotizacionesBean.cotizacionMineralDesc}" rowKey="#{parameter.id}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15,20" rowIndexVar="rowIndex"
+				emptyMessage="No existen registros.">
+
+				<p:ajax event="rowSelect" process="@this" update="frmCotizaciones"
+					listener="#{cotizacionesBean.onRowSelectDescripcion}" />
+
+				<p:column headerText="Nro." style="width:2%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+		        	
+		        <p:column headerText="Nombre"
+					sortBy="#{parameter.nombre}"
+					style="white-space:normal;" width="95%">
+					<h:outputText value="#{parameter.nombre}" />
+				</p:column>
+				
+			</p:dataTable>
+			
+		</h:form>
+		
+		<p:dialog id="dlgRegistroMineral" widgetVar="dlgMasterVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" modal="true"
+			closable="false" resizable="false" width="550"
+			header="#{cotizacionesBean.strTitulo}">
+			<h:form id="frmRegistroMaster">
+				<p:panel id="pnlRegistroMaster">
+					<h:panelGrid id="pgrRegistroMaster" columns="2">
+
+						<h:outputText value="Nombre:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:inputText  id="txtNombre" size="50" required="true"
+							onkeyup="return trimText(this);"
+							requiredMessage="El campo Nombre es requerido"
+							value="#{cotizacionesBean.cotizacionMineral.nombre}">
+						</p:inputText>
+						
+						<h:outputLabel for="idUnidad" value="Unid Medida:" style="font-weight:bold" />
+						<p:selectOneMenu id="idUnidad" label="Unid Medida"
+							style="width:60px" panelStyle="width:60px" effect="fade" required="true"
+							value="#{cotizacionesBean.cotizacionMineral.indUnidadMedida}">
+							<f:selectItems value="#{cotizacionesBean.selectMedidaMineral}" />
+						</p:selectOneMenu>
+						
+						<h:outputLabel for="idCoticacionOficial" value="Cotización Oficial $us:" style="font-weight:bold" />
+						<p:inputNumber id="idCoticacionOficial" value="#{cotizacionesBean.cotizacionMineral.cotizacionOficial}" 
+			            	required="true" label="Ley" size="30" decimalPlaces="4" decimalSeparator=".">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+			            </p:inputNumber>
+			            
+			            <h:outputLabel for="idAlicuotaExportaciones" value="Alicuota Regalias Exportaciones:" style="font-weight:bold" />
+						<p:inputNumber id="idAlicuotaExportaciones" value="#{cotizacionesBean.cotizacionMineral.alicuotaExportaciones}" 
+			            	required="true" label="Ley" size="30" decimalPlaces="4" decimalSeparator=".">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+			            </p:inputNumber>
+			            
+			            <h:outputLabel for="idAlicuotaInternas" value="Alicuota Regalias Internas:" style="font-weight:bold" />
+						<p:inputNumber id="idAlicuotaInternas" value="#{cotizacionesBean.cotizacionMineral.alicuotaInternas}" 
+			            	required="true" label="Ley" size="30" decimalPlaces="4" decimalSeparator=".">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+			            </p:inputNumber>
+			            
+					</h:panelGrid>
+					
+					<p:toolbar>
+						<f:facet name="left">
+								<p:commandButton value="Guardar" icon="ui-save"
+									actionListener="#{cotizacionesBean.guardarMaster}" process="@form"
+									update="frmRegistroMaster
+											frmCotizaciones
+											:messages"
+									oncomplete="enviarFormMaster(xhr, status, args); " />
+								<p:separator />
+								<p:commandButton process="@this" value="Cancelar"
+									icon="ui-remove"
+									update=":frmRegistroMaster,
+											:frmCotizaciones:mnuMinerales"
+									oncomplete="PF('dlgMasterVar').hide(); PF('tblDetalleVar').unselectAllRows();">
+									<p:resetInput target="frmRegistroMaster" />
+								</p:commandButton>
+							</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<p:confirmDialog id="dglConfirmacion" header="Eliminar"
+			appendTo="@(body)"
+			severity="alert" width="350" widgetVar="dglConfirmacionVar"
+			closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Mineral: #{cotizacionesBean.cotizacionMineral.nombre}.
+		  			</f:facet>
+			<p:toolbar
+				style="margin:0;border-spacing:0;border-collapse:collapse;padding:0;">
+				<p:toolbarGroup style="width:100%; text-align:center; height:30px;">
+					<p:commandButton value="Si"
+						update=":messages
+								frmCotizaciones" process="@this"
+						actionListener="#{cotizacionesBean.eliminarMaster}"
+						oncomplete="PF('dglConfirmacionVar').hide(); PF('tblDetalleVar').unselectAllRows(); PF('tblDetalleVar').clearFilters(); " />
+
+					<p:commandButton value="No" process="@none"
+						onclick="PF('dglConfirmacionVar').hide()" type="button" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</p:confirmDialog>
+		
+		<p:dialog id="dlgRegistroParameter" widgetVar="dlgParameterVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" modal="true"
+			closable="false" resizable="false" width="400"
+			header="#{cotizacionesBean.strTitulo}">
+			<h:form id="frmRegistroParameter">
+				<p:panel id="pnlRegistroParameter">
+					<h:panelGrid id="pgrRegistroParameter" columns="2">
+
+						<h:outputText value="Nombre:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:inputText  id="txtNombre" size="40" required="true"
+							onkeyup="return trimText(this);"
+							requiredMessage="El campo Nombre es requerido"
+							value="#{cotizacionesBean.cotizacionMineralDesc.nombre}">
+						</p:inputText>
+						
+					</h:panelGrid>
+					
+					<p:toolbar>
+						<f:facet name="left">
+								<p:commandButton value="Guardar" icon="ui-save"
+									actionListener="#{cotizacionesBean.guardarCotizacionDescripcion}" process="@form"
+									update="frmRegistroParameter
+											frmCotizaciones
+											:messages"
+									oncomplete="enviarFormParameter(xhr, status, args); " />
+								<p:separator />
+								<p:commandButton process="@this" value="Cancelar"
+									icon="ui-remove"
+									update="frmCotizaciones"
+									oncomplete="PF('dlgParameterVar').hide(); PF('tblParameterVar').unselectAllRows();">
+									<p:resetInput target="frmRegistroParameter" />
+								</p:commandButton>
+							</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<p:confirmDialog id="dglConfirmacionParam" header="Eliminar"
+			severity="alert" width="350" widgetVar="dglConfirmacionVarParam"
+			closable="false" appendTo="@(body)">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Descripcion del Mineral: #{cotizacionesBean.cotizacionMineralDesc.nombre}.
+		  			</f:facet>
+			<p:toolbar
+				style="margin:0;border-spacing:0;border-collapse:collapse;padding:0;">
+				<p:toolbarGroup style="width:100%; text-align:center; height:30px;">
+					<p:commandButton value="Si"
+						update=":messages
+								frmCotizaciones" process="@this"
+						actionListener="#{cotizacionesBean.eliminarCotizacionDescripcion}"
+						oncomplete="PF('dglConfirmacionVarParam').hide(); PF('tblParameterVar').unselectAllRows(); " />
+
+					<p:commandButton value="No" process="@none"
+						onclick="PF('dglConfirmacionVarParam').hide()" type="button" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</p:confirmDialog>
+		
+		<script type="text/javascript">
+			function enviarFormMaster(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  PF('tblDetalleVar').unselectAllRows(); PF('tblDetalleVar').clearFilters();  
+					  PF('dlgMasterVar').hide();
+				  } else {  
+				    	PF('dlgMasterVar').jq.effect("shake", {times:2}, 50);
+				  }
+
+				}
+
+			function enviarFormParameter(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  PF('tblParameterVar').unselectAllRows();  
+					  PF('dlgParameterVar').hide();
+				  } else {  
+				    	PF('dlgParameterVar').jq.effect("shake", {times:2}, 50);
+				  }  
+				}
+			
+			function enviarRolesPorUsuario(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  
+				  }   
+				}
+			
+	</script>
+
+
+	</ui:define>
+</ui:composition>

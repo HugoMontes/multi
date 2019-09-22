@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:view>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0"
+			class="tablaTitulo">
+
+			<tr valign="top">
+				<td width="100%" style="background-color: #002746">
+					<table align="left" width="100%" border="0" cellpadding="0"
+						cellspacing="0"
+						style='background-repeat: padding:                                                                     0;'>
+						<tr>
+							<td align="left" style="width: 175px;"><h:graphicImage
+									url="/resources/img/escudo.png" style=" height : 106px;" /></td>
+							<td align="center">
+								<table style="color: 002746;" width="100%" border="0"
+									cellpadding="0" cellspacing="0">
+									<tr>
+										<td align="center"><br /> <br /> <h:outputLabel
+												style="FONT-WEIGHT: bold; font-family: 'Arial'; color: #ffffff; font-size:20px;"
+												value="#{mB.get['SYSTEM_TITLE']==null? 'SISTEMA DE INFORMACI&#211;N INTEGRADO DE RECURSOS HUMANOS' : mB.get['SYSTEM_TITLE']}" /> <br /></td>
+									</tr>
+									<tr>
+										<td width="100%" align="center">
+											<table width="100%" border="0" cellpadding="0"
+												cellspacing="0" style="background-color: #002746">
+												<tr valign="top">
+
+													<td width="30%" align="left"><h:outputText
+															value="Fecha Actual: " /> <h:outputText
+															value="18/09/2012">
+															<f:convertDateTime pattern="dd/MM/yyyy" />
+														</h:outputText></td>
+
+													<td width="38%" align="center">
+														<table>
+															<tr>
+																<td align="center"><h:outputText
+																		value="Banco Central de Bolivia - " /> <h:outputText
+																		value=" La Paz - " /> <h:outputText value=" Centro " /></td>
+															</tr>
+														</table>
+													</td>
+
+													<td width="30%" align="right">
+														<table border="0" cellpadding="0" cellspacing="2">
+															<tr>
+																<td></td>
+																<td><h:outputText value="bSimpson" /><br /> <h:outputText
+																		value="Bartolomeo J. Simpson" /></td>
+																<td width="15px" align="center"><h:outputText
+																		value="|" /></td>
+																<td><a href="/bcb-siirrhh-web/saml/Logout">Logout</a>																
+																</td>
+															</tr>
+														</table>
+													</td>
+													<td width="1%"></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+		</table>
+
+	</f:view>
+
+</ui:composition>

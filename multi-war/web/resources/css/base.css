@@ -1,0 +1,283 @@
+/*NATIVOS--------------------------------------------------------------------------*/
+*{
+	-moz-border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+	-khtml-border-radius: 0px !important; 
+	border-radius: 0px !important;	
+}
+body {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Geneva, Verdana,
+		Arial, sans-serif !important;
+	font-size: 11px !important;
+	margin: 0  !important;
+}
+input[type="text"] {
+	text-transform: uppercase;
+}
+textarea {
+	/* text-transform: uppercase; */
+	resize: none;
+}
+th[role="columnheader"] {
+	font-size: 12px !important;
+	padding-top: 5px !important;
+	padding-bottom: 5px !important;
+}
+fieldset legend {
+	background: none !important;
+	border: none !important;
+	font-weight: bolder !important;
+	font-size: 12px !important;
+	color: #221C43 !important;
+}
+table{
+	border-collapse: collapse !important;
+	/* text-transform: uppercase; */
+}
+img {
+	border: 0 !important;
+}
+
+/*PRIMEFACES--------------------------------------------------------------------------*/
+.ui-widget {
+	font-size: 11px !important;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, 
+.ui-widget-header .ui-state-hover, .ui-state-focus, 
+.ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus{
+	border:1px solid #F5A9A9 !important;
+	background:#F5A9A9 linear-gradient(top, rgba(255,255,255,0.6), rgba(255,255,255,0)) !important;
+	background:#F5A9A9 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.6)), to(rgba(255,255,255,0))) !important;
+	background:#F5A9A9 -moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(255,255,255,0)) !important;
+	color:#313131 !important;
+	-moz-box-shadow:0 0 5px #F78181 !important;
+	-webkit-box-shadow:0px 0px 8px #F78181 !important;
+	box-shadow:0px 0px 8px #F78181 !important;
+}
+
+.ui-inputfield,.ui-widget-content .ui-inputfield,.ui-widget-header .ui-inputfield
+	{
+	background: none repeat scroll 0 0 #FFFFFF;
+	box-shadow: 0 2px 2px #E0E0E0 inset;	
+	color: #313131;
+}
+
+.ui-tree {
+	widht:100% !important;
+}
+
+.ui-panelmenu .ui-panelmenu-header {
+	background:
+		repeat-x scroll 50% 50% #221C43;
+}
+
+.ui-panelmenu .ui-panelmenu-header a {
+	color: white;
+	font-size: 11px !important;
+	padding: 1em 1em 1em 2.2em !important;
+}
+
+.ui-inputfield,.ui-widget-content .ui-inputfield,.ui-widget-header .ui-inputfield
+	{
+	background: none repeat scroll 0 0 #FFFFFF;
+	/*box-shadow: 0 2px 2px #8F8F8F inset;*/
+	box-shadow: 0 2px 2px #E0E0E0 inset;	
+	color: #313131;
+}
+
+.ui-helper-clearfix:before,.ui-helper-clearfix:after {
+	display: block !important;
+}
+
+.ui-datatable .ui-datatable-data .ui-commandlink {
+	color: blue !important;
+}
+
+.ui-datatable .ui-datatable-data .even-row td {
+	background-color: #E9E9E9;
+}
+
+.ui-datatable .ui-datatable-data .odd-row td {
+	background-color: #ffffff;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+	text-align: center !important;
+}
+
+.ui-panelmenu .ui-menuitem-link {
+	padding: 0.1em !important;
+}
+
+.ui-datatable th div.ui-dt-c,.ui-datatable .ui-datatable-data td div.ui-dt-c,.ui-datatable .ui-datatable-data-empty td div.ui-dt-c,.ui-datatable tfoot td div.ui-dt-c
+	{
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+
+.ui-fieldset-toggleable .ui-fieldset-legend {
+	white-space: nowrap;
+}
+
+.ui-state-highlight,.ui-widget-content .ui-state-highlight,.ui-widget-header .ui-state-highlight
+	{
+	background: #B4BEF1 !important;
+	border: 1px solid #AAAAAA !important;
+	color: #212121 !important;
+}
+
+.ui-state-disabled{
+	opacity : 0.4 !important;
+}
+
+.ui-state-disabled .ui-selectonemenu-label{
+	font-weight: bold !important;
+}
+
+.ui-inputfield.ui-state-disabled{
+	font-weight: bold !important;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+	text-shadow: none !important;
+}
+
+.ui-datatable-footer.ui-widget-header.ui-corner-bottom{
+	border-top: 1px solid #a8a8a8 !important;
+	text-align: left;
+}
+.ui-paginator.ui-paginator-top.ui-widget-header.ui-corner-top{
+	border-bottom: none;
+}
+.ui-datepicker-trigger.ui-button.ui-widget.ui-corner-all.ui-button-icon-only{
+	padding-top: 1px !important;
+	height: 24px !important;
+}
+/*HACK PARA IE 11-------------------------------------------------------------------------*/
+.ie11 .ui-datepicker-trigger.ui-button.ui-widget.ui-corner-all.ui-button-icon-only {
+  	padding-top: 0px !important;
+}
+/*HACK PARA FIREFOX-----------------------------------------------------------------------*/
+@-moz-document url-prefix() { 
+  .ui-datepicker-trigger.ui-button.ui-widget.ui-corner-all.ui-button-icon-only{
+	padding-top: 0px !important;
+  }
+}
+
+.ui-inputfield.ui-widget.ui-corner-all.hasDatepicker{
+	border-right-color: transparent !important;
+}
+/*ICONS BUTTONS----------------------------------------------------------------------------------*/
+
+.ui-viewList {
+	background-image: url("#{resource['img:buttons/viewList.png']}")
+		!important;
+}
+
+.ui-find {
+	background-image: url("#{resource['img:buttons/find.png']}") !important;
+}
+
+.ui-search {
+	background-image: url("#{resource['img:buttons/search.png']}")
+		!important;
+}
+
+.ui-save {
+	background-image: url("#{resource['img:buttons/save.png']}") !important;
+}
+
+.ui-textList {
+	background-image: url("#{resource['img:buttons/textList.png']}")
+		!important;
+}
+
+.ui-empty {
+	background-image: url("#{resource['img:buttons/empty.png']}") !important;
+}
+
+.ui-new {
+	background-image: url("#{resource['img:buttons/new.png']}") !important;
+}
+
+.ui-edit {
+	background-image: url("#{resource['img:buttons/edit.png']}") !important;
+}
+
+.ui-add {
+	background-image: url("#{resource['img:buttons/add.png']}") !important;
+}
+
+.ui-remove {
+	background-image: url("#{resource['img:buttons/remove.png']}")
+		!important;
+}
+
+.ui-cancel {
+	background-image: url("#{resource['img:buttons/cancel.png']}")
+		!important;
+}
+
+.ui-confirm {
+	background-image: url("#{resource['img:buttons/confirm.png']}")
+		!important;
+}
+
+.ui-anulate {
+	background-image: url("#{resource['img:buttons/annular.png']}")
+		!important;
+}
+
+.ui-back {
+	background-image: url("#{resource['img:buttons/back.png']}") !important;
+}
+
+.ui-refresh {
+	background-image: url("#{resource['img:buttons/refresh.png']}")
+		!important;
+}
+
+.ui-config {
+	background-image: url("#{resource['img:buttons/config.png']}")
+		!important;
+}
+
+.ui-review {
+	background-image: url("#{resource['img:buttons/review.png']}")
+		!important;
+}
+
+.ui-approve {
+	background-image: url("#{resource['img:buttons/approve.png']}")
+		!important;
+}
+.ui-lock {
+	background-image: url("#{resource['img:buttons/lock.png']}")
+		!important;
+}
+.ui-unlock {
+	background-image: url("#{resource['img:buttons/unlock.png']}")
+		!important;
+}
+.ui-run {
+	background-image: url("#{resource['img:buttons/run.png']}")
+		!important;
+}
+
+.ui-help {
+	background-image: url("#{resource['img:buttons/help.png']}")
+		!important;
+}
+
+.ui-datatable thead th {
+    text-align: center !important;
+}
+
+.buttonRed{
+	color:red !important;
+	border-color:red !important;
+}
+.buttonGreen{
+	color:green !important;
+	border-color:green !important;
+}

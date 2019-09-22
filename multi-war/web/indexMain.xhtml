@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	
+<f:view contentType="text/html" locale="#{sessionScope.locale}">
+	<h:head>
+		<title>:: #{accesoBean.systemOwnModule} ::</title>
+		<link href="resources/img/fav_icon.png" rel="shortcut icon" type="image/png" />
+		<meta http-equiv="Pragma" content="no-store"/>
+		<meta http-equiv="Cache-Control" content="no-store,No-cache,post-check=0,pre-check=0,max-age=0" />
+		<meta http-equiv="Expires" content="-1"/>
+		
+		<h:outputScript library="js" name="functions.js" />
+		<h:outputScript library="js" name="encrypted.js" />
+		
+		<h:outputStylesheet library="css" name="base.css" />
+		<h:outputStylesheet library="css" name="layout.css" />
+	</h:head>
+	
+	<h:body >
+
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{accesoBean.inicio}"/>
+		</f:metadata>
+		
+		<p:ajaxStatus onstart="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();"/>  
+	              
+		<p:dialog modal="true" widgetVar="statusDialog"  id="idDialogStatusDialog"
+		resizable="false" draggable="false" closable="false" >  
+	        	<p:graphicImage library="img" id="idImgLoading"	name="loading2.gif"/> 	
+	     </p:dialog>
+	     
+		<h:form id="frmLogin">
+			<div id="login-app">
+				<div class="login-logo">
+					<h:graphicImage library="img" name="logo/logo_dos.jpg"  id="idImgLogo" styleClass="logo" alt="LOGO"/>
+					  
+				</div>
+				<div class="login-form">
+					<div class="login-form-wrapper">
+						<div class="login-form-row">
+							<h:outputText value="#{msgs['login.lbl.user']}" styleClass="login-label"/>
+							
+							<p:inputText id="txtLoginUser" value="#{accesoBean.segUsuario.usuario}" maxlength="20"  
+								required="true" requiredMessage="#{msgs['login.lbl.user.required']}"
+								autocomplete="off" styleClass="login-input">
+								<pe:keyFilter regEx="#{cons['exp.regular.alphabetic.not.space']}"/>
+							</p:inputText>
+							<p:message for="txtLoginUser" display="icon"/>
+							
+							
+						</div>
+						<div class="login-form-row">
+							<h:outputText  value="#{msgs['login.lbl.password']}" styleClass="login-label"/>
+							<p:password id="txtPassword" value="#{accesoBean.segUsuario.contrasena}" maxlength="20" 
+							required="true" requiredMessage="#{msgs['login.lbl.password.required']}"
+							styleClass="login-input" autocomplete="off"/>
+							<p:message for="txtPassword" display="icon" />
+						</div>
+						
+						     
+						<p:outputPanel id="panelCatpcha" rendered="#{accesoBean.useCaptcha}">
+							<div class="login-form-row">
+								<p:spacer width="1"/>
+								<p:graphicImage id="captcha" value="#{accesoBean.captchaUrl}"/>
+								<p:spacer width="5"/>
+								<p:commandLink style="color:#ffffff !important;vertical-align:middle" actionListener="#{accesoBean.reloadCaptcha}" ajax="false" immediate="true">
+									<p:graphicImage library="img" name="refresh.png" height="40" title="Recargar"/>
+								</p:commandLink>
+							</div>
+							<div class="login-form-row">
+								<h:outputText  value="Código de seguridad" styleClass="login-label"/>
+								<p:inputText id="txtCaptcha" value="#{accesoBean.captchaAnswer}" maxlength="6" required="true"
+								requiredMessage="Debe ingresar los codigos"
+								validatorMessage="Código de seguridad no es Válido" validator="#{accesoBean.validateCaptcha}"
+								styleClass="login-input" autocomplete="off"/>
+								<p:message for="txtCaptcha" display="icon" />
+							</div>
+						</p:outputPanel>
+						
+
+						
+						<p:messages id="messages" showDetail="false" autoUpdate="true" />
+						
+						<div class="login-form-row login-submit">
+							<p:message for="cmdLogin" display="text" />
+							<p:commandButton id="cmdLogin" value="#{msgs['btn.accept']}" 
+							update="@form" icon="ui-icon-key" onclick="encrypt_string()"
+							actionListener="#{accesoBean.verificarUsuario}" ajax="true" styleClass="login-button" oncomplete="validarDatos(xhr, status, args);"/>
+						</div>	
+						
+						<div class="login-form-row login-submit">
+							<p:commandLink value="#{msgs['login.lbl.password.forgot']}" oncomplete="PF('dlgForgotVar').show();" process="@this"  styleClass="login-label"/>
+						</div>
+						
+					</div>					
+				</div>
+				<h:inputHidden id="userKey" value="#{accesoBean.userKey}"/>
+				<h:inputHidden id="userPass" value="#{accesoBean.userPass}"/>
+				<div class="login-bottom">
+					<h:selectOneMenu id="language1" value="#{sessionScope.locale}" immediate="true">
+						<f:selectItem itemLabel="#{msgs['lbl.footer.Espanol']}" itemValue="es"  id="idCboItemEsponol"/>
+						<f:selectItem itemLabel="#{msgs['lbl.footer.Ingles']}" itemValue="en"  id="idCboItemIngles"/>
+ 						<p:ajax event="change"  listener="#{accesoBean.localeCodeChanged}" update="@form"/> 
+					</h:selectOneMenu>		
+				</div>
+				<div class="login-footer">
+					<ul>						
+						<!--
+						<li><p:outputLabel value="#{accesoBean.systemNameProvider}" style="color:  #797d7f !important;"/></li>
+						  
+						<li><p:outputLabel value="#{msgs['lbl.devlope.env']} #{accesoBean.stageApplication}"/></li>
+						<li><p:outputLabel value="#{msgs['lbl.devlope.version']} #{accesoBean.versionApplication}"/></li>
+						<li><p:outputLabel value="#{msgs['lbl.devlope.version.date']} #{accesoBean.dateApplication}"/></li>
+						-->
+					</ul>
+				</div>
+			</div>
+		</h:form>
+		
+		<p:dialog id="dlgforgotPass" widgetVar="dlgForgotVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" 
+			closable="false" resizable="false" width="550" modal="true" 
+			header="Restaurar Contraseña">
+			<h:form id="frmForgot">
+				<p:panel>
+					<p:spacer/>
+					<h:panelGrid id="pgrRegistroRol" columns="2">
+
+						<h:outputText value="Ingrese su correo electronico: " />
+						<p:inputText id="txtCorreo" size="50" required="true" onkeyup="return trimText(this);"
+							requiredMessage="El campo es requerido"
+							value="#{accesoBean.correo}" >
+							<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.not.space.with.underline.mail']}"/>
+						</p:inputText>
+					</h:panelGrid>
+					<p:spacer/>
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Restaurar" icon="ui-icon-disk"
+								actionListener="#{accesoBean.verificarCorreo}" process="@form"
+								update="frmForgot"
+								oncomplete="enviarCorreo(xhr, status, args);" />
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar"
+								icon="ui-icon-close"
+								update="frmForgot"
+								onclick="PF('dlgForgotVar').hide();">
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+					</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<script type="text/javascript">
+			function validarDatos(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+
+				  } 
+				}
+			function enviarCorreo(xhr, status, args) {
+		        if( undefined == args.validationFailed) {
+					  PF('dlgForgotVar').hide();
+				  } else {  
+				    	PF('dlgForgotVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+		</script>
+		
+		<!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
+		
+		
+	</h:body>
+</f:view>
+
+</html>

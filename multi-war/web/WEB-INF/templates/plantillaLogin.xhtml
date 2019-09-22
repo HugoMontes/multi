@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet name="css/defaultLog.css" />
+	
+	<h:outputStylesheet name="css/tableLayoutLog.css" />
+	<h:outputScript name="js/funciones.js" />
+
+	<title>..:: Indetificación ::..</title>
+</h:head>
+
+<h:body>
+	<script type="text/javascript">  
+	    
+	function startStatusDwnload() {  
+		if(typeof statusDialogX !== 'undefined'){
+			statusDialogX.show();
+		}  
+	}  
+	  
+	function stopStatusDwnload() {  
+		if(typeof statusDialogX !== 'undefined'){
+			statusDialogX.hide();
+		}  
+	}
+
+	function statusDialogXShow() {  
+		if(typeof statusDialogX !== 'undefined'){
+			statusDialogX.show();
+		}  
+	}
+
+	function statusDialogXHide() {  
+		if(typeof statusDialogX !== 'undefined'){
+			statusDialogX.hide();
+		}  
+	}
+	function statusDlgErrorShow() {  
+		if(typeof statusDlgError !== 'undefined'){
+			statusDlgError.show();
+		}  
+	}
+	
+	</script>
+
+
+
+	<table align="center" width="30%"  cellpadding="100%" cellspacing="1">
+	<!-- 
+	<table align="center" width="30%"  cellpadding="100%" cellspacing="1" style="margin-left:25%; margin-top: 15%;">
+	 -->
+		<tr>
+			<td id="content"> <ui:insert name="content">Content</ui:insert>
+				
+				<!-- 
+		       <ui:insert name="status">
+					<p:ajaxStatus onerror="statusDlgErrorShow();" onstart="statusDialogXShow();" oncomplete="statusDialogXHide();"/>  
+					              
+					<p:dialog modal="true" widgetVar="statusDialogX" header="Un momento por favor..."   
+					        draggable="false" closable="false" resizable="false" >  
+					    <p:graphicImage value="/resources/img/ajaxloadingbar.gif" />  
+					</p:dialog>
+
+					<p:dialog modal="true" widgetVar="statusDlgError" header="Status"   
+					        draggable="false" closable="false" resizable="false" >  
+					   <p:outputLabel value="Ocurrieron errores al conectarse al servidor." />     
+					</p:dialog> 		           
+		       </ui:insert>
+		        -->
+		    </td>
+		</tr>
+
+	</table>
+
+
+</h:body>
+
+</html>

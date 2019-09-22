@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oficinasSub" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="edb3547a-0303-477f-9446-6292fbbf15c1">
+	<property name="ireport.zoom" value="3.543122000000033"/>
+	<property name="ireport.x" value="981"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idRegalia" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select mine.nombre,liq.min_ley,liq.min_pf_kg,liq.min_cotizacion,liq.min_vbv_bs,liq.min_alicuota,liq.min_rm_bs
+from liquidacion liq
+inner join cotizacion_mineral mine on mine.id = liq.min_id_cotizacion_mineral
+where liq.estado = 'HAB'
+and liq.id_regalia = $P{idRegalia}]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="min_ley" class="java.math.BigDecimal"/>
+	<field name="min_pf_kg" class="java.math.BigDecimal"/>
+	<field name="min_cotizacion" class="java.math.BigDecimal"/>
+	<field name="min_vbv_bs" class="java.math.BigDecimal"/>
+	<field name="min_alicuota" class="java.math.BigDecimal"/>
+	<field name="min_rm_bs" class="java.math.BigDecimal"/>
+	<variable name="totalRegaliaMinera" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{min_rm_bs}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="2" width="55" height="11" uuid="da8d7f7b-368f-4b8b-b4f5-e148ce321210"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mineral]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="2" width="43" height="11" uuid="8537fc08-3124-4428-b9e2-f51ecdb28328"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PF(Kg)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="2" width="61" height="11" uuid="a7bed56f-0f2b-447d-a8f1-1fae773f0aaf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cotización]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="128" y="2" width="37" height="11" uuid="8845f896-56da-4bb6-a872-6493d416eac9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ley]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="13" width="497" height="1" uuid="68ebd910-99ff-4240-9414-b107ab542583"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="324" y="2" width="48" height="11" uuid="6291b582-9dc1-4d26-af73-fb700b34696c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VBV(Bs)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="497" height="1" uuid="b98abcd6-44eb-47c2-b405-6f0d5cccfb3e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="373" y="2" width="51" height="11" uuid="f4df2718-8888-4a63-9af3-20660b6ab06e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Alicuota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="437" y="2" width="58" height="11" uuid="638dba9a-fca7-46f7-ac21-8c657987aca5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RM (Bs)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="117" height="12" uuid="3bc8fa92-1bf7-4c8a-a71e-afc556a62289"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.0000">
+				<reportElement x="248" y="0" width="66" height="12" uuid="4ab14f3e-2261-41b6-bf27-b4302bb1035c"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{min_cotizacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00">
+				<reportElement x="316" y="0" width="55" height="12" uuid="ed4597e5-bff8-41ef-9518-922316e506c3"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{min_vbv_bs}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00000">
+				<reportElement x="183" y="0" width="60" height="12" uuid="facad5dc-0558-4d86-8421-1af777745276"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{min_pf_kg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.0000">
+				<reportElement x="373" y="0" width="51" height="12" uuid="e0091cfd-c8d0-4774-9fa6-b73890d41c60"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{min_alicuota}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00000">
+				<reportElement x="129" y="0" width="51" height="12" uuid="5261d876-6748-4b80-b8cc-b187b2b6a1ea"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{min_ley}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00">
+				<reportElement x="426" y="0" width="69" height="12" uuid="a4f98a9b-7325-48fa-9762-f7be7e9e3d76"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{min_rm_bs}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="12" width="485" height="1" uuid="4759c50e-71e7-4768-b946-8b5ddcf0ed70"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="13">
+			<textField pattern="###,###,##0.00">
+				<reportElement x="373" y="2" width="121" height="11" uuid="6360cfec-64cf-46e4-b9be-d18de9912b61"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalRegaliaMinera}.setScale(0, BigDecimal.ROUND_HALF_UP)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="261" y="2" width="109" height="11" uuid="03c58d05-d0bf-42bd-83f7-87bdb5734e06"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Regalia Minera (Bs)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="300" y="1" width="195" height="1" uuid="2a33888d-19aa-40bf-9eb5-322210f50b6f"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>

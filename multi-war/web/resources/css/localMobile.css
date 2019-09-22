@@ -1,0 +1,28 @@
+.ui-outputlabel {
+	font-size: 0.8em !important;
+}
+
+.ui-commandlink {
+	font-size: 0.8em !important;
+}
+
+.body, input, select, textarea, button, .ui-btn{
+	font-size: 0.9em !important;
+}
+.ui-link{
+	font-size: 0.8em !important;
+}
+
+.ui-messages-info-summary, .ui-messages-warn-summary,
+	.ui-messages-error-summary, .ui-messages-fatal-summary,
+	.ui-message-info-summary, .ui-message-warn-summary,
+	.ui-message-error-summary, .ui-message-fatal-summary {
+	font-size: 0.8em !important;
+}
+.ui-column-title{
+	font-size: 0.7em !important;
+}
+.ui-widget-content, .ui-datatable-empty-message{
+	font-size: 0.7em !important;
+}
+

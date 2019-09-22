@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oficinasSub" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="edb3547a-0303-477f-9446-6292fbbf15c1">
+	<property name="ireport.zoom" value="2.928200000000023"/>
+	<property name="ireport.x" value="248"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idCooperativa" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select suc.*,
+dep.nombre as nombreDepartamento,
+mun.nombre as nombreMunicipio,
+ciu.nombre as nombreCiudad,
+mun.descripcion as regionProvinciaMun,
+(select nombre from parameter_table where id = suc.ind_tipo_sucursal) as tipoSucursal
+from sucursal suc
+left join departamento dep on dep.id = suc.id_departamento
+left join municipio mun on mun.id = suc.id_municipio
+left join ciudad ciu on ciu.id = suc.id_ciudad
+where suc.estado ='HAB'
+and suc.id_cooperativa = $P{idCooperativa}
+order by suc.ind_tipo_sucursal asc]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="id_ciudad" class="java.lang.Integer"/>
+	<field name="zona" class="java.lang.String"/>
+	<field name="calle_avenida" class="java.lang.String"/>
+	<field name="numero" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="fax" class="java.lang.String"/>
+	<field name="ind_tipo_sucursal" class="java.lang.Integer"/>
+	<field name="id_cooperativa" class="java.lang.Integer"/>
+	<field name="usuario_reg" class="java.lang.String"/>
+	<field name="fecha_reg" class="java.sql.Date"/>
+	<field name="fecha_mod" class="java.sql.Date"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="id_departamento" class="java.lang.Integer"/>
+	<field name="id_municipio" class="java.lang.Integer"/>
+	<field name="nombredepartamento" class="java.lang.String"/>
+	<field name="nombremunicipio" class="java.lang.String"/>
+	<field name="nombreciudad" class="java.lang.String"/>
+	<field name="regionprovinciamun" class="java.lang.String"/>
+	<field name="tiposucursal" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="55" height="11" uuid="da8d7f7b-368f-4b8b-b4f5-e148ce321210"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Departamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="2" width="122" height="11" uuid="8537fc08-3124-4428-b9e2-f51ecdb28328"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Región   Provincia  Municipio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="2" width="59" height="11" uuid="a7bed56f-0f2b-447d-a8f1-1fae773f0aaf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Zona]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="63" y="2" width="80" height="11" uuid="8845f896-56da-4bb6-a872-6493d416eac9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comunidad/Ciudad]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="13" width="570" height="1" uuid="68ebd910-99ff-4240-9414-b107ab542583"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="344" y="2" width="133" height="11" uuid="6291b582-9dc1-4d26-af73-fb700b34696c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Calle/Av]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="570" height="1" uuid="b98abcd6-44eb-47c2-b405-6f0d5cccfb3e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="479" y="2" width="51" height="11" uuid="f4df2718-8888-4a63-9af3-20660b6ab06e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Teléfono]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="532" y="2" width="38" height="11" uuid="638dba9a-fca7-46f7-ac21-8c657987aca5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Suc]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="59" height="12" uuid="3bc8fa92-1bf7-4c8a-a71e-afc556a62289"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombredepartamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="284" y="0" width="59" height="12" uuid="4ab14f3e-2261-41b6-bf27-b4302bb1035c"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{zona}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="344" y="0" width="133" height="12" uuid="ed4597e5-bff8-41ef-9518-922316e506c3"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{calle_avenida}+ " Nro:"+$F{numero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="154" y="0" width="108" height="12" uuid="facad5dc-0558-4d86-8421-1af777745276"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{regionprovinciamun}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="479" y="0" width="51" height="12" uuid="e0091cfd-c8d0-4774-9fa6-b73890d41c60"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="0" width="69" height="12" uuid="5261d876-6748-4b80-b8cc-b187b2b6a1ea"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombremunicipio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="532" y="0" width="38" height="12" uuid="a4f98a9b-7325-48fa-9762-f7be7e9e3d76"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tiposucursal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

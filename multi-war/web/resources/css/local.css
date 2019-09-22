@@ -1,0 +1,22 @@
+.table-number {
+	white-space:normal; 
+	text-align: right;
+}
+.red{
+   background-color:red;
+   background-image:none;
+}
+.celda-derecha{
+   text-align: right !important;
+   white-space:normal !important;	
+}
+.fila-rojo {
+    background: #F6CECE  !important ;
+}
+.texto-azul {
+    color: #013ADF  !important ;
+     
+}
+
+
+

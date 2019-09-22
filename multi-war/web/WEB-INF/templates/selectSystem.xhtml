@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<f:view contentType="text/html" locale="#{sessionScope.locale}">
+	<h:head>
+	
+		<h:outputScript library="js" name="functions.js" />
+		<h:outputScript library="js" name="layout.js" />
+		<h:outputStylesheet library="css" name="base_edv.css" />
+		<h:outputStylesheet library="css" name="application_edv.css" />
+		<h:outputStylesheet library="css" name="layout_edv.css" />
+	
+	<script type="text/javascript">
+	     idleTime = 0;
+	     idlFirst =  true;
+	     $(document).ready(function () {
+	         //Increment the idle time counter every minute.
+	         var idleInterval = setInterval(timerIncrement, 60000); 
+	         //Zero the idle timer on mouse movement.
+	         //$(this).mousemove(function (e) {
+	         //    idleTime = 0;
+	       //  });
+	         $(this).keypress(function (e) {
+	             idleTime = 0;
+	         });
+	         $(this).click(function (e) {
+	             idleTime = 0;
+	         });
+	     });
+	     function timerIncrement() {
+	         idleTime = idleTime + 1;
+	        if(idlFirst){
+	          if (idleTime == #{loginBean.sessionIdleTime}) { 
+	        	 $("#sessionTimeOutAction").click();
+	        	 idlFirst = false;
+	          }
+	        }
+	     }
+	
+	   function handleMessage(browser){
+		//temporals id enum notification
+		type = browser.notificationType;
+			switch(type){
+			case 1446:
+				//killsession
+				var msg=browser.message
+				if(msg!=null){
+					 document.getElementById('frmHeader:message').value = msg;
+				}	
+				clsSession();
+				break;
+			case 247:
+				//process system
+				popupMessage.show([{
+					summary:decodeToUtf8(browser.subject),
+					detail:decodeToUtf8(browser.message),
+					severity:'info'
+					}]);
+				$('#notificationAudio')[0].play();
+				updateProcess();
+				break;
+			case 1440:
+				//message system
+				popupMessage.show([{
+					summary:decodeToUtf8(browser.subject),
+					detail:decodeToUtf8(browser.message),
+					severity:'info'
+					}]);
+				$('#notificationAudio')[0].play();
+				updateMessages();
+				break;
+			} 	
+		    
+		}
+	  </script>	
+	</h:head>
+	
+	<h:body>	
+		<pe:layout maskPanesEarly="true">
+			<pe:layoutPane position="north" closable="false" size="80" minHeight="80" resizable="false" id="footer-layout" spacingOpen="0">
+				<div id="topbar-layout">
+					<ui:include src="/template/includes/header.xhtml" />
+				</div>
+				<h:form id="frmFooter">
+					<h:graphicImage library="img" name="logo/logo_footer.jpg" styleClass="logo-footer" alt="" />
+				</h:form>			
+			</pe:layoutPane>
+			<pe:layoutPane position="center" closable="false" resizable="true" styleContent="overflow-y:hidden" id="main-layout">
+				<h:form id="frmSelectSystem">					
+					<p:dataGrid var="sys" value="#{loginBean.lstSystemsByUser}" rowIndexVar="rowIndex" styleClass="content-systems"
+					columns="#{fn:length(loginBean.lstSystemsByUser)}" rows="#{fn:length(loginBean.lstSystemsByUser)}" >							
+					    <p:panel>
+						    <h:panelGrid columns="1" styleClass="panel-cell-system">
+								<p:commandLink action="#{loginBean.selectSystem}" id="idCmdLinkSystem" ajax="false" update=":opnlGenericDialogs">
+									<p:graphicImage height="100px" width="100px" id="idImgFileContent" value="#{imageStreamerBean.fileContent}" cache="false">
+										<f:param id="rowIndex" name="rowIndex" value="#{rowIndex}" />
+									</p:graphicImage>
+									<f:setPropertyActionListener target="#{loginBean.selectedSystem}" value="#{sys}" />
+								</p:commandLink>
+								<h:outputText value="#{sys.description}" id="idOtxtSysDescription" />
+							</h:panelGrid>
+						</p:panel>
+					</p:dataGrid> 			
+				</h:form>
+			</pe:layoutPane>
+			<pe:layoutPane position="south" closable="false" size="30" minHeight="30" resizable="false" styleContent="overflow-y:hidden" id="footer-bar" spacingOpen="0">
+				<ui:include src="/template/includes/footer.xhtml" />
+			</pe:layoutPane>
+		</pe:layout>	
+	
+		<p:growl widgetVar="popupMessage" globalOnly="true" showDetail="true"
+		sticky="false" life="8000" id="idGrowlPopupMsg" />
+		
+		<p:ajaxStatus onstart="statusDialog.show();"
+			oncomplete="statusDialog.hide();" />
+
+		<p:dialog modal="true" widgetVar="statusDialog" id="idDialogStatus"
+		resizable="false" draggable="false" closable="false">
+			<p:graphicImage library="img" id="idImgLoading"
+				name="loading/loading.gif" />
+		</p:dialog>
+
+		<ui:include src="/template/includes/dialogs.xhtml" />
+		
+		<h:form id="iTime" prependId="false">
+		 	<h:body>
+				<p:commandButton id="sessionTimeOutAction"  style="display:none" action="#{loginBean.sessionLogout}" update="@form :opnlGenericDialogs"></p:commandButton>
+			</h:body>
+	    </h:form>
+	</h:body>
+</f:view>
+</html>

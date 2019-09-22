@@ -1,0 +1,256 @@
+/*COMPONENT SIZE---------------------*/
+.small-select-width {
+	width: 50px !important;
+}
+.short-select-width {
+	width: 100px !important;
+}
+.medium-select-width {
+	width: 200px !important;
+}
+.small-input-text-width {
+	width: 50px !important;
+}
+.short-input-text-width {
+	width: 100px !important;
+}
+.medium-input-text-width {
+	width: 195px !important;
+}
+.large-input-text-width {
+	width: 570px !important;
+}
+.extra-large-input-text-width {
+	width: 620px !important;
+}
+.medium-large-input-text-width {
+	width: 230px !important;
+}
+.wide-full {
+	width: 100%;
+}
+.campo-mediano {
+	width: 490px;
+}
+.campo-texto-largo {
+	width: 570px !important;
+}
+.campo-texto-medio {
+	width: 300px !important;
+}
+.campo-texto-corto {
+	width: 150px !important;
+}
+.combo-widh-medium{
+	width: 190px !important;
+}
+.combo-widh-large{
+	width: 380px !important;
+}
+.combo-widh-more-large{
+	width: 550x !important;
+}
+.securityCode-input-text-width{
+	width:320px !important;
+}
+/*POSITION COMPONENT ------------------------*/
+.content-center {
+	text-align: center !important;
+}
+.content-left {
+	text-align: left !important;
+}
+.content-right {
+	text-align: right !important;
+}
+.float-left{
+	float: left !important;
+}
+.float-right{
+	float: right !important;
+}
+.no-margin{
+	margin: 0 !important;
+}
+.no-border{
+	border: none !important;
+}
+
+/*INDEPENDENT COMPONENT ---------------------*/
+.index-page {
+	font-weight: bold;
+	letter-spacing: 0.5px;
+	color: #6F6F70;
+	display: block;
+	margin-bottom: 5px;
+}
+.title-page {
+	color: #0B0B3B;
+	font-size: 18px !important;
+	font-weight: normal;
+	margin-left: 5px;
+	text-align: left;
+}
+.title-header {
+	color: #BDBDBD;
+	font-size: 15px;
+	font-weight: normal;
+	margin-left: 5px;
+	text-align: left;
+	font-weight: bold !important;	
+}
+
+.colorRojo {
+	color: red;
+	background-color: green;
+}
+.couponEnabled{
+	background: rgb(238, 238, 182);
+	cursor:pointer;
+}
+.couponDisabled{
+	background: rgb(210, 218, 205);
+}
+.buttonCancel {
+	background: url("#{resource['img:icons/cancel.png']}");
+}
+.containter-tree-wide-full {
+	width: 100%;
+	height: 200px;
+	overflow: auto;
+	display: block;
+	border: 1px solid #A8A8A8;
+	border-radius: 7px;
+}
+.containter-tree-privilegios-wide-full {
+	width: 100%;
+	height: 210px;
+	overflow: auto;
+	display: block;
+	border: 1px solid #A8A8A8;
+	border-radius: 7px;
+}
+.containter-dataTable-wide-full{
+	width: 407px;
+	height: 180px;
+	overflow: auto;
+	display: block;
+	border: 1px solid #A8A8A8;
+	border-radius: 7px;
+}
+.containter-treeTable-wide-full {
+	width: 100%;
+	height: 445px;
+	overflow: auto;
+	display: block;
+	border: 1px solid #A8A8A8;
+	border-radius: 7px;
+}
+.required-field{
+	font-weight: bold;
+}
+.redText{
+	color:red !important;
+}
+.redText-bold{
+	color: red !important;
+	font-weight: bold !important;
+}
+.amount-inputfield{
+	text-align: right !important;
+	width: 190px !important;
+}
+.cashAmount-inputField{
+	text-align: right !important;
+	width: 290px !important;	
+}
+.text-inputField{
+	text-align: left !important;
+}
+.tr-border-top-red{
+	border-top: solid 1px red;	
+}
+.border-red{
+	border: solid 1px red;	
+}
+.rateFactor-inputField{
+	text-align:right;
+}
+.containter-representative-wide-full {
+	width: 900px;
+	height: 440px;
+	overflow: auto;
+	display: block;
+	border: 1px solid #A8A8A8;
+	border-radius: 2px;
+}
+.buttons-top-right{
+	position: absolute;
+	top: 10px;
+	right: 20px;
+}
+.fileupload-customize{
+	width: 450px;
+	display: block;
+}
+.fileupload-customize .icon{
+	cursor:pointer;
+	float:left;
+	padding-top:5px;
+}
+.fileupload-customize .label{
+	float:left;
+	padding-top:5px;
+	margin-left:4px;
+}
+/* .ui-fileupload-content{  
+	display:none !important;
+} */
+/* .ui-fileupload-buttonbar{
+	padding:0 !important;
+	width: 160px !important;
+	background:none !important;
+	border: 0 !important;
+	float: left !important;
+} */
+.fileupload-buttonbar .ui-button input{	
+	z-index: 100!important;
+}
+.label-bolder{
+	font-weight: bold !important;
+}
+.system-image-preview{
+	width: 300px !important;
+}
+.system-image-preview-panel{
+	width: 310px !important;
+}
+.panel-privileges-buttoms{
+	border: none;
+}
+.table-fields{
+	width: 100% !important;
+	border: none !important;
+}
+.table-fields tr td{
+	vertical-align: top !important;
+}
+.td-label-default{
+	width: 150px !important;
+	max-width: 150px !important;
+	min-width: 150px !important;
+}
+.panel-no-border .ui-widget-content, 
+.panel-no-border .ui-widget-content .ui-panelgrid-cell{
+	border:	none !important;
+	padding: 0px !important;
+}
+
+.buttonRed{
+	color:red !important;
+	border-color:red !important;
+}
+.buttonGreen{
+	color:green !important;
+	border-color:green !important;
+}

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+		<!-- 
+		<p:panel style="text-align:center;" styleClass="ui-widget-header">
+			<p:outputLabel value="ADMINISTRACION DE USUARIOS"
+				style="font-size:12px;font-weight:bold;" />
+		</p:panel>
+		-->
+		<p:outputLabel value="Cambiar contraseña" styleClass="title-page" />
+		
+			<h:form id="frmModificarPass">
+				<p:panel id="pnlModificarPass" style="width:500px;">
+					<h:panelGrid id="pgrModificarPass" columns="2">
+
+						<h:outputText value="Nombre:" style='white-space:nowrap;' />
+						<h:outputText
+							value="#{usuarioBean.segUsuarioSession.nombreCompleto}" />
+						
+						<h:outputText value="Contraseña Actúal*:" />
+						<p:password id="txtContrasenasActual" size="24" required="true"
+							requiredMessage="El campo Contraseña Actúal es requerido"
+							value="#{usuarioBean.contrasenaActual}">
+						</p:password>
+
+						<h:outputText value="Nueva contraseña*:" />
+						<p:password id="txtNuevaContrasenas" size="24" required="true"
+							match="txtContrasenaRepetirNueva"
+							validatorMessage="Las contrasemas no coenciden"
+							requiredMessage="El campo Contraseña es requerido"
+							value="#{usuarioBean.nuevoPass}">
+						</p:password>
+
+						<h:outputText value="Repetir Contraseña*:" />
+						<p:password id="txtContrasenaRepetirNueva" size="24"
+							required="true"
+							requiredMessage="El campo Repetir Contraseña es requerido"
+							value="#{usuarioBean.nuevoPass}">
+						</p:password>
+
+					</h:panelGrid>
+
+					<f:facet name="footer">
+						<p:toolbar>
+							<p:toolbarGroup align="left"
+								style="width:100%; text-align:center;">
+								<p:commandButton value="Guardar" icon="ui-icon-disk"
+									actionListener="#{usuarioBean.cambioPass}"
+									process="@form"
+									update=":frmModificarPass,
+											:messages"/>
+								<p:separator />
+								<p:commandButton process="@this" value="Cancelar"
+									icon="ui-icon-close"
+									actionListener="#{menuController.home}"
+									update=":frmModificarPass">
+									<p:resetInput target="frmModificarPass" />
+								</p:commandButton>
+							</p:toolbarGroup>
+						</p:toolbar>
+					</f:facet>
+				</p:panel>
+			</h:form>
+		
+
+		<script type="text/javascript">
+			function enviarFormUsuario(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  tblUsuarioVan.unselectAllRows(); tblUsuarioVan.clearFilters();  
+					  dlgUsuarioVar.hide();
+				  } else {  
+				    	$('#dlgRegistroUsuario').effect("shake", { times:2 }, 30);
+				  }  
+				}
+			function enviarFormUsuarioMod(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  tblUsuarioVan.unselectAllRows(); tblUsuarioVan.clearFilters();  
+					  dlgUsuarioModificarVar.hide();
+				  } else {  
+				    	$('#dlgModificarUsuario').effect("shake", { times:2 }, 30);
+				  }  
+				}
+			function enviarRolesPorUsuario(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  
+				  }   
+				}
+			function enviarFormCambioPass(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  dglConfirmacionPassVar.hide();
+				  } else {  
+				    	$('#dglConfirmacionPass').effect("shake", { times:2 }, 30);
+				  }  
+				}
+	</script>
+
+
+	</ui:define>
+</ui:composition>

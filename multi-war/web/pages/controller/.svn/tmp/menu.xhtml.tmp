@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:view>
+		<h:form>
+
+			<p:panelMenu style="width:200px">
+				
+				<!-- :submenu label="Gestion de Usuarios"
+					rendered="#{sB.esAutorizado['MDL_ADM_USR'] or sB.esAutorizado['MDL_ADM_USR']}">						
+					<p:menuitem value="Administrar Usuarios" update="@this"
+						actionListener="#{menuController.eventoMenu}"
+						rendered="#{sB.esAutorizado['MDL_BTN_ES_NUEVO']}">						
+						<f:param name="pagina" value="/pages/pagina2.xhtml"></f:param>
+					</p:menuitem>
+				</p:submenu-->
+				<p:separator />
+				<p:submenu label="Dotacion de Personal"
+					rendered="#{sB.esAutorizado['MDL_CAT_PST'] or sB.esAutorizado['MDL_CLV']}">	
+					
+					<p:submenu label="Clasificacion de Puestos">
+						<!-- p:menuitem value="Clasificador de Puestos"
+							action="/pages/parametricas/dpClasificadorPuesto?faces-redirect=true"
+							process="@this" actionListener="#{menuController.eventoMenu}"
+							rendered="#{sB.esAutorizado['MDL_CLASF_PUEST']}">
+							<f:param name="pagina" value="/pages/parametricas/dpClasificadorPuesto.xhtml"></f:param>
+						</p:menuitem -->
+						<p:menuitem value="Clasificador de Puestos"
+							action="/pages/dotacion/clasificador/dpClasificadorPuesto?faces-redirect=true"
+							process="@this" actionListener="#{menuController.eventoMenu}">
+							<f:param name="pagina" value="/pages/parametricas/dpClasificadorPuesto.xhtml"></f:param>
+						</p:menuitem>
+					</p:submenu>
+					<p:submenu label="Remuneracion de Puestos">
+						<p:menuitem value="Escala salarial"
+							action="/pages/parametricas/escalaSalarial?faces-redirect=true"
+							process="@this" actionListener="#{menuController.eventoMenu}"
+							rendered="#{sB.esAutorizado['MDL_ESC_SAL']}">
+							<f:param name="pagina" value="/pages/parametricas/escalaSalarial.xhtml"></f:param>
+						</p:menuitem>
+						
+						<!-- 
+						<p:menuitem value="Componente"
+							action="/pages/dotacion/comun/dpPuestoComponente?faces-redirect=true"
+							process="@this" actionListener="#{menuController.eventoMenu}"
+							rendered="#{sB.esAutorizado['MDL_ESC_SAL']}">
+							<f:param name="pagina" value="/pages/parametricas/dpPuestoComponente.xhtml"></f:param>
+						</p:menuitem>
+						
+						<p:menuitem value="Requisitos(SubComponente)"
+							action="/pages/dotacion/manualPuestos/requisitosPuestoPrueba?faces-redirect=true"
+							process="@this" actionListener="#{menuController.eventoMenu}"
+							rendered="#{sB.esAutorizado['MDL_ESC_SAL']}">
+							<f:param name="pagina" value="/pages/dotacion/manualPuestos/requisitosPuestoPrueba.xhtml"></f:param>
+						</p:menuitem>
+						-->
+					</p:submenu>
+					<p:submenu label="Administracion de Puestos">
+						<p:menuitem value="Puestos"
+							action="/pages/dotacion/puestos/admPuestos?faces-redirect=true"
+							process="@this" actionListener="#{menuController.eventoMenu}"
+							rendered="#{sB.esAutorizado['MDL_ADM_PUESTOS']}">
+							<f:param name="pagina" value="/pages/dotacion/puestos/admPuestos.xhtml"></f:param>
+						</p:menuitem>
+						<p:menuitem value="Manual de Puestos" action="/pages/dotacion/manualPuestos/dpManualPuestoList?faces-redirect=true"
+							process="@this" actionListener="#{menuController.eventoMenu}"
+							rendered="#{sB.esAutorizado['MDL_ESC_SAL']}">
+							<f:param name="pagina" value="/pages/dotacion/manualPuestos/dpManualPuestoList.xhtml"></f:param>
+						</p:menuitem>
+					</p:submenu>
+					<p:submenu label="Valoracion de Puestos">
+						<p:menuitem value="Factores de Valoracion"
+							action="/pages/dotacion/valoracion/formularioValoracion?faces-redirect=true"
+							process="@this" actionListener="#{menuController.eventoMenu}">
+							<f:param name="pagina" value="/pages/dotacion/valoracion/formularioValoracion.xhtml"></f:param>
+						</p:menuitem>
+						<p:menuitem value="Valoracion de Puestos"
+								action="/pages/dotacion/valoracion/admValoracionPuestos?faces-redirect=true"
+								process="@this" actionListener="#{menuController.eventoMenu}"
+								rendered="#{sB.esAutorizado['MDL_ADM_PUESTOS']}">
+							<f:param name="pagina" value="/pages/dotacion/valoracion/admValoracionPuestos.xhtml"></f:param>
+						</p:menuitem>
+					</p:submenu>
+					
+								
+					<!-- p:menuitem value="Categoria - Puestos"
+						action="/pages/parametricas/categoriaPuesto?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}"
+						rendered="#{sB.esAutorizado['MDL_CAT_PST']}">
+						<f:param name="pagina" value="/pages/parametricas/categoriaPuesto.xhtml"></f:param>
+						<f:param name="pagina" value="/pages/parametricas/categoriaPuesto.xhtml"></f:param>
+					</p:menuitem -->
+					
+				</p:submenu>
+				
+				<p:submenu label="Parametricas Sistema"
+					rendered="#{sB.esAutorizado['MDL_ESC_SAL'] or sB.esAutorizado['MDL_MDLS'] or sB.esAutorizado['MDL_TRANSC'] or sB.esAutorizado['MDL_CLASF_PUEST']}">
+					
+					<p:menuitem value="Perfil de Puesto"
+						action="/pages/parametricas/dpPerfilPuesto?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}">
+						<f:param name="pagina" value="/pages/parametricas/dpPerfilPuesto.xhtml"></f:param>
+					</p:menuitem>
+					<p:menuitem value="Normas"
+						action="/pages/parametricas/rhNorma?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}">
+						<f:param name="pagina" value="/pages/parametricas/rhNorma.xhtml"></f:param>
+					</p:menuitem>
+					<p:menuitem value="Carreras"
+						action="/pages/parametricas/rhCarrera?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}">
+						<f:param name="pagina" value="/pages/parametricas/rhCarrera.xhtml"></f:param>
+					</p:menuitem>
+					<p:menuitem value="Instituciones"
+						action="/pages/parametricas/rhInstitucion?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}">
+						<f:param name="pagina" value="/pages/parametricas/rhInstitucion.xhtml"></f:param>
+					</p:menuitem>
+					<p:menuitem value="Temas de Conocimiento"
+						action="/pages/parametricas/rhTemaConocimiento?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}">
+						<f:param name="pagina" value="/pages/parametricas/rhTemaConocimiento.xhtml"></f:param>
+					</p:menuitem>
+				</p:submenu>
+				<p:submenu label="Administracion Sistema">
+					<p:menuitem value="Claves"
+						action="/pages/parametricas/rhClave?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}"
+						rendered="#{sB.esAutorizado['MDL_CLV']}">
+						<f:param name="pagina" value="/pages/parametricas/rhClave.xhtml"></f:param>
+					</p:menuitem>
+					
+					<!--p:menuitem value="Modulos"
+						action="/pages/parametricas/rhModulo?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}"
+						rendered="#{sB.esAutorizado['MDL_MDLS']}">						
+						<f:param name="pagina" value="/pages/parametricas/rhModulo.xhtml"></f:param>
+					</p:menuitem-->
+					<!-- p:menuitem value="Transacciones"
+						action="/pages/parametricas/rhTransaccion?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}">
+						<f:param name="pagina" value="/pages/parametricas/rhTransaccion.xhtml"></f:param>
+					</p:menuitem -->
+					
+					<!-- p:menuitem value="Mensajes de Sistema"
+						action="/pages/parametricas/admMsgSistema?faces-redirect=true"
+						process="@this" actionListener="#{menuController.eventoMenu}"
+						rendered="#{sB.esAutorizado['MDL_MSGS-SIST']}">
+						<f:param name="pagina" value="/pages/parametricas/admMsgSistema.xhtml"></f:param>
+					</p:menuitem -->
+
+				</p:submenu>
+				<p:separator />				
+				<!-- p:submenu label="Pruebas"
+					rendered="#{sB.esAutorizado['MDL_TEST'] or sB.esAutorizado['MDL_MNU1'] or sB.esAutorizado['MDL_ACERC']}">
+					<p:menuitem value="test Estructura Organica" process="@this" action="/pages/testEstructuraOrganica?faces-redirect=true"
+						actionListener="#{menuController.eventoMenu}"
+						rendered="#{sB.esAutorizado['MDL_TEST']}">
+						<f:param name="pagina" value="/pages/testEstructuraOrganica.xhtml"></f:param>
+					</p:menuitem>
+					<p:menuitem value="Menu 1" process="@this" action="/pages/pagina1?faces-redirect=true"
+						actionListener="#{menuController.eventoMenu}"
+						rendered="#{sB.esAutorizado['MDL_MNU1']}">
+						<f:param name="pagina" value="/pages/pagina1.xhtml"></f:param>
+					</p:menuitem>
+					<p:menuitem value="Acerca de..." process="@this" onclick="dlgAbout.show();"
+						rendered="#{sB.esAutorizado['MDL_ACERC']}">
+					</p:menuitem>
+				</p:submenu -->
+			</p:panelMenu>
+
+		</h:form>
+		<p:dialog id="about" header="Acerca" widgetVar="dlgAbout" modal="true" height="100" resizable="false" >  
+			<h:panelGrid>
+				<h:outputText value="Acerca del Sistema de Informacion Integrado de Recursos Humanos" />
+				<h:outputText value="El sistema de recursos humanos YA fue ..." />
+				<br />
+				<br />
+				<br />
+				<a href="#" onclick="dlgAbout.hide();">
+					cerrar </a>
+			</h:panelGrid>
+		</p:dialog> 
+	</f:view>
+
+</ui:composition>

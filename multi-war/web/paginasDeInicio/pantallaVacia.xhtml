@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<br /> <br /> <br /> <br /><br />
+	
+	
+		<h:outputText
+			value="Bienvenid@ al Sistema iSim :)"
+			style="font-size:15px;font-weight:bold;" styleClass="title-header"/>
+		<br/><br/><br/><br/>
+		<h:outputLabel value="Hora del Servidor" /><br/><br/>
+    	<p:clock pattern="HH:mm:ss dd.MM.yyyy" mode="server" />
+
+</ui:composition>

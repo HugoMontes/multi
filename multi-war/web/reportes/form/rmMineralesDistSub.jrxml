@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oficinasSub" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="edb3547a-0303-477f-9446-6292fbbf15c1">
+	<property name="ireport.zoom" value="4.287177620000042"/>
+	<property name="ireport.x" value="934"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idRegalia" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select mun.nombre,liq.min_distribucion_municipio
+from liquidacion liq
+inner join municipio mun on mun.id = liq.min_id_municipio
+where liq.estado = 'HAB'
+and liq.id_regalia = $P{idRegalia}]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="min_distribucion_municipio" class="java.math.BigDecimal"/>
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{min_distribucion_municipio}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="2" width="275" height="11" uuid="da8d7f7b-368f-4b8b-b4f5-e148ce321210"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gobierno Autónomo Municipal de Origen del Mineral]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="13" width="497" height="1" uuid="68ebd910-99ff-4240-9414-b107ab542583"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="1" width="497" height="1" uuid="b98abcd6-44eb-47c2-b405-6f0d5cccfb3e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="405" y="2" width="81" height="11" uuid="638dba9a-fca7-46f7-ac21-8c657987aca5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Regalia Minera (Bs)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="21" y="0" width="248" height="12" uuid="3bc8fa92-1bf7-4c8a-a71e-afc556a62289"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00">
+				<reportElement x="335" y="0" width="138" height="12" uuid="a4f98a9b-7325-48fa-9762-f7be7e9e3d76"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{min_distribucion_municipio}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="12" width="476" height="1" uuid="4759c50e-71e7-4768-b946-8b5ddcf0ed70"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="13">
+			<staticText>
+				<reportElement x="297" y="2" width="44" height="11" uuid="11a13753-a527-41e7-a578-551052346daa"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField pattern="###,###,##0.00">
+				<reportElement x="341" y="2" width="132" height="11" uuid="467b858a-5888-41f9-93d9-55925456486c"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="355" y="1" width="118" height="1" uuid="20c01e66-8cb3-473b-8b83-d540bb80f0a9"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>

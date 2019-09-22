@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml">
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+		<!-- 
+		<p:panel style="text-align:center;" styleClass="ui-widget-header">
+			<p:outputLabel value="ADMINISTRACION DE USUARIOS"
+				style="font-size:12px;font-weight:bold;" />
+		</p:panel>
+		-->
+		<p:outputLabel value="Master"
+			style="font-size:15px;font-weight:bold; color:#0B0B3B;" />
+
+		<!-- <p:tabView id="tabView">
+			<p:tab title="Personal">
+ -->
+		<h:form id="frmMaster">
+			<p:menubar id="mnuMaster">
+				<p:menuitem id="actualizarButton" label="Actualizar"
+					value="Actualizar" icon="ui-refresh" process="@this"
+					actionListener="#{parametrosBean.listarMaster}"
+					oncomplete="PF('tblMasterVar').unselectAllRows(); PF('tblMasterVar').clearFilters(); PF('tblParameterVar').unselectAllRows();" 
+					update=":frmMaster:tblMaster
+							:frmMaster:mnuMaster
+							:frmParameter:mnuParameter
+							:frmParameter:tblParameter"/>
+
+				<p:menuitem id="registrarButton" value="Registrar" process="@this"
+					icon="ui-add" actionListener="#{parametrosBean.registrarMaster}"
+					update=":dlgRegistroMaster,
+							:frmRegistroMaster"
+					oncomplete="PF('dlgMasterVar').show();" />
+
+				<p:menuitem id="modificarButton" value="Modificar"
+					icon="ui-edit" actionListener="#{parametrosBean.modificarMaster}"
+					process="@this" oncomplete="PF('dlgMasterVar').show();"
+					update=":dlgRegistroMaster" disabled="#{parametrosBean.blnHabModificarMaster}"/>
+
+				<p:menuitem id="eliminarButton" label="Eliminar" value="Eliminar"
+					icon="ui-remove" process="@this" update=":dglConfirmacion"
+					oncomplete="PF('dglConfirmacionVar').show();" disabled="#{parametrosBean.blnHabModificarMaster}"/>
+
+			</p:menubar>
+
+			<p:dataTable id="tblMaster" var="master" widgetVar="tblMasterVar"
+				value="#{parametrosBean.listaMasterTable}"
+				selection="#{parametrosBean.masterTable}" rowKey="#{master.id}"
+				filteredValue="#{parametrosBean.filtroListaMasterTable}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15,20" rowIndexVar="rowIndex"
+				emptyMessage="No existen registros.">
+
+				<p:ajax event="rowSelect" process="@this" 
+					update=":frmMaster:mnuMaster
+							:frmParameter:tblParameter
+							:frmParameter:mnuParameter"
+					listener="#{parametrosBean.onRowSelect}" oncomplete="PF('tblParameterVar').unselectAllRows();"/>
+
+				<p:column headerText="Nro." style="width:2%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+		        	
+		        <p:column headerText="Nombre"
+					filterBy="#{master.nombre}"
+					filterMatchMode="contains" sortBy="#{master.nombre}"
+					style="white-space:normal;" width="40%">
+					<h:outputText value="#{master.nombre}" />
+				</p:column>
+				
+				<p:column headerText="Descripción"
+					sortBy="#{master.descripcion}"
+					style="white-space:normal;" width="59%">
+					<h:outputText
+						value="#{master.descripcion}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog id="dlgRegistroMaster" widgetVar="dlgMasterVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" modal="true"
+			closable="false" resizable="false" width="550"
+			header="#{parametrosBean.strTitulo}">
+			<h:form id="frmRegistroMaster">
+				<p:panel id="pnlRegistroMaster">
+					<h:panelGrid id="pgrRegistroMaster" columns="2">
+
+						<h:outputText value="Nombre:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:inputText  id="txtNombre" size="50" required="true"
+							requiredMessage="El campo Nombre es requerido"
+							value="#{parametrosBean.masterTable.nombre}">
+						</p:inputText>
+						
+						<h:outputText value="Descripción:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:inputText  id="txtDescripcion" size="50" required="true"
+							requiredMessage="El campo Descripción es requerido"
+							value="#{parametrosBean.masterTable.descripcion}">
+						</p:inputText>
+						
+					</h:panelGrid>
+					
+					<p:toolbar>
+						<f:facet name="left">
+								<p:commandButton value="Guardar" icon="ui-save"
+									actionListener="#{parametrosBean.guardarMaster}" process="@form"
+									update=":frmRegistroMaster,
+											:frmMaster:mnuMaster,
+											:messages"
+									oncomplete="enviarFormMaster(xhr, status, args); " />
+								<p:separator />
+								<p:commandButton process="@this" value="Cancelar"
+									icon="ui-remove"
+									update=":frmRegistroMaster,
+											:frmMaster:mnuMaster"
+									oncomplete="PF('dlgMasterVar').hide(); PF('tblMasterVar').unselectAllRows();"
+									actionListener="#{parametrosBean.listarMaster}">
+									<p:resetInput target="frmRegistroMaster" />
+								</p:commandButton>
+							</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<p:confirmDialog id="dglConfirmacion" header="Eliminar"
+			severity="alert" width="350" widgetVar="dglConfirmacionVar"
+			closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Nombre master: #{parametrosBean.masterTable.nombre}.
+		  			</f:facet>
+			<p:toolbar
+				style="margin:0;border-spacing:0;border-collapse:collapse;padding:0;">
+				<p:toolbarGroup style="width:100%; text-align:center; height:30px;">
+					<p:commandButton value="Si"
+						update=":messages,
+								:frmMaster:mnuMaster" process="@this"
+						actionListener="#{parametrosBean.eliminarMaster}"
+						oncomplete="PF('dglConfirmacionVar').hide(); PF('tblMasterVar').unselectAllRows(); PF('tblMasterVar').clearFilters(); " />
+
+					<p:commandButton value="No" process="@none"
+						onclick="PF('dglConfirmacionVar').hide()" type="button" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</p:confirmDialog>
+		
+		<!-- ::::::::::::::::::::::::::::::::: SEGUNDA PARTE ::::::::::::::::::::::::::::::::::::: -->
+		
+		<p:outputLabel value="Parámetros"
+			style="font-size:15px;font-weight:bold; color:#0B0B3B;" />
+			
+		<h:form id="frmParameter">
+			<p:menubar id="mnuParameter">
+				<p:menuitem id="actualizarButtonParam" label="Actualizar"
+					value="Actualizar" icon="ui-refresh" process="@this"
+					actionListener="#{parametrosBean.listarParameters}"
+					oncomplete="PF('tblParameterVar').unselectAllRows();" 
+					update=":frmParameter:tblParameter
+							:frmParameter:mnuParameter"/>
+
+				<p:menuitem id="registrarButtonParam" value="Registrar" process="@this"
+					icon="ui-add" actionListener="#{parametrosBean.registrarParameter}"
+					update=":dlgRegistroParameter,
+							:frmRegistroParameter"
+					oncomplete="PF('dlgParameterVar').show(); PF('tblParameterVar').unselectAllRows();"
+					disabled="#{parametrosBean.blnHabRegistrarParameter}" />
+
+				<p:menuitem id="modificarButtonParam" value="Modificar"
+					icon="ui-edit" actionListener="#{parametrosBean.modificarParameter}"
+					process="@this" oncomplete="PF('dlgParameterVar').show();"
+					update=":dlgRegistroParameter" disabled="#{parametrosBean.blnHabModificarParameter}"/>
+
+				<p:menuitem id="eliminarButtonParam" label="Eliminar" value="Eliminar"
+					icon="ui-remove" process="@this" update=":dglConfirmacionParam"
+					oncomplete="PF('dglConfirmacionVarParam').show();" disabled="#{parametrosBean.blnHabModificarParameter}"/>
+
+			</p:menubar>
+
+			<p:dataTable id="tblParameter" var="parameter" widgetVar="tblParameterVar"
+				value="#{parametrosBean.listaParameterTable}"
+				selection="#{parametrosBean.parameterTable}" rowKey="#{parameter.id}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15,20" rowIndexVar="rowIndex"
+				emptyMessage="No existen registros.">
+
+				<p:ajax event="rowSelect" process="@this" update=":frmParameter:mnuParameter"
+					listener="#{parametrosBean.onRowSelectParameter}" />
+
+				<p:column headerText="Nro." style="width:2%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+		        	
+		        <p:column headerText="Nombre"
+					sortBy="#{parameter.nombre}"
+					style="white-space:normal;" width="20%">
+					<h:outputText value="#{parameter.nombre}" />
+				</p:column>
+				
+				<p:column headerText="Descripción"
+					sortBy="#{parameter.descripcion}"
+					style="white-space:normal;" width="20%">
+					<h:outputText
+						value="#{parameter.descripcion}" />
+				</p:column>
+				
+				<p:column headerText="Texto 1"
+					sortBy="#{parameter.texto1}"
+					style="white-space:normal;" width="10%">
+					<h:outputText
+						value="#{parameter.texto1}" />
+				</p:column>
+				
+				<p:column headerText="Texto 2"
+					sortBy="#{parameter.texto2}"
+					style="white-space:normal;" width="10%">
+					<h:outputText
+						value="#{parameter.texto2}" />
+				</p:column>
+				
+				<p:column headerText="F.Inicio"
+					sortBy="#{parameter.fechaInicio}"
+					style="white-space:normal;" width="10%">
+					<h:outputText
+						value="#{parameter.fechaInicio}" />
+				</p:column>
+				
+				<p:column headerText="F.Fin"
+					sortBy="#{parameter.fechaFin}"
+					style="white-space:normal;" width="10%">
+					<h:outputText
+						value="#{parameter.fechaFin}" />
+				</p:column>
+				
+				<p:column headerText="Numero 1"
+					sortBy="#{parameter.numero1}"
+					style="white-space:normal;" width="10%">
+					<h:outputText
+						value="#{parameter.numero1}" />
+				</p:column>
+				
+				<p:column headerText="Numero 2"
+					sortBy="#{parameter.numero2}"
+					style="white-space:normal;" width="10%">
+					<h:outputText
+						value="#{parameter.numero2}" />
+				</p:column>
+				
+				<p:column headerText="requerido"
+					sortBy="#{parameter.requerido}"
+					style="white-space:normal;" width="10%">
+					<h:outputText
+						value="#{parameter.requerido}" />
+				</p:column>
+				
+				<p:column headerText="orden"
+					sortBy="#{parameter.orden}"
+					style="white-space:normal;" width="10%">
+					<h:outputText
+						value="#{parameter.orden}" />
+				</p:column>
+				
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog id="dlgRegistroParameter" widgetVar="dlgParameterVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" modal="true"
+			closable="false" resizable="false" width="400"
+			header="#{parametrosBean.strTitulo}">
+			<h:form id="frmRegistroParameter">
+				<p:panel id="pnlRegistroParameter">
+					<h:panelGrid id="pgrRegistroParameter" columns="2">
+
+						<h:outputText value="Nombre:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:inputText  id="txtNombre" size="40" required="true"
+							requiredMessage="El campo Nombre es requerido"
+							value="#{parametrosBean.parameterTable.nombre}">
+						</p:inputText>
+						
+						<h:outputText value="Descripción:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:inputText  id="txtDescripcion" size="40" required="true"
+							requiredMessage="El campo Descripción es requerido"
+							value="#{parametrosBean.parameterTable.descripcion}">
+						</p:inputText>
+						
+						<h:outputText value="Texto 1:" style='white-space:nowrap;' />
+						<p:inputText  id="txtTexto1" size="40" 
+							value="#{parametrosBean.parameterTable.texto1}">
+						</p:inputText>
+						
+						<h:outputText value="Texto 2:" style='white-space:nowrap;' />
+						<p:inputText  id="txtTexto2" size="40" 
+							value="#{parametrosBean.parameterTable.texto2}">
+						</p:inputText>
+						
+						<h:outputText value="Fecha Inicio:" style='white-space:nowrap;' />
+						<p:calendar id="txtFechaInicio" showOn="button"
+							value="#{parametrosBean.parameterTable.fechaInicio}"
+							pattern="dd/MM/yyyy" showButtonPanel="false" navigator="true"
+							locale="es">
+						</p:calendar>
+						
+						<h:outputText value="Fecha Fin:" style='white-space:nowrap;' />
+						<p:calendar id="txtFechaFin" showOn="button"
+							value="#{parametrosBean.parameterTable.fechaFin}"
+							pattern="dd/MM/yyyy" showButtonPanel="false" navigator="true"
+							locale="es">
+						</p:calendar>
+						
+						<h:outputText value="Numero 1:" style='white-space:nowrap;' />
+						<p:inputText  id="txtNumero1" size="40" 
+							value="#{parametrosBean.parameterTable.numero1}">
+						</p:inputText>
+						
+						<h:outputText value="Numero 2:" style='white-space:nowrap;' />
+						<p:inputText  id="txtNumero2" size="40" 
+							value="#{parametrosBean.parameterTable.numero2}">
+						</p:inputText>
+						
+						<h:outputText value="Requerido:" style='white-space:nowrap;' />
+						<p:inputText  id="txtRequerido" size="40" 
+							value="#{parametrosBean.parameterTable.requerido}">
+						</p:inputText>
+						
+						<h:outputText value="Orden:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:inputText  id="txtOrden" size="40"  required="true"
+							value="#{parametrosBean.parameterTable.orden}">
+						</p:inputText>
+						
+					</h:panelGrid>
+					
+					<p:toolbar>
+						<f:facet name="left">
+								<p:commandButton value="Guardar" icon="ui-save"
+									actionListener="#{parametrosBean.guardarParameter}" process="@form"
+									update=":frmRegistroParameter,
+											:frmParameter:mnuParameter,
+											:frmParameter:tblParameter,
+											:messages"
+									oncomplete="enviarFormParameter(xhr, status, args); " />
+								<p:separator />
+								<p:commandButton process="@this" value="Cancelar"
+									icon="ui-remove"
+									update=":frmRegistroParameter,
+											:frmParameter:mnuParameter"
+									oncomplete="PF('dlgParameterVar').hide(); PF('tblParameterVar').unselectAllRows();"
+									actionListener="#{parametrosBean.listarParameters}">
+									<p:resetInput target="frmRegistroParameter" />
+								</p:commandButton>
+							</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<p:confirmDialog id="dglConfirmacionParam" header="Eliminar"
+			severity="alert" width="350" widgetVar="dglConfirmacionVarParam"
+			closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Nombre master: #{parametrosBean.parameterTable.nombre}.
+		  			</f:facet>
+			<p:toolbar
+				style="margin:0;border-spacing:0;border-collapse:collapse;padding:0;">
+				<p:toolbarGroup style="width:100%; text-align:center; height:30px;">
+					<p:commandButton value="Si"
+						update=":messages,
+								:frmParameter:mnuParameter
+								:frmParameter:tblParameter" process="@this"
+						actionListener="#{parametrosBean.eliminarParameter}"
+						oncomplete="PF('dglConfirmacionVarParam').hide(); PF('tblParameterVar').unselectAllRows(); " />
+
+					<p:commandButton value="No" process="@none"
+						onclick="PF('dglConfirmacionVarParam').hide()" type="button" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</p:confirmDialog>
+		
+		<script type="text/javascript">
+			function enviarFormMaster(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  PF('tblMasterVar').unselectAllRows(); PF('tblMasterVar').clearFilters();  
+					  PF('dlgMasterVar').hide();
+				  } else {  
+				    	PF('dlgMasterVar').jq.effect("shake", {times:2}, 50);
+				  }
+
+				}
+
+			function enviarFormParameter(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  PF('tblParameterVar').unselectAllRows();  
+					  PF('dlgParameterVar').hide();
+				  } else {  
+				    	PF('dlgParameterVar').jq.effect("shake", {times:2}, 50);
+				  }  
+				}
+			
+			function enviarRolesPorUsuario(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  
+				  }   
+				}
+			
+	</script>
+
+
+	</ui:define>
+</ui:composition>

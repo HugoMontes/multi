@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+		
+		<h:outputText value="Licencia del sistema iBar" styleClass="title-page" />
+
+		<h:form id="frmLicencia">
+
+			<p:accordionPanel>
+				<p:tab title="Licencia para: #{keyBean.systemOwnModule}">
+					
+					<p:graphicImage library="img" name="logo/key.jpg"  id="idImgLicencia" alt="LOGO"  width="150px" height="130px"/>
+					<br />
+					<br />
+					<br />
+					<h:outputText value="TIPO DE LICENCIA:  " styleClass="required-field" />
+					<h:outputText value="#{keyBean.mapTipoLicencia.get(keyBean.genKey.tipoLicenciaMostrar)}" />
+					<br />
+					<h:outputText value="DESDE: " styleClass="required-field"/>
+					<h:outputText value="#{keyBean.formatoFecha(keyBean.genKey.desdeMostrar)}"/>
+					<br />
+					<h:outputText value="HASTA: " styleClass="required-field"/>
+					<h:outputText value="#{keyBean.formatoFecha(keyBean.genKey.hastaMostrar)}"/>
+					<br />
+					<h:outputText value="Serial: " styleClass="required-field texto-azul"/>
+					<br />
+					<h:outputText value="#{keyBean.genKey.serial}"/>
+					<br />
+					
+					 <p:commandLink id="cambiarLicencia" 
+					 	rendered="#{menuController.tieneRole('ROLE_GERENCIA')}"
+					 	value="Cambiar Licencia" process="@this"
+					 	update=":dlgRegistroLicen,
+								:frmRegistroLicen"
+					 	actionListener="#{keyBean.registrarLicencia}"
+						oncomplete="PF('dlgLicenVar').show(); " >
+				        <!-- <h:outputText value="Ajax Submit" /> -->
+				    </p:commandLink>
+					
+					<br />
+					<h:outputText value="Esperamos que pueda disfrutar de nuestro software, para cualquier consulta estamos a su disposición" />
+					<a href="http://www.codebolivia.com" target="_blank">www.codebolivia.com</a>
+				    
+				</p:tab>
+			</p:accordionPanel>
+		</h:form>
+		
+		<p:dialog id="dlgRegistroLicen" widgetVar="dlgLicenVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" 
+			closable="false" resizable="false" width="550" modal="true" 
+			header="#{keyBean.strTitulo}">
+			<h:form id="frmRegistroLicen">
+				<p:panel id="pnlRegistroLicen">
+					<h:panelGrid id="pgrRegistroLicen" columns="2">
+
+						<h:outputLabel for="idTipoLicencia" value="Tipo Licencia" style="font-weight:bold" />
+						<p:selectOneRadio id="idTipoLicencia" columns="1" required="true" label="Tipo Salida"
+							value="#{keyBean.genKey.tipoLicenciaMostrar}">
+							<f:selectItem itemLabel="Compra Definitiva" itemValue="66" />
+							<f:selectItem itemLabel="Alquiler" itemValue="67"/>
+						</p:selectOneRadio>
+			            
+						<h:outputLabel for="idDesde" value="Desde:" style="font-weight:bold"/>                    
+			            <p:calendar id="idDesde" required="true" showOn="button" 
+							value="#{keyBean.genKey.desdeMostrar}" label="Desde"
+							pattern="dd/MM/yyyy" showButtonPanel="false"
+							locale="es" mindate="#{keyBean.fechaActual}">
+						</p:calendar>
+						
+						<h:outputLabel for="idHasta" value="Hasta:" style="font-weight:bold"/>                    
+			            <p:calendar id="idHasta" showOn="button" required="true"
+							value="#{keyBean.genKey.hastaMostrar}" label="Hasta"
+							pattern="dd/MM/yyyy" showButtonPanel="false"
+							locale="es" mindate="#{keyBean.fechaActual}">
+						</p:calendar>
+			            
+			            <h:outputLabel for="idSerial" value="Serial:"/>                    
+			            <p:inputTextarea id="idSerial" value="#{keyBean.genKey.serial}" label="Descripción"
+			            rows="3" cols="45" required="true">
+			            </p:inputTextarea>
+						
+					</h:panelGrid>
+
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-icon-disk" id="cmdGuardar"
+								actionListener="#{keyBean.guardarLicencia}" process="frmRegistroLicen"
+								update="@form frmLicencia :messages"
+								oncomplete="enviarFormLicencia(xhr, status, args);" />
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar" id="cmdCancelar"
+								icon="ui-icon-close"
+								update="frmLicencia"
+								onclick="PF('dlgLicenVar').hide();"
+								actionListener="#{keyBean.recuperarDatos}">
+								<p:resetInput target="frmRegistroLicen" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<script type="text/javascript">
+			function enviarFormLicencia(xhr, status, args) {
+		        if( undefined == args.validationFailed &amp;&amp; args.sinErrores) {
+					  PF('dlgLicenVar').hide();
+				  } else {  
+				    	PF('dlgLicenVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+		</script>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<meta http-equiv="Pragma" content="no-store"/>
+	<meta http-equiv="Cache-Control" content="no-store,No-cache,post-check=0,pre-check=0,max-age=0" />
+	<meta http-equiv="Expires" content="-1"/>
+		
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<!-- <h:outputStylesheet name="css/default.css" />
+	<h:outputStylesheet name="css/tableLayout.css" /> -->
+ 
+	<h:outputStylesheet library="css" name="base.css" />
+	<h:outputStylesheet library="css" name="layout.css"/>
+	<h:outputStylesheet library="css" name="application.css"/>
+	<h:outputStylesheet library="css" name="local.css"/>
+	<h:outputScript name="js/funciones.js" />
+	<h:outputScript library="js" name="functions.js" />
+	
+	<ui:insert name="header" />
+	<style type="text/css"> 
+		
+		input[type="text"] {
+			text-transform: uppercase;
+		}
+		
+		.ui-menu-horizontal-application{
+		     position: absolute !important;
+			  right: 5px !important;
+			  top: 0px !important;
+			  z-index: 10!important;
+		}
+		
+		#footer-layout{
+			border: none !important;
+			/*background: transparent !important;*/	
+			z-index: 10 !important;
+			overflow: visible !important;
+		}
+		
+		.ui-menubar-height{
+		height: 25px !important;
+		}
+	</style>
+	
+</h:head>
+
+<h:body>
+	<script type="text/javascript">  
+
+	function permitirTeclas(elEvento, op_permitidos) {
+		// Variables que definen los caracteres permitidos
+		var permitidos = "";
+		//var numeros = "0123456789";
+		//var caracteres2 = " abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚüÜ";
+		var teclas_especiales = [8, 37, 39, 46, 35, 36, 38, 40, 13, 9, 17];
+		// flecha izquierda(37), flecha arriba(38), flecha derecha(39), flecha abajo(40)
+		// Fin(35), Inicio(36), BackSpace(8), Tabulador (9), enter(13), Supr(46)
+
+/* 		if (op_permitidos == 'CODIGODERELLENO') {
+		      ;
+		<ui:repeat var="valor" value="#{teclasValidacionBean.listaClavesTeclas}">
+		} else if (op_permitidos == '#{valor}') {
+			permitidos = '#{teclasValidacionBean.mapCveTeclas[valor]}';
+		</ui:repeat>
+		} else {
+			  return true;
+		  } */
+
+		// Obtener la tecla pulsada 
+		var evento = elEvento || window.event;
+		var codigoCaracter = evento.charCode || evento.keyCode;
+		var caracter = String.fromCharCode(evento.charCode);
+		 
+		// Comprobar si la tecla pulsada es alguna de las teclas especiales
+		if ( evento.charCode == 0 ) {
+			for(var i in teclas_especiales) {
+			  if(evento.keyCode == teclas_especiales[i]) {
+				return true;
+			  }
+			}
+			return false;
+		}
+		 
+		// Comprobar si la tecla pulsada se encuentra en los caracteres permitidos
+		if (permitidos.indexOf(caracter) >= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function start() {
+	    PF('statusDialog').show();
+	}
+	 
+	function stop() {
+	    PF('statusDialog').hide();
+	}
+	    
+		
+	</script>
+	
+	<style>
+		 .ui-menu .ui-menu-parent .ui-menu-child {
+		 	width: 14em !important;
+		 }
+	</style>
+	
+	<pe:layout maskPanesEarly="true">
+		<pe:layoutPane position="north" closable="false" size="79" minHeight="79" resizable="false" id="footer-layout" spacingOpen="0">
+			<!-- <ui:include src="/template/includes/topbar.xhtml" /> --> 	
+			<ui:include src="/pages/controller/topbar.xhtml" />
+		</pe:layoutPane>			
+		<pe:layoutPane position="center" closable="false" resizable="true"  id="main-layout">
+			
+			<div id="general-content">
+				<div id="main">
+					<div class="content">
+						<ui:insert name="content">Content</ui:insert>
+					</div>
+				</div>
+			</div>
+			<p:ajaxStatus onerror="PF('statusDlgError').show();"
+						onstart="PF('statusDialogX').show();" oncomplete="PF('statusDialogX').hide();" />
+
+					<p:dialog modal="true" widgetVar="statusDialogX" appendTo="@(body)"
+						header="Un momento por favor..." draggable="false"
+						closable="false" resizable="false">
+						<p:graphicImage value="/resources/img/ajaxloadingbar.gif" />
+					</p:dialog>
+
+					<p:dialog modal="true" widgetVar="statusDlgError" header="Desconectado" appendTo="@(body)"
+						draggable="false" closable="false" resizable="false">
+						<p:outputLabel
+							value="Ocurrieron errores al conectarse al servidor." />
+						<!--  
+						<p:commandButton value="Aceptar" icon="ui-icon-check"
+					  		onclick="PF('statusDlgError').hide();" >
+					    </p:commandButton>
+					    -->
+					</p:dialog>
+
+					<p:idleMonitor onidle="PF('sessionTimeOutDialog').show();" 
+						timeout="#{menuController.tiempoSession}"/>
+						
+					<p:dialog header="Sesión expirada" widgetVar="sessionTimeOutDialog" appendTo="@(body)"
+						modal="true" fixedCenter="true" closable="false" width="300" resizable="false"
+						visible="false">
+						<h:outputText value="La sesión ha caducado, presione el botón para volver a acceder al sistema. " />
+						<!-- <input id="confirmBackToLogin" type="button" value="Aceptar"
+							onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsf';" /> -->
+						<p:commandButton id="confirmBackToLogin" value="Aceptar" actionListener="#{menuController.cerrarSesion}"
+						onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsf';" />
+					</p:dialog>
+					
+					<p:dialog modal="true" widgetVar="statusDialog" appendTo="@(body)"
+						header="Un momento por favor..." draggable="false"
+						closable="false" resizable="false">
+						<p:graphicImage value="/resources/img/ajaxloadingbar.gif" />
+					</p:dialog>
+			
+		</pe:layoutPane>			
+		<pe:layoutPane position="south" closable="false" size="30" minHeight="30" resizable="false" styleContent="overflow-y:hidden" id="footer-bar" spacingOpen="0">
+			<ui:include src="/pages/controller/piePagina.xhtml" />
+		</pe:layoutPane>
+	</pe:layout>
+</h:body>
+
+</html>

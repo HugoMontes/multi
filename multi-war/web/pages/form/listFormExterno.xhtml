@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+
+		<h:outputText value="Administración de Formularios Externo" styleClass="title-page"/>
+
+		<h:form id="frmExterno">
+			<p:menubar id="mnuInterno">
+			
+				<p:menuitem id="actualizarButton" label="Actualizar"
+					value="Actualizar" icon="ui-refresh" process="@this"
+					actionListener="#{listExternoBean.listarTransporteExterno}"
+					update="frmExterno"
+					oncomplete="PF('tblExternoVar').unselectAllRows(); PF('tblExternoVar').clearFilters();"/> 
+
+				<p:menuitem id="registrarButton" value="Registrar" process="@this"
+					icon="ui-add"
+					rendered="#{!menuController.tieneRole('ROLE_ADMINISTRADOR')}"
+					update=""
+					actionListener="#{listExternoBean.registerExterno}"
+				/>
+				
+				<p:menuitem id="modificarButton" value="Modificar"
+					icon="ui-edit" actionListener="#{listExternoBean.modifyTransporte}"
+					disabled="#{listExternoBean.transporteExterno.id == null}"
+					rendered="#{listExternoBean.transporteExterno.indEstadoRegistro.intValue() == 129}"
+					process="@this">
+							
+				</p:menuitem>
+				
+				<p:menuitem id="emitirButton" value="Emitir Formulario" process="@this"
+					icon="ui-approve"
+					rendered="#{listExternoBean.transporteExterno.indEstadoRegistro.intValue() == 129 and listExternoBean.transporteExterno.id !=null}"
+					update="frmExterno
+							:messages"
+					actionListener="#{listExternoBean.guardarEmision}">
+					<p:confirm header="Confirmación" message="¿Esta seguro de EMITIR el Formulario seleccionado?" icon="ui-icon-alert" />
+				</p:menuitem>
+				
+				<p:menuitem id="devolverOperadorButton" value="Devolver a Operador" process="@this"
+					icon="ui-back"
+					rendered="#{listExternoBean.transporteExterno.id !=null and menuController.tieneRole('ROLE_ADMINISTRADOR')}"
+					update="frmExterno
+							:messages"
+					actionListener="#{listExternoBean.devolverHaciaOperador}"
+					oncomplete="PF('tblExternoVar').unselectAllRows(); PF('tblExternoVar').clearFilters();">
+					<p:confirm header="Confirmación" message="¿Esta seguro de DEVOLVER al OPERADOR el Formulario seleccionado?" icon="ui-icon-alert" />
+				</p:menuitem>
+				
+				<p:menuitem id="imprimirButton" icon="ui-textList"
+					value="Imprimir Formulario" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false"
+					rendered="#{listExternoBean.transporteExterno.indEstadoRegistro.intValue() == 130 and listExternoBean.transporteExterno.id !=null}">
+					<p:fileDownload value="#{listExternoBean.reporteFormEmision}" />
+				</p:menuitem>
+				 
+			</p:menubar>
+
+			<p:dataTable id="tblExterno" var="exte" widgetVar="tblExternoVar"
+				value="#{listExternoBean.listTransExterno}" selection="#{listExternoBean.transporteExterno}"
+				rowKey="#{exte.id}" filteredValue="#{listExternoBean.listTransExternoFilter}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{cons['dtb.rows.per.page.template']}" rowIndexVar="rowIndex"
+				emptyMessage="#{cons['dtb.empty.page.table']}">
+
+				<p:ajax event="rowSelect" process="@this" update="frmExterno" 
+					listener="#{listExternoBean.onRowSelect}" 
+				 />
+
+				<!--  
+				<p:column headerText="Nro." style="width:1%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+				-->
+				
+				<p:column headerText="NroReg" sortBy="#{exte.id}"
+					style="white-space:normal;" width="3%">
+					<h:outputText value="#{exte.id}" />
+				</p:column>
+				
+				<p:column headerText="Operador Minero" sortBy="#{exte.idCooperativa.razonSocial}"
+					filterBy="#{exte.idCooperativa.razonSocial}" filterMatchMode="contains"
+					style="white-space:normal;" width="15%">
+					<h:outputText value="#{exte.idCooperativa.razonSocial}" />
+				</p:column>
+				
+				<p:column headerText="Emision" sortBy="#{exte.fechaEmision}"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{exte.fechaEmision}" >
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="F.Exportación" sortBy="#{exte.fechaExportacion}"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{exte.fechaExportacion}" >
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				
+				<!--  
+				<p:column headerText="Solicitante" sortBy="#{exte.solRazonSocial}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{exte.solRazonSocial}" />
+				</p:column>
+				-->
+				
+				
+				<!--  
+				<p:column headerText="NIT" sortBy="#{exte.solNit}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{exte.solNit}" />
+				</p:column>
+				-->
+				
+				<p:column headerText="Presentación"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{listExternoBean.mapPresentacion.get(exte.carIndPresentacionProd)}" />
+				</p:column>
+				
+				<!--  
+				<p:column headerText="Lote" sortBy="#{exte.carLote}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{exte.carLote}" />
+				</p:column>
+				-->
+				
+				<p:column headerText="Exportación"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{listExternoBean.mapTipoExportacion.get(exte.carIndExportTotalParcial)}" />
+				</p:column>
+				
+				<!--  
+				<p:column headerText="P.Bruto Hum" sortBy="#{exte.carPesoBrutoHumedo}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{exte.carPesoBrutoHumedo}" />
+				</p:column>
+				
+				<p:column headerText="P.Neto Hum" sortBy="#{exte.carPesoNetoHumedo}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{exte.carPesoNetoHumedo}" />
+				</p:column>
+				-->
+				
+				<p:column headerText="Destino" sortBy="#{exte.destRazonSocialComprador}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{exte.destRazonSocialComprador}" />
+				</p:column>
+				
+				<p:column headerText="Conductor" sortBy="#{exte.condNombreConductor}"
+					filterBy="#{exte.condNombreConductor}" filterMatchMode="contains"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{exte.condNombreConductor}" />
+				</p:column>
+				
+				<p:column headerText="Placa" sortBy="#{exte.condPlacaControl}"
+					filterBy="#{exte.condPlacaControl}" filterMatchMode="contains" 
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{exte.condPlacaControl}" />
+				</p:column>
+				
+				<p:column headerText="Estado" sortBy="#{exte.indEstadoRegistro}"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{listExternoBean.mapEstadoRegistroForm.get(exte.indEstadoRegistro)}" />
+				</p:column>
+				
+			</p:dataTable>
+		</h:form>
+		
+		<!--    
+		<p:dialog id="dlgRegistroAmpliacion" widgetVar="dlgRegistroAmpliacionVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" 
+			closable="false" resizable="false" width="550" modal="true" 
+			header="#{listCooperativaBean.strTitulo}">
+			<h:form id="frmRegistroAmpliacion">
+				<p:panel id="pnlRegistroAmpliacion">
+					<h:panelGrid id="pgrRegistroAmpliacion" columns="2">
+
+						<h:outputLabel value="Fecha registro:" />                    
+			            <h:outputText value="#{listCooperativaBean.cooperativa.fechaRegistro}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+						
+						<h:outputLabel for="idfechaValidez" value="Fecha Validez:" style="font-weight:bold" />
+						<p:calendar id="idfechaValidez" required="true" showOn="button" mask="true"
+							value="#{listCooperativaBean.cooperativa.fechaExpiracion}" label="Fecha Validez"
+							pattern="dd/MM/yyyy" showButtonPanel="false"
+							locale="es" mindate="#{listCooperativaBean.fechaActual}">
+						</p:calendar>
+			            
+					</h:panelGrid>
+
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-icon-disk" id="cmdGuardar"
+								actionListener="#{listCooperativaBean.guardarValidez}" process="@form"
+								update="@form :messages"
+								oncomplete="enviarFormValidez(xhr, status, args);">
+								<p:confirm header="Confirmación" message="¿Esta seguro de Confirmar el REGISTRO...?" icon="ui-icon-alert" />
+							</p:commandButton>
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar" id="cmdCancelar"
+								icon="ui-icon-close"
+								onclick="PF('dlgRegistroAmpliacionVar').hide();">
+								<p:resetInput target="frmRegistroAmpliacion" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		-->
+		
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+	        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+	        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+
+		<script type="text/javascript">
+			function enviarFormValidez(xhr, status, args) {
+		        if( undefined == args.validationFailed &amp;&amp; args.sinErrores) {
+					  PF('dlgRegistroAmpliacionVar').hide();
+					  PF('tblCooperativaVar').unselectAllRows(); PF('tblCooperativaVar').clearFilters();
+				  } else {  
+				    	PF('dlgRegistroAmpliacionVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+			
+	</script>
+
+	</ui:define>
+</ui:composition>

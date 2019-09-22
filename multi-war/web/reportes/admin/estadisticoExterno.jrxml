@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="estadisticoExterno" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f699767-d48d-4dc4-a9fc-aa24a7b6700a">
+	<property name="ireport.zoom" value="1.0245201830476132"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="usuario" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\workspaceLuna\\multi\\web\\src\\main\\webapp\\reportes\\rrhh\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="query" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="desde" class="java.util.Date"/>
+	<parameter name="hasta" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[select
+(case when date_part('month',t.fecha_emision) = 1 then 'ENERO' else
+(case when date_part('month',t.fecha_emision) = 2 then 'FEBRERO' else
+(case when date_part('month',t.fecha_emision) = 3 then 'MARZO' else
+(case when date_part('month',t.fecha_emision) = 4 then 'ABRIL' else
+(case when date_part('month',t.fecha_emision) = 5 then  'MAYO' else
+(case when date_part('month',t.fecha_emision) = 6 then 'JUNIO' else
+(case when date_part('month',t.fecha_emision) = 7 then 'JULIO' else
+(case when date_part('month',t.fecha_emision) = 8 then 'AGOSTO' else
+(case when date_part('month',t.fecha_emision) = 9 then 'SEPTIEMBRE' else
+(case when date_part('month',t.fecha_emision) = 10 then 'OCTUBRE' else
+(case when date_part('month',t.fecha_emision) = 11 then 'NOVIEMBRE' else
+(case when date_part('month',t.fecha_emision) = 12 then 'DICIEMBRE' else '' end) end) end) end) end) end) end)end)end)end) end)  end)as mes,
+count(t.id) as cantidad
+from transporte_externo t
+where t.estado = 'HAB'
+and t.ind_estado_registro = 130
+and t.fecha_emision between $P{desde} and $P{hasta}
+group by date_part('month',t.fecha_emision)
+order by date_part('month',t.fecha_emision)]]>
+	</queryString>
+	<field name="mes" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Long"/>
+	<variable name="TOTAL_PAGINAS" class="java.lang.Integer" resetType="None" calculation="Sum">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<group name="actorProductivo">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<group name="grupo">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<group name="categoria">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="55" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="34" width="122" height="13" uuid="b3e93c30-9e1f-498e-941c-f945bb1a7bad"/>
+				<textElement textAlignment="Center">
+					<font size="5" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Secretaria Departamental de Minería Metalurgia e Hidrocarburos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="26" width="122" height="8" uuid="81266d99-6d0d-4c0f-848c-66377d031903"/>
+				<textElement textAlignment="Center">
+					<font size="5" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Gobierno Autónomo Departamental de La Paz]]></text>
+			</staticText>
+			<image>
+				<reportElement x="41" y="1" width="33" height="24" uuid="29922029-1a27-46c4-befe-daa6ca1467af"/>
+				<imageExpression><![CDATA[new File($P{IMAGE_DIR})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="718" y="22" width="8" height="8" uuid="57a6ae4d-fe78-4f86-acae-632c608ec715"/>
+				<textElement>
+					<font size="6" isBold="false"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="726" y="22" width="16" height="8" uuid="b3aa65fd-0ef2-41d3-8f71-39c4d43333cb"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="688" y="1" width="63" height="11" uuid="5ff766d2-54c7-4458-9277-eb56ac58d240"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="688" y="12" width="63" height="10" uuid="dc547db4-36c6-48a1-9c8f-deb5225c8447"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="709" y="22" width="8" height="8" uuid="072bd294-6a1d-4a52-815f-2a3d1d79b809"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="688" y="22" width="21" height="8" uuid="bdda59f6-0bc4-4d9e-bbdc-6f17c351af74"/>
+				<textElement>
+					<font size="6" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="54" width="752" height="1" uuid="e82ac48d-fd9e-4e46-938c-0598036566ed"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="123" y="25" width="565" height="12" uuid="dc3b1c69-b70d-4a7d-bcce-f265e5ad4f63"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(EXTERNO)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="8" width="566" height="17" uuid="8cde8f69-2521-4873-b693-20981c9896c1"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTADISTICAS DE TRANSPORTE DEL MINERAL]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="450" y="38" width="58" height="12" uuid="a04ceb38-4a17-4f50-99b0-b9174af95dea"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{hasta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="354" y="38" width="58" height="12" uuid="c9c83579-d118-449b-ba1d-f22976bd0a1f"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{desde}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="417" y="38" width="32" height="12" uuid="0f5c98b6-e883-4547-8aa6-ec5434d9fbbc"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="38" width="32" height="12" uuid="871db598-3c94-4ee4-9a20-b3de951855fe"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="12"/>
+	</detail>
+	<summary>
+		<band height="360">
+			<barChart>
+				<chart>
+					<reportElement x="41" y="0" width="668" height="295" uuid="7832c21e-6fe8-4298-92f4-7476796884e9"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{cantidad}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{mes}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{cantidad}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<staticText>
+				<reportElement x="29" y="68" width="12" height="94" uuid="90c72b17-f0d9-4f6e-9a0c-081593043a66"/>
+				<textElement rotation="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TRANSPORTES]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

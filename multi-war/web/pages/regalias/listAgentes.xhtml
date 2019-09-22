@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+
+		<h:outputText value="Administración de Agentes de Retención" styleClass="title-page"/>
+
+		<h:form id="frmRegalia">
+			<p:menubar id="mnuExportacion">
+			
+				<p:menuitem id="actualizarButton" label="Actualizar"
+					value="Actualizar" icon="ui-refresh" process="@this"
+					actionListener="#{listAgentesBean.listarRegaliaExterno}"
+					update="frmRegalia"
+					oncomplete="PF('tblExportacionVar').unselectAllRows(); PF('tblExportacionVar').clearFilters();"/> 
+
+				<p:menuitem id="registrarButton" value="Registrar" process="@this"
+					icon="ui-add"
+					rendered="#{!menuController.tieneRole('ROLE_ADMINISTRADOR')}"
+					update=""
+					actionListener="#{listAgentesBean.registerRegaliaExterno}"
+				/>
+				
+				<p:menuitem id="modificarButton" value="Modificar"
+					icon="ui-edit" actionListener="#{listAgentesBean.modifyRegaliaExterno}"
+					disabled="#{listAgentesBean.regalia.id == null}"
+					rendered="#{listAgentesBean.regalia.indEstadoFormulario.intValue() == 129}"
+					process="@this">
+							
+				</p:menuitem>
+				
+				<p:menuitem id="emitirButton" value="Emitir Formulario" process="@this"
+					icon="ui-approve"
+					rendered="#{listAgentesBean.regalia.indEstadoFormulario.intValue() == 129 and listAgentesBean.regalia.id !=null}"
+					update="frmRegalia
+							:messages"
+					actionListener="#{listAgentesBean.guardarEmision}">
+					<p:confirm header="Confirmación" message="¿Esta seguro de EMITIR el Formulario seleccionado?" icon="ui-icon-alert" />
+				</p:menuitem>
+				
+				<p:menuitem id="devolverOperadorButton" value="Devolver a Operador" process="@this"
+					icon="ui-back"
+					rendered="#{listAgentesBean.regalia.id !=null and menuController.tieneRole('ROLE_ADMINISTRADOR')}"
+					disabled="#{listAgentesBean.regalia.indEstadoPago == 251}"
+					update="frmRegalia
+							:messages"
+					actionListener="#{listAgentesBean.devolverHaciaOperador}"
+					oncomplete="PF('tblExportacionVar').unselectAllRows(); PF('tblExportacionVar').clearFilters();">
+					<p:confirm header="Confirmación" message="¿Esta seguro de DEVOLVER al OPERADOR el Formulario seleccionado?" icon="ui-icon-alert" />
+				</p:menuitem>
+				
+				
+				<p:menuitem id="imprimirBoletaPago" icon="ui-textList"
+					value="Emitir Boleta de Pago" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false"
+					rendered="#{listAgentesBean.regalia.indEstadoFormulario.intValue() == 130 and listAgentesBean.regalia.id !=null}">
+					<p:fileDownload value="#{listAgentesBean.reporteBoletaPago}" />
+				</p:menuitem>
+				
+				<p:menuitem id="imprimirLiquidacionRM" icon="ui-textList"
+					value="Emitir Liquidación de RM" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false"
+					rendered="#{listAgentesBean.regalia.indEstadoFormulario.intValue() == 130 and listAgentesBean.regalia.id !=null}">
+					<p:fileDownload value="#{listAgentesBean.reporteFormEmision}" />
+				</p:menuitem>
+				
+				 
+			</p:menubar>
+
+			<p:dataTable id="tblExterno" var="regAge" widgetVar="tblExportacionVar"
+				value="#{listAgentesBean.listRegalia}" selection="#{listAgentesBean.regalia}"
+				rowKey="#{regAge.id}" filteredValue="#{listAgentesBean.listRegaliaFilter}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{cons['dtb.rows.per.page.template']}" rowIndexVar="rowIndex"
+				emptyMessage="#{cons['dtb.empty.page.table']}">
+
+				<p:ajax event="rowSelect" process="@this" update="frmRegalia" 
+					listener="#{listAgentesBean.onRowSelect}" 
+				 />
+
+				<!--  
+				<p:column headerText="Nro." style="width:1%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+				-->
+				
+				<p:column headerText="Operador Minero" sortBy="#{regAge.idCooperativa.razonSocial}"
+					filterBy="#{regAge.idCooperativa.razonSocial}" filterMatchMode="contains"
+					style="white-space:normal;" width="15%">
+					<h:outputText value="#{regAge.idCooperativa.razonSocial}" />
+				</p:column>
+				
+				<p:column headerText="Nro Tramite" sortBy="#{regAge.numeroOrden}"
+					filterBy="#{regAge.numeroOrden}" filterMatchMode="contains"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{regAge.numeroOrden}" />
+				</p:column>
+				
+				<p:column headerText="F.Emision" sortBy="#{regAge.fechaEmision}"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{regAge.fechaEmision}" >
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Razon Social Vemdedor" sortBy="#{regAge.ageRazonSocial}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{regAge.ageRazonSocial}" />
+				</p:column>
+				
+				<p:column headerText="NIM/CI Vendedor" sortBy="#{regAge.ageNimCi}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{regAge.ageNimCi}" />
+				</p:column>
+				
+				<p:column headerText="F.Declaración" sortBy="#{regAge.ageFechaTransaccion}"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{regAge.ageFechaTransaccion}" >
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Estado Pago" sortBy="#{regAge.indEstadoPago}"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{listAgentesBean.mapEstadoPagoForm.get(regAge.indEstadoPago)}" />
+				</p:column>
+				
+				<p:column headerText="Estado" sortBy="#{exte.indEstadoRegistro}"
+					style="white-space:normal;" width="5%">
+					<h:outputText value="#{listAgentesBean.mapEstadoRegistroForm.get(regAge.indEstadoFormulario)}" />
+				</p:column>
+				
+			</p:dataTable>
+		</h:form>
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+	        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+	        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+
+		<script type="text/javascript">
+			function enviarFormValidez(xhr, status, args) {
+		        if( undefined == args.validationFailed &amp;&amp; args.sinErrores) {
+					  PF('dlgRegistroAmpliacionVar').hide();
+					  PF('tblCooperativaVar').unselectAllRows(); PF('tblCooperativaVar').clearFilters();
+				  } else {  
+				    	PF('dlgRegistroAmpliacionVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+			
+	</script>
+
+	</ui:define>
+</ui:composition>

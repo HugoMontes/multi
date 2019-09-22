@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+	
+		<h:outputText value="Administración de Tipos de Cambio" styleClass="title-page"/>
+		
+		<h:form id="frmTipoCambio">
+		
+			<p:menubar id="mnuTipoCambio">
+				<p:menuitem id="actualizarButton" label="Actualizar"
+					value="Actualizar" icon="ui-refresh" process="@this"
+					actionListener="#{tipoCambioBean.listarTipoCambio}"
+					oncomplete="PF('tblTipoCambioVar').unselectAllRows(); PF('tblTipoCambioVar').clearFilters();" 
+					update="frmTipoCambio"/>
+
+				<p:menuitem id="registrarButton" value="Registrar" process="@this"
+					icon="ui-add" actionListener="#{tipoCambioBean.registrarTipoCambio}"
+					update=":dlgTipoCambio,
+							frmRegistroTC"
+					oncomplete="PF('dlgMasterVar').show();" />
+
+				<p:menuitem id="modificarButton" value="Modificar"
+					icon="ui-edit" actionListener="#{tipoCambioBean.modificarTC}"
+					process="@this" oncomplete="PF('dlgMasterVar').show();"
+					update=":dlgTipoCambio
+							:frmRegistroTC" 
+					disabled="#{tipoCambioBean.tipoCambio.id == null}"/>
+
+				<p:menuitem id="eliminarButton" label="Eliminar" value="Eliminar"
+					icon="ui-remove" process="@this" update=":dglConfirmacion"
+					oncomplete="PF('dglConfirmacionVar').show();" disabled="#{tipoCambioBean.tipoCambio.id == null}"/>
+
+			</p:menubar>
+
+			<p:dataTable id="tblMaster" var="master" widgetVar="tblTipoCambioVar"
+				value="#{tipoCambioBean.listTipoCambio}"
+				selection="#{tipoCambioBean.tipoCambio}" rowKey="#{master.id}"
+				filteredValue="#{tipoCambioBean.listTipoCambioFilter}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15,20" rowIndexVar="rowIndex"
+				emptyMessage="No existen registros.">
+
+				<p:ajax event="rowSelect" process="@this" update="@form"
+					listener="#{tipoCambioBean.onRowSelect}" />
+
+				<p:column headerText="Nro." style="width:2%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+		        	
+		        <p:column headerText="Fecha"
+					style="white-space:normal;" width="40%">
+					<h:outputText value="#{master.fecha}">
+						<f:convertDateTime pattern="dd/MM/yyyy" locale="es"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Moneda"
+					style="white-space:normal;" width="59%">
+					<h:outputText
+						value="#{tipoCambioBean.mapTipoMoneda.get(master.indTipoMoneda)}" />
+				</p:column>
+				
+				<p:column headerText="Cotización Oficial"
+					style="white-space:normal;" width="59%">
+					<h:outputText value="#{master.cotizacionOficial}">
+						<f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Cotización Compra"
+					style="white-space:normal;" width="59%">
+					<h:outputText value="#{master.cotizacionCompra}">
+						<f:convertNumber pattern="#{cons['pattern.currency']}" locale="#{cons['conv.number.locale']}"/>
+					</h:outputText>
+				</p:column>
+				
+			</p:dataTable>
+			
+		</h:form>
+		
+		<p:dialog id="dlgTipoCambio" widgetVar="dlgMasterVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" modal="true"
+			closable="false" resizable="false" width="550"
+			header="#{tipoCambioBean.strTitulo}">
+			<h:form id="frmRegistroTC">
+				<p:panel id="pnlRegistroMaster">
+					<h:panelGrid id="pgrRegistroMaster" columns="2">
+
+						<h:outputText value="Fecha:" style='white-space:nowrap;' styleClass="required-field" />
+						<p:calendar id="txtFecha" required="true" showOn="button"
+							label="Fecha"
+							value="#{tipoCambioBean.tipoCambio.fecha}"
+							pattern="dd/MM/yyyy" showButtonPanel="false" navigator="true"
+							locale="es" mindate="#{tipoCambioBean.fechaActual}">
+						</p:calendar>
+							
+						<h:outputLabel for="idMoneda" value="Moneda:" style="font-weight:bold" />
+						<p:selectOneMenu id="idMoneda" label="Moneda"
+							style="width:70px" panelStyle="width:70px" effect="fade" required="true"
+							value="#{tipoCambioBean.tipoCambio.indTipoMoneda}">
+							<f:selectItems value="#{tipoCambioBean.selectMoneda}" />
+						</p:selectOneMenu>
+						
+						<h:outputLabel for="idCoticacionOficial" value="Cotización Oficial:" style="font-weight:bold" />
+						<p:inputNumber id="idCoticacionOficial" value="#{tipoCambioBean.tipoCambio.cotizacionOficial}" 
+			            	required="true" label="Cotización Oficial" size="30" decimalPlaces="2" decimalSeparator=".">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+			            </p:inputNumber>
+			            
+			            <h:outputLabel for="idCotizacionCompra" value="Cotización Compra:" style="font-weight:bold" />
+						<p:inputNumber id="idCotizacionCompra" value="#{tipoCambioBean.tipoCambio.cotizacionCompra}" 
+			            	required="true" label="Ley" size="30" decimalPlaces="2" decimalSeparator=".">
+			            	<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.business.name']}"/>
+			            </p:inputNumber>
+			            
+					</h:panelGrid>
+					
+					<p:toolbar>
+						<f:facet name="left">
+								<p:commandButton value="Guardar" icon="ui-save"
+									actionListener="#{tipoCambioBean.guardarMaster}" process="@form"
+									update="frmRegistroTC
+											frmTipoCambio
+											:messages"
+									oncomplete="enviarFormMaster(xhr, status, args); " />
+								<p:separator />
+								<p:commandButton process="@this" value="Cancelar"
+									icon="ui-remove"
+									update=":frmRegistroTC,
+											:frmTipoCambio:mnuTipoCambio"
+									oncomplete="PF('dlgMasterVar').hide(); PF('tblTipoCambioVar').unselectAllRows();">
+									<p:resetInput target="frmRegistroTC" />
+								</p:commandButton>
+							</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		
+		<p:confirmDialog id="dglConfirmacion" header="Eliminar"
+			appendTo="@(body)"
+			severity="alert" width="350" widgetVar="dglConfirmacionVar"
+			closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Fecha: #{tipoCambioBean.tipoCambio.fecha}.
+		  			</f:facet>
+			<p:toolbar
+				style="margin:0;border-spacing:0;border-collapse:collapse;padding:0;">
+				<p:toolbarGroup style="width:100%; text-align:center; height:30px;">
+					<p:commandButton value="Si"
+						update=":messages
+								frmTipoCambio" process="@this"
+						actionListener="#{tipoCambioBean.eliminarMaster}"
+						oncomplete="PF('dglConfirmacionVar').hide(); PF('tblTipoCambioVar').unselectAllRows(); PF('tblTipoCambioVar').clearFilters(); " />
+
+					<p:commandButton value="No" process="@none"
+						onclick="PF('dglConfirmacionVar').hide()" type="button" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</p:confirmDialog>
+		
+		<script type="text/javascript">
+			function enviarFormMaster(xhr, status, args) {  
+				  if( undefined == args.validationFailed  &amp;&amp; args.sinErrores) {
+					  PF('tblTipoCambioVar').unselectAllRows(); PF('tblTipoCambioVar').clearFilters();  
+					  PF('dlgMasterVar').hide();
+				  } else {  
+				    	PF('dlgMasterVar').jq.effect("shake", {times:2}, 50);
+				  }
+			}
+		</script>
+
+
+	</ui:define>
+</ui:composition>

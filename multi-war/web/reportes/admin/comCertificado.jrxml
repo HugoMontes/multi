@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="comCertificado" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="99eafa8b-4bff-45bd-a7ce-d67c4100650d">
+	<property name="ireport.zoom" value="1.650000000000045"/>
+	<property name="ireport.x" value="63"/>
+	<property name="ireport.y" value="816"/>
+	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="idCooperativa" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\workspaceLuna\\multi\\web\\src\\main\\webapp\\reportes\\admin\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMAGE_DIR_TWO" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select co.*,
+(select nombre from parameter_table where id = co.ind_actor_productivo) as actorProductivo,
+(select mun.nombre
+from sucursal suc
+inner join municipio mun on mun.id = suc.id_municipio
+where suc.id_cooperativa = co.id
+and suc.ind_tipo_sucursal = 80
+and suc.estado='HAB'
+) as municipio_cooperativa
+from cooperativa co
+where co.id = $P{idCooperativa}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="nro_registro" class="java.lang.Integer"/>
+	<field name="fecha_registro" class="java.sql.Date"/>
+	<field name="fecha_expiracion" class="java.sql.Date"/>
+	<field name="razon_social" class="java.lang.String"/>
+	<field name="nit" class="java.lang.String"/>
+	<field name="nim" class="java.lang.String"/>
+	<field name="niar" class="java.lang.String"/>
+	<field name="ruex" class="java.lang.String"/>
+	<field name="ind_actor_productivo" class="java.lang.Integer"/>
+	<field name="resolucion_fundeempresa" class="java.lang.String"/>
+	<field name="resolucion_adm" class="java.lang.String"/>
+	<field name="fecha_admin" class="java.sql.Date"/>
+	<field name="nro_socios" class="java.lang.String"/>
+	<field name="repre_paterno" class="java.lang.String"/>
+	<field name="repre_materno" class="java.lang.String"/>
+	<field name="repre_nombres" class="java.lang.String"/>
+	<field name="repre_cargo" class="java.lang.String"/>
+	<field name="repre_ci" class="java.lang.String"/>
+	<field name="ind_repre_expendido" class="java.lang.Integer"/>
+	<field name="repre_email" class="java.lang.String"/>
+	<field name="repre_telefono" class="java.lang.String"/>
+	<field name="repre_celular" class="java.lang.String"/>
+	<field name="usuario_reg" class="java.lang.String"/>
+	<field name="fecha_reg" class="java.sql.Date"/>
+	<field name="fecha_mod" class="java.sql.Date"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="actorproductivo" class="java.lang.String"/>
+	<field name="municipio_cooperativa" class="java.lang.String"/>
+	<detail>
+		<band height="572">
+			<textField>
+				<reportElement x="247" y="420" width="157" height="26" uuid="968ebb1e-45e7-48bf-bc7f-8b5442c2e559"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CER-LPZ-"+$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="288" width="533" height="18" uuid="cd6fd7a8-5f89-41e4-83df-2d503ed0afc5"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{razon_social}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="12" y="274" width="112" height="13" backcolor="#EAEAEA" uuid="d6d3c476-e9ce-484a-8580-2ec966685c4b"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RAZÓN SOCIAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="58" y="322" width="124" height="13" backcolor="#EAEAEA" uuid="2ea64390-1e22-4aca-9bf6-03e8d002fffc"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTOR PRODUCTIVO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="182" y="322" width="256" height="13" uuid="f202ecfe-c02f-4dd3-b155-722f4ac9b4aa"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{actorproductivo}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="3" width="72" height="84" uuid="089a907b-1c9e-4fda-823e-64e9f4035655"/>
+				<imageExpression><![CDATA[new File($P{IMAGE_DIR})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement mode="Transparent" x="72" y="14" width="274" height="73" backcolor="#EAEAEA" uuid="e6433493-616f-47c1-b5b7-72f0edb0fe5a"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GOBIERNO
+AUTÓNOMO
+DEPARTAMENTAL DE LA PAZ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="2" width="572" height="1" uuid="4cb67e80-5769-49ea-b57b-1c2704c81e78"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="140" width="533" height="21" backcolor="#EAEAEA" uuid="e69b2a27-5fd3-4970-acf1-816d976756ee"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SECRETARIA DEPARTAMENTAL DE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="161" width="533" height="21" backcolor="#EAEAEA" uuid="1ded4493-2014-40a7-b189-ad2d33e22f97"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MINERÍA, METALURGÍA E]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="182" width="533" height="21" backcolor="#EAEAEA" uuid="94b1fede-ad51-4891-be47-cb389f222a9a"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HIDROCARBUROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="58" y="348" width="124" height="13" backcolor="#EAEAEA" uuid="9ca69128-1add-4f84-8a0e-5aa6e5ebfbc3"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTIVIDADES:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="58" y="335" width="124" height="13" backcolor="#EAEAEA" uuid="2497e772-8f0e-4068-bc08-aaf4de597686"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPIO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="182" y="335" width="256" height="13" uuid="b72f79d4-bf0c-44b9-b009-7e660bfafba1"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{municipio_cooperativa}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="160" y="361" width="211" height="14" isRemoveLineWhenBlank="true" uuid="0ea0ff16-7fee-4b80-b9af-b9318f665c2b"/>
+				<subreportParameter name="idCooperativa">
+					<subreportParameterExpression><![CDATA[$P{idCooperativa}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[new File($P{SUBREPORT_DIR} + "actividadesSub.jasper")]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement mode="Transparent" x="167" y="420" width="76" height="26" backcolor="#EAEAEA" uuid="c5cb5f33-73ad-4d05-95ba-b5aa0cd7f920"/>
+				<textElement textAlignment="Right">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIOM:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="451" width="13" height="28" backcolor="#EAEAEA" uuid="53057e42-1295-4124-9f2f-1835403e1ee3"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N°]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="411" width="13" height="37" uuid="692da768-2c3a-41f9-b4a8-a9da66f80ee7"/>
+				<textElement rotation="Left">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="404" y="487" width="168" height="78" uuid="3a08a518-3a48-40ac-b4fd-e424edc25fc8"/>
+				<imageExpression><![CDATA[new File($P{IMAGE_DIR_TWO})]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="0" y="487" width="93" height="85" uuid="36950753-bb4b-44e4-8b87-f36a810374b2"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+    new com.google.zxing.qrcode.QRCodeWriter().encode(
+            "CER-LPZ-"+$F{id}, com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="59">
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="23" width="533" height="12" backcolor="#EAEAEA" uuid="45f22a1f-d305-4c7c-96d0-252a100a9ca9"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[SECRETARIA DEPARTAMENTAL]]></text>
+			</staticText>
+			<line>
+				<reportElement x="141" y="21" width="282" height="1" uuid="1a80eee3-bfc4-436c-8b98-16c4e8e06957"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="35" width="533" height="12" backcolor="#EAEAEA" uuid="1dea6cbd-264a-4d39-81b5-5dd7c1f93445"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MINERIA METALURGIA E HIDROCARBUROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="47" width="533" height="12" backcolor="#EAEAEA" uuid="42fe364a-f291-4ac7-abfa-7f6ac4bfee13"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[G.A.D.L.P]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="50">
+			<line>
+				<reportElement x="0" y="47" width="572" height="1" uuid="89530499-46ac-4033-96cc-10bfcf0d236f"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="32" width="112" height="13" backcolor="#EAEAEA" uuid="7411704a-8f5f-4172-a6d3-110f160920d5"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA REGISTRO:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="127" y="32" width="86" height="13" uuid="03e772f8-6f6e-44d4-a6cd-7a995903d29b"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_registro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="361" y="32" width="109" height="13" backcolor="#EAEAEA" uuid="4f4c7c70-c842-4111-b14a-53bf612a4e79"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA EXPIRACIÓN:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="472" y="32" width="73" height="13" uuid="8bf8a357-fd6f-4fec-8939-2d70f13064f6"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_expiracion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

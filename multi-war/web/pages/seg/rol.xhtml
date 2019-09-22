@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantillaT.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="false" />
+
+		<h:outputText value="Administración de Roles" styleClass="title-page"/>
+
+		<h:form id="frmRol">
+			<p:menubar id="mnuRol">
+				<p:menuitem id="actualizarButton" label="Actualizar"
+					value="Actualizar" icon="ui-icon-refresh" process="@this"
+					actionListener="#{rolesBean.listarRolesTabla}"
+					update=":frmRol:tblRol,
+							:frmRol:mnuRol"
+				
+					oncomplete="PF('tblRolVar').unselectAllRows(); PF('tblRolVar').clearFilters();"/> 
+
+				<p:menuitem id="registrarButton" value="Registrar" process="@this"
+					icon="ui-icon-document"
+					update=":dlgRegistroRol,
+							:frmRegistroRol"
+					actionListener="#{rolesBean.registrarRol}"
+					oncomplete="PF('dlgRolVar').show(); " />
+
+				<p:menuitem id="modificarButton" value="Modificar"
+					icon="ui-icon-pencil" actionListener="#{rolesBean.modificarRol}"
+					process="@this" update=":dlgRegistroRol,
+							:frmRegistroRol"
+					oncomplete="PF('dlgRolVar').show();"
+					disabled="#{rolesBean.blnBloquearBoton}" />
+
+				<p:menuitem id="eliminarButton" label="Eliminar" value="Eliminar"
+					icon="ui-icon-trash" process="@this" update=":dglConfirmacion"
+					oncomplete="PF('dglConfirmacionVar').show();"
+					disabled="#{rolesBean.blnBloquearBoton}" />
+
+			</p:menubar>
+
+			<p:dataTable id="tblRol" var="rol" widgetVar="tblRolVar"
+				value="#{rolesBean.listaSegRol}" selection="#{rolesBean.segRol}"
+				rowKey="#{rol.id}" filteredValue="#{rolesBean.listaSegRolFiltro}"
+				selectionMode="single" paginator="true" rows="10"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{cons['dtb.rows.per.page.template']}" rowIndexVar="rowIndex"
+				emptyMessage="No existen registros.">
+
+				<p:ajax event="rowSelect" process="@this" update=":frmRol:mnuRol"
+					listener="#{rolesBean.onRowSelect}" />
+
+				<p:column headerText="Nro." style="width:2%; text-align:right;">  
+		            #{rowIndex+1}   
+		        	</p:column>
+
+				<p:column headerText="Código" filterBy="#{rol.codigo}"
+					filterMatchMode="contains" sortBy="#{rol.codigo}"
+					style="white-space:normal;" width="10%">
+					<h:outputText value="#{rol.codigo}" />
+				</p:column>
+
+				<p:column headerText="Rol" filterBy="#{rol.nombre}"
+					filterMatchMode="contains" sortBy="#{rol.nombre}"
+					style="white-space:normal;" width="40%">
+					<h:outputText value="#{rol.nombre}" />
+				</p:column>
+
+				<p:column headerText="Descripción" filterBy="#{rol.observaciones}"
+					filterMatchMode="contains" sortBy="#{rol.observaciones}"
+					style="white-space:normal;" width="50%">
+					<h:outputText value="#{rol.observaciones}" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+		
+
+		<p:dialog id="dlgRegistroRol" widgetVar="dlgRolVar" appendTo="@(body)"
+			showEffect="explode" hideEffect="clip" position="center" 
+			closable="false" resizable="false" width="550" modal="true" 
+			header="#{rolesBean.strTitulo}">
+			<h:form id="frmRegistroRol">
+				<p:panel id="pnlRegistroRol">
+					<h:panelGrid id="pgrRegistroRol" columns="2">
+
+						<h:outputText value="Código:" styleClass="required-field"/>
+						<p:inputText id="txtCodigo" size="24" required="true" onkeyup="return trimText(this);"
+							requiredMessage="El campo Código es requerido"
+							value="#{rolesBean.segRol.codigo}" >
+							<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.not.space.with.underline']}"/>
+						</p:inputText>
+
+						<h:outputText value="Rol:" styleClass="required-field" style='white-space:nowrap;' />
+						<p:inputText id="txtRol" size="24" required="true"  onkeyup="return trimText(this);"
+							requiredMessage="El campo Rol es requerido"
+							value="#{rolesBean.segRol.nombre}">
+							<pe:keyFilter regEx="#{cons['exp.regular.alphanumeric.not.space.with.underline']}"/>
+						</p:inputText>
+
+						  
+						<h:outputText value="Descripción:" styleClass="required-field" style='white-space:nowrap;' />
+						<p:inputTextarea rows="3" cols="45" id="txtObservacioens"
+							required="true"
+							requiredMessage="El campo Observaciones: es requerido"
+							value="#{rolesBean.segRol.observaciones}" size="50"
+							maxlength="250">
+							<pe:keyFilter regEx="#{cons['exp.regular.address.and.observations']}"/>
+						</p:inputTextarea>
+					</h:panelGrid>
+
+					<p:toolbar>
+						<f:facet name="left">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								actionListener="#{rolesBean.guardarRol}" process="@form"
+								update=":frmRol:mnuRol,
+										:messages,
+										:frmRol:tblRol,
+										frmRegistroRol"
+								oncomplete="enviarFormRol(xhr, status, args);" />
+							<p:separator />
+							<p:commandButton process="@this" value="Cancelar"
+								icon="ui-icon-close"
+								update=":frmRegistroRol,
+										:frmRol:mnuRol,
+										:frmRol:tblRol"
+								onclick="PF('dlgRolVar').hide();" oncomplete="PF('tblRolVar').unselectAllRows(); PF('tblRolVar').clearFilters();"
+								actionListener="#{rolesBean.listarRolesTabla}">
+								<p:resetInput target="frmRegistroRol" />
+							</p:commandButton>
+						</f:facet>
+					</p:toolbar>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+
+		<p:confirmDialog id="dglConfirmacion" header="Eliminar" appendTo="@(body)"
+			severity="alert" width="350" widgetVar="dglConfirmacionVar"
+			closable="false">
+			<f:facet name="message">#{mB.get['MSG_ELIMINACION']}: <br />
+				<br /> 
+								 Nombre Rol: #{rolesBean.segRol.nombre}.
+		  			</f:facet>
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="Si"
+						update=":messages,
+								:frmRol:mnuRol,
+								:frmRol:tblRol" process="@this"
+						actionListener="#{rolesBean.eliminarRol}"
+						oncomplete="PF('dglConfirmacionVar').hide(); PF('tblRolVar').unselectAllRows(); PF('tblRolVar').clearFilters();" />
+
+					<p:commandButton value="No" process="@none"
+						onclick="PF('dglConfirmacionVar').hide()" type="button" />
+				</f:facet>
+			</p:toolbar>
+		</p:confirmDialog>
+
+		<script type="text/javascript">
+			function enviarFormRol(xhr, status, args) {
+		        if( undefined == args.validationFailed) {
+					  PF('dlgRolVar').hide();
+					  PF('tblRolVar').unselectAllRows(); PF('tblRolVar').clearFilters();
+				  } else {  
+				    	PF('dlgRolVar').jq.effect("shake", {times:2}, 100);
+				    	
+				  }  
+		    }
+
+			
+
+	</script>
+
+
+	</ui:define>
+</ui:composition>
