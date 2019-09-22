@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.j2ee.ejbjarproject</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
+            <name>multi-ejb</name>
+            <minimum-ant-version>1.6.5</minimum-ant-version>
+            <explicit-platform explicit-source-supported="true"/>
+            <included-library dirs="200">file.reference.activation.jar</included-library>
+            <included-library dirs="200">file.reference.antlr.jar</included-library>
+            <included-library dirs="200">file.reference.dom4j.jar</included-library>
+            <included-library dirs="200">file.reference.epsonupos-admin.jar</included-library>
+            <included-library dirs="200">file.reference.epsonupos-core-uno.jar</included-library>
+            <included-library dirs="200">file.reference.epsonupos-dos.jar</included-library>
+            <included-library dirs="200">file.reference.epsonupos.jar</included-library>
+            <included-library dirs="200">file.reference.epsonuposCoreDos.jar</included-library>
+            <included-library dirs="200">file.reference.hibernate-commons-annotations.jar</included-library>
+            <included-library dirs="200">file.reference.hibernate-core.jar</included-library>
+            <included-library dirs="200">file.reference.hibernate-entitymanager.jar</included-library>
+            <included-library dirs="200">file.reference.hibernate-jpa-2.0-api.jar</included-library>
+            <included-library dirs="200">file.reference.javassist.jar</included-library>
+            <included-library dirs="200">file.reference.jboss-logging.jar</included-library>
+            <included-library dirs="200">file.reference.jboss-transaction-api_1.1_spec.jar</included-library>
+            <included-library dirs="200">file.reference.jpos.jar</included-library>
+            <included-library dirs="200">file.reference.mail.jar</included-library>
+            <included-library dirs="200">file.reference.pos.jar</included-library>
+            <included-library dirs="200">file.reference.posv3Dos.jar</included-library>
+            <included-library dirs="200">file.reference.posv3uno.jar</included-library>
+            <included-library dirs="200">file.reference.uposcommon.jar</included-library>
+            <included-library dirs="200">file.reference.uposcommonCoreDos.jar</included-library>
+            <included-library dirs="200">file.reference.uposcommonCoreUno.jar</included-library>
+            <included-library dirs="200">file.reference.xercesImpl.jar</included-library>
+            <included-library dirs="200">file.reference.xml-apis.jar</included-library>
+            <source-roots>
+                <root id="src.dir"/>
+            </source-roots>
+            <test-roots>
+                <root id="test.src.dir"/>
+            </test-roots>
+        </data>
+        <libraries xmlns="http://www.netbeans.org/ns/ant-project-libraries/1">
+            <definitions>..\.\lib\nblibraries.properties</definitions>
+        </libraries>
+    </configuration>
+</project>
