@@ -215,9 +215,3 @@
 /* 215 */     this.fechaActual = fechaActual;
 /*     */   }
 /*     */ }
-
-
-/* Location:              F:\win\multi-ear.ear!\multi-web.war!\WEB-INF\classes\org\erp\util\GenericBaseBean.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       0.7.1
- */

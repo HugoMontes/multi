@@ -291,11 +291,13 @@
 /*     */   private boolean comparadorListaRoles(List<SegRol> rolesMenu, List<SegRol> rolesUsuario)
 /*     */   {
 /* 293 */     boolean resultado = false;
-/* 294 */     Iterator localIterator2; for (Iterator localIterator1 = rolesMenu.iterator(); localIterator1.hasNext(); 
-/* 295 */         localIterator2.hasNext())
+/* 294 */     Iterator localIterator2; 
+              for (Iterator localIterator1 = rolesMenu.iterator(); localIterator1.hasNext(); localIterator2.hasNext())
 /*     */     {
 /* 294 */       SegRol menu = (SegRol)localIterator1.next();
-/* 295 */       localIterator2 = rolesUsuario.iterator(); continue;SegRol roles = (SegRol)localIterator2.next();
+/* 295 */       localIterator2 = rolesUsuario.iterator(); 
+                // continue;
+                SegRol roles = (SegRol)localIterator2.next();
 /* 296 */       if (menu.equals(roles)) {
 /* 297 */         resultado = true;
 /*     */       }

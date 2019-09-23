@@ -84,13 +84,13 @@
 /*     */   
 /*     */   @PostConstruct
 /*     */   public void inicio() {
-/*     */     try {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e) {
-/*  91 */       e.printStackTrace();
-/*  92 */       this.logger.info("Error en la validación de sesión");
-/*     */     }
+///*     */     try {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e) {
+///*  91 */       e.printStackTrace();
+///*  92 */       this.logger.info("Error en la validación de sesión");
+///*     */     }
 /*  94 */     cargarParametros();
 /*  95 */     this.operadoresTO = new OperadoresTO();
 /*     */   }

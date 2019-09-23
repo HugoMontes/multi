@@ -96,7 +96,7 @@
 /*     */ 
 /*     */     String imagen;
 /*     */     
-/*     */     String imagen;
+/*     */     // String imagen;
 /*     */     
 /* 101 */     if (sw_img) {
 /* 102 */       imagen = contexts.getRealPath("resources").concat("/img");
@@ -109,10 +109,15 @@
 /*     */     
 /* 110 */     String imagenForm100 = contexts.getRealPath("resources").concat("/img/logo/form100.jpg");
 /*     */     String imagenForm101;
-/* 112 */     String imagenForm101; if (tipoTransporte.intValue() == 1) {
-/* 113 */       imagenForm101 = contexts.getRealPath("resources").concat("/img/logo/form101i.jpg"); } else { String imagenForm101;
+/* 112 */     // String imagenForm101; 
+              if (tipoTransporte.intValue() == 1) {
+/* 113 */       imagenForm101 = contexts.getRealPath("resources").concat("/img/logo/form101i.jpg"); 
+              } else { 
+                // String imagenForm101;
 /* 114 */       if (tipoTransporte.intValue() == 2) {
-/* 115 */         imagenForm101 = contexts.getRealPath("resources").concat("/img/logo/form101e.jpg"); } else { String imagenForm101;
+/* 115 */         imagenForm101 = contexts.getRealPath("resources").concat("/img/logo/form101e.jpg"); 
+                } else { 
+                  // String imagenForm101;
 /* 116 */         if (tipoTransporte.intValue() == 3) {
 /* 117 */           imagenForm101 = contexts.getRealPath("resources").concat("/img/logo/logo_rm.jpg");
 /*     */         } else {
@@ -174,9 +179,3 @@
 /* 174 */     return runReporte(carpeta, nombre, parametros, tipo, nombreArchivo, false, tipoTransporte);
 /*     */   }
 /*     */ }
-
-
-/* Location:              F:\win\multi-ear.ear!\multi-web.war!\WEB-INF\classes\org\erp\util\MostrarReporte.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       0.7.1
- */

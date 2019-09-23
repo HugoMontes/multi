@@ -4,6 +4,7 @@
 /*    */ import java.util.Date;
 /*    */ import java.util.Properties;
 /*    */ import javax.inject.Inject;
+import javax.mail.Message;
 /*    */ import javax.mail.Message.RecipientType;
 /*    */ import javax.mail.MessagingException;
 /*    */ import javax.mail.Session;
@@ -78,9 +79,3 @@
 /*    */     }
 /*    */   }
 /*    */ }
-
-
-/* Location:              F:\win\multi-ear.ear!\multi-web.war!\WEB-INF\classes\org\erp\util\EnvioMail.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       0.7.1
- */

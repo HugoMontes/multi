@@ -101,12 +101,12 @@
 /*     */   
 /*     */   @PostConstruct
 /*     */   public void inicio() {
-/*     */     try {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e) {
-/* 108 */       e.printStackTrace();
-/*     */     }
+///*     */     try {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e) {
+///* 108 */       e.printStackTrace();
+///*     */     }
 /*     */     
 /* 111 */     cargarParametros();
 /* 112 */     listarMinerales();

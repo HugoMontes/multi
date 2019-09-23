@@ -127,13 +127,13 @@
 /*     */   @PostConstruct
 /*     */   public void inicio()
 /*     */   {
-/*     */     try {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e) {
-/* 134 */       e.printStackTrace();
-/* 135 */       this.logger.info("Error en la validación de sesión");
-/*     */     }
+///*     */     try {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e) {
+///* 134 */       e.printStackTrace();
+///* 135 */       this.logger.info("Error en la validación de sesión");
+///*     */     }
 /*     */     try
 /*     */     {
 /* 139 */       this.cooperativa = ((Cooperativa)JSFUtilities.getHttpSessionAttributeObject("cooperativaId"));
@@ -687,10 +687,11 @@
 /*     */ 
 /*     */ 
 /*     */ 
-/* 690 */       Object listMunDerMin = new ArrayList();
-/* 691 */       listMunDerMin = this.cooperativaEJBBeanLocal.listadoMunicipioDerMin();
+/* 690 */       // Object listMunDerMin = new ArrayList();
+/* 691 */       List<Municipio> listMunDerMin = this.cooperativaEJBBeanLocal.listadoMunicipioDerMin();
 /*     */       
-/* 693 */       for (Municipio mun : (List)listMunDerMin) {
+/* 693 */       // for (Municipio mun : (List)listMunDerMin) {
+                for (Municipio mun : listMunDerMin) {
 /* 694 */         this.selectMunicipioDerMin.add(new SelectItem(mun.getId(), mun.getMunicipio()));
 /*     */       }
 /*     */       

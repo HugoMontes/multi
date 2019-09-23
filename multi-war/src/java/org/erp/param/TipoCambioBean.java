@@ -98,12 +98,12 @@
 /*     */   
 /*     */   @PostConstruct
 /*     */   public void inicio() {
-/*     */     try {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e) {
-/* 105 */       e.printStackTrace();
-/*     */     }
+///*     */     try {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e) {
+///* 105 */       e.printStackTrace();
+///*     */     }
 /*     */     
 /* 108 */     cargarParametros();
 /* 109 */     listarTipoCambio();

@@ -8,9 +8,3 @@ public class MessageConstants
   public static final String ERROR_RESET_PASSWORD = "error.reset.password";
   public static final String NOT_ALLOVED_SYSTEM = "login.error.holiday";
 }
-
-
-/* Location:              F:\win\multi-ear.ear!\multi-web.war!\WEB-INF\classes\org\erp\util\MessageConstants.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       0.7.1
- */

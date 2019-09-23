@@ -73,14 +73,14 @@
 /*     */   @PostConstruct
 /*     */   public void inicio()
 /*     */   {
-/*     */     try
-/*     */     {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e)
-/*     */     {
-/*  82 */       e.printStackTrace();
-/*     */     }
+///*     */     try
+///*     */     {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e)
+///*     */     {
+///*  82 */       e.printStackTrace();
+///*     */     }
 /*     */     
 /*  85 */     this.listaSegMenu = new ArrayList();
 /*  86 */     this.listaSegMenuRol = new ArrayList();

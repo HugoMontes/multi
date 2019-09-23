@@ -56,14 +56,14 @@
 /*     */   @PostConstruct
 /*     */   public void inicio()
 /*     */   {
-/*     */     try
-/*     */     {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e)
-/*     */     {
-/*  65 */       e.printStackTrace();
-/*     */     }
+///*     */     try
+///*     */     {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e)
+///*     */     {
+///*  65 */       e.printStackTrace();
+///*     */     }
 /*     */     
 /*  68 */     listarRolesTabla();
 /*  69 */     this.segRol = new SegRol();

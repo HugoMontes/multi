@@ -83,12 +83,12 @@
 /*     */   
 /*     */   @PostConstruct
 /*     */   public void inicio() {
-/*     */     try {
-/*     */       
-/*     */     } catch (IOException e) {
-/*  89 */       e.printStackTrace();
-/*  90 */       this.logger.info("Error en la validación de sesión");
-/*     */     }
+///*     */     try {
+///*     */       
+///*     */     } catch (IOException e) {
+///*  89 */       e.printStackTrace();
+///*  90 */       this.logger.info("Error en la validación de sesión");
+///*     */     }
 /*  92 */     this.systemOwnModule = this.messageConfiguration.getProperty("system.own.module");
 /*  93 */     cargarParametros();
 /*  94 */     recuperarDatos();

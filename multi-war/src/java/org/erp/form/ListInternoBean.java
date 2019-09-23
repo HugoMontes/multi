@@ -107,13 +107,13 @@
 /*     */   
 /*     */   @PostConstruct
 /*     */   public void inicio() {
-/*     */     try {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e) {
-/* 114 */       e.printStackTrace();
-/* 115 */       this.logger.info("Error en la validación de sesión");
-/*     */     }
+///*     */     try {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e) {
+///* 114 */       e.printStackTrace();
+///* 115 */       this.logger.info("Error en la validación de sesión");
+///*     */     }
 /*     */     
 /* 118 */     listarTransporteInterno();
 /* 119 */     cargarParametros();

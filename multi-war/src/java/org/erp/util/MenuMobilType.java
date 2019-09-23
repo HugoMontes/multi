@@ -60,9 +60,3 @@
 /* 60 */     this.value = value;
 /*    */   }
 /*    */ }
-
-
-/* Location:              F:\win\multi-ear.ear!\multi-web.war!\WEB-INF\classes\org\erp\util\MenuMobilType.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       0.7.1
- */

@@ -118,13 +118,13 @@
 /*     */   @PostConstruct
 /*     */   public void inicio()
 /*     */   {
-/*     */     try {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e) {
-/* 125 */       e.printStackTrace();
-/* 126 */       this.logger.info("Error en la validación de sesión");
-/*     */     }
+///*     */     try {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e) {
+///* 125 */       e.printStackTrace();
+///* 126 */       this.logger.info("Error en la validación de sesión");
+///*     */     }
 /*     */     try
 /*     */     {
 /* 130 */       this.transporteInterno = ((TransporteInterno)JSFUtilities.getHttpSessionAttributeObject("internoId"));
@@ -348,9 +348,9 @@
 /*     */ 
 /* 349 */       this.selectMunicipioDerMin = new ArrayList();
 /* 350 */       this.selectMunicipioDerMin.add(new SelectItem(null, "Seleccione..."));
-/* 351 */       Object listMunDerMin = new ArrayList();
-/* 352 */       listMunDerMin = this.cooperativaEJBBeanLocal.listadoMunicipioDerMin();
-/* 353 */       for (Municipio mun : (List)listMunDerMin) {
+/* 351 */       // Object listMunDerMin = new ArrayList();
+/* 352 */       List<Municipio> listMunDerMin = this.cooperativaEJBBeanLocal.listadoMunicipioDerMin();
+/* 353 */       for (Municipio mun : listMunDerMin) {
 /* 354 */         if (mun.getMunicipio() != null) {
 /* 355 */           this.selectMunicipioDerMin.add(new SelectItem(mun.getMunicipio(), mun.getMunicipio()));
 /*     */         }

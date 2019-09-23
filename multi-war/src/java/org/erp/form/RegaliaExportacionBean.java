@@ -134,8 +134,7 @@
 /*     */   }
 /*     */   
 /*     */   @PostConstruct
-/*     */   public void inicio() throws AdminException, ParseException
-/*     */   {
+/*     */   public void inicio() {
 /* 139 */     this.departamento = new Departamento();
 /* 140 */     this.departamento.setId(Integer.valueOf(1));
 /*     */     try
@@ -200,7 +199,9 @@
 /*     */       }
 /*     */     } catch (AdminException e) {
 /* 202 */       Util.CrearMsgErrorFatalGenerico(e.getMessage());
-/*     */     }
+/*     */     } catch (ParseException e){
+                Util.CrearMsgErrorFatalGenerico(e.getMessage());
+              }
 /*     */   }
 /*     */   
 /*     */   public void eliminarMineral(Liquidacion liquidacionParam)
@@ -453,9 +454,9 @@
 /* 453 */       this.selectMineral = new ArrayList();
 /* 454 */       this.mapSelectMineral = new HashMap();
 /* 455 */       this.selectMineral.add(new SelectItem(null, "Seleccione..."));
-/* 456 */       Object cotMineral = new ArrayList();
-/* 457 */       cotMineral = this.liquidacionEjbBeanLocal.listCotizacionMineral();
-/* 458 */       for (CotizacionMineral list : (List)cotMineral) {
+/* 456 */       // Object cotMineral = new ArrayList();
+/* 457 */       List<CotizacionMineral> cotMineral = this.liquidacionEjbBeanLocal.listCotizacionMineral();
+/* 458 */       for (CotizacionMineral list : cotMineral) {
 /* 459 */         this.selectMineral.add(new SelectItem(list.getId(), list.getNombre()));
 /* 460 */         this.mapSelectMineral.put(list.getId(), list);
 /*     */       }
@@ -486,9 +487,9 @@
 /*     */       }
 /*     */       
 /* 488 */       this.mapDepartamento = new HashMap();
-/* 489 */       Object listDepar = new ArrayList();
-/* 490 */       listDepar = this.cooperativaEJBBeanLocal.listadoDepartamento();
-/* 491 */       for (Departamento dep : (List)listDepar) {
+/* 489 */       // Object listDepar = new ArrayList();
+/* 490 */       List<Departamento> listDepar = this.cooperativaEJBBeanLocal.listadoDepartamento();
+/* 491 */       for (Departamento dep : listDepar) {
 /* 492 */         this.mapDepartamento.put(dep.getId(), dep.getNombre());
 /*     */ 
 /*     */ 

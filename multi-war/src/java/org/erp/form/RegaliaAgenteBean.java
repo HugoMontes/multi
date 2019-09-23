@@ -13,6 +13,7 @@
 /*     */ import java.util.List;
 /*     */ import java.util.Locale;
 /*     */ import java.util.Map;
+import java.util.logging.Level;
 /*     */ import java.util.logging.Logger;
 /*     */ import javax.annotation.PostConstruct;
 /*     */ import javax.faces.bean.ManagedBean;
@@ -134,14 +135,15 @@
 /*     */   }
 /*     */   
 /*     */   @PostConstruct
-/*     */   public void inicio() throws AdminException, ParseException {
-/*     */     try {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e) {
-/* 142 */       e.printStackTrace();
-/* 143 */       this.logger.info("Error en la validación de sesión");
-/*     */     }
+            public void inicio(){
+/*     */   // public void inicio() throws AdminException, ParseException {
+///*     */     try {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e) {
+///* 142 */       e.printStackTrace();
+///* 143 */       this.logger.info("Error en la validación de sesión");
+///*     */     }
 /*     */     try
 /*     */     {
 /* 147 */       this.regalia = ((Regalia)JSFUtilities.getHttpSessionAttributeObject("RegaliaAgenteId"));
@@ -149,9 +151,13 @@
 /*     */     catch (Exception e) {
 /* 150 */       this.regalia = new Regalia();
 /* 151 */       this.departamento = new Departamento();
-/* 152 */       this.departamento = this.cooperativaEJBBeanLocal.departamentoById(new Integer(1));
-/*     */       
-/* 154 */       this.regalia.setIdDepartamento(this.departamento);
+///* 152 */     this.departamento = this.cooperativaEJBBeanLocal.departamentoById(new Integer(1));
+                try {
+                    this.departamento = this.cooperativaEJBBeanLocal.departamentoById(new Integer(1));
+                } catch (AdminException ex) {
+                    Logger.getLogger(RegaliaAgenteBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.regalia.setIdDepartamento(this.departamento);
 /* 155 */       this.regalia.setIdCooperativa(this.cooperativa);
 /*     */       
 /* 157 */       this.regalia.setAgeIdMunicipio(new Municipio());
@@ -201,7 +207,9 @@
 /*     */     }
 /*     */     catch (AdminException e) {
 /* 203 */       Util.CrearMsgErrorFatalGenerico(e.getMessage());
-/*     */     }
+/*     */     }catch(ParseException e){
+                Util.CrearMsgErrorFatalGenerico(e.getMessage());
+              }
 /*     */   }
 /*     */   
 /*     */   public void eliminarMineral(Liquidacion liquidacionParam)
@@ -454,9 +462,10 @@
 /* 454 */       this.selectMineral = new ArrayList();
 /* 455 */       this.mapSelectMineral = new HashMap();
 /* 456 */       this.selectMineral.add(new SelectItem(null, "Seleccione..."));
-/* 457 */       Object cotMineral = new ArrayList();
-/* 458 */       cotMineral = this.liquidacionEjbBeanLocal.listCotizacionMineral();
-/* 459 */       for (CotizacionMineral list : (List)cotMineral) {
+/* 457 */       // Object cotMineral = new ArrayList();
+/* 458 */       List<CotizacionMineral> cotMineral = this.liquidacionEjbBeanLocal.listCotizacionMineral();
+/* 459 */       // for (CotizacionMineral list : (List)cotMineral) {
+                for (CotizacionMineral list : cotMineral) {
 /* 460 */         this.selectMineral.add(new SelectItem(list.getId(), list.getNombre()));
 /* 461 */         this.mapSelectMineral.put(list.getId(), list);
 /*     */       }
@@ -487,9 +496,9 @@
 /*     */       }
 /*     */       
 /* 489 */       this.mapDepartamento = new HashMap();
-/* 490 */       Object listDepar = new ArrayList();
-/* 491 */       listDepar = this.cooperativaEJBBeanLocal.listadoDepartamento();
-/* 492 */       for (Departamento dep : (List)listDepar) {
+/* 490 */       // Object listDepar = new ArrayList();
+/* 491 */       List<Departamento> listDepar = this.cooperativaEJBBeanLocal.listadoDepartamento();
+/* 492 */       for (Departamento dep : listDepar) {
 /* 493 */         this.mapDepartamento.put(dep.getId(), dep.getNombre());
 /*     */ 
 /*     */ 

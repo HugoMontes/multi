@@ -124,13 +124,13 @@
 /*     */   @PostConstruct
 /*     */   public void inicio()
 /*     */   {
-/*     */     try {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e) {
-/* 131 */       e.printStackTrace();
-/* 132 */       this.logger.info("Error en la validación de sesión");
-/*     */     }
+///*     */     try {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e) {
+///* 131 */       e.printStackTrace();
+///* 132 */       this.logger.info("Error en la validación de sesión");
+///*     */     }
 /*     */     try
 /*     */     {
 /* 136 */       this.transporteExterno = ((TransporteExterno)JSFUtilities.getHttpSessionAttributeObject("externoId"));
@@ -246,9 +246,9 @@
 /*     */ 
 /* 247 */       this.selectPais = new ArrayList();
 /* 248 */       this.selectPais.add(new SelectItem(null, "Seleccione..."));
-/* 249 */       Object listPais = new ArrayList();
-/* 250 */       listPais = this.cooperativaEJBBeanLocal.listadoPais();
-/* 251 */       for (Pais pais : (List)listPais) {
+/* 249 */       // Object listPais = new ArrayList();
+/* 250 */       List<Pais> listPais = this.cooperativaEJBBeanLocal.listadoPais();
+/* 251 */       for (Pais pais : listPais) {
 /* 252 */         this.selectPais.add(new SelectItem(pais.getId(), pais.getNombre()));
 /*     */       }
 /*     */       

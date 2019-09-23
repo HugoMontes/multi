@@ -127,12 +127,12 @@
 /*     */   @PostConstruct
 /*     */   public void inicio()
 /*     */   {
-/*     */     try {
-/*     */       
-/*     */     }
-/*     */     catch (IOException e) {
-/* 134 */       e.printStackTrace();
-/*     */     }
+///*     */     try {
+///*     */       
+///*     */     }
+///*     */     catch (IOException e) {
+///* 134 */       e.printStackTrace();
+///*     */     }
 /*     */     
 /* 137 */     System.out.println("Nombre: " + this.segUsuarioSession.getNombres());
 /*     */     
